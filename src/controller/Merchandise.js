@@ -21,7 +21,7 @@ const Merchandise = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
   async getMerchandiseClientProviderNegotiation(req, res) {
@@ -38,7 +38,7 @@ const Merchandise = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
   async getMerchandiseProvider(req, res) {
@@ -55,7 +55,7 @@ const Merchandise = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
   async getMerchandiseProviderIfClient(req, res) {
@@ -72,7 +72,7 @@ const Merchandise = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
 

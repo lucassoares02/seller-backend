@@ -29,7 +29,7 @@ const User = {
               return res.json(results);
             }
           });
-          connection.end();
+          // connection.end();
 
         } else if (results[0].direcAcesso == 2) {
 
@@ -42,7 +42,7 @@ const User = {
               return res.json(results);
             }
           });
-          connection.end();
+          // connection.end();
 
         } else if (results[0].direcAcesso == 3) {
 
@@ -55,12 +55,12 @@ const User = {
               return res.json(results);
             }
           });
-          connection.end();
+          // connection.end();
         }
       };
       return 0;
     });
-    connection.end();
+    // connection.end();
   },
 
 

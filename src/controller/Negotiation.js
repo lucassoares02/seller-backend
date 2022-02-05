@@ -17,7 +17,7 @@ const Negotiation = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
 
@@ -38,7 +38,7 @@ const Negotiation = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
 
@@ -58,7 +58,7 @@ const Negotiation = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
 

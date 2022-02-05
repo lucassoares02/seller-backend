@@ -19,7 +19,7 @@ const Request = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
 
@@ -37,7 +37,7 @@ const Request = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
 
@@ -81,7 +81,7 @@ const Request = {
       };
       return 0;
     });
-    connection.end();
+    // connection.end();
   },
 
 

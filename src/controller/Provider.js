@@ -19,7 +19,7 @@ const Provider = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
   async getProviderSells(req, res) {
@@ -34,7 +34,7 @@ const Provider = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
 
@@ -52,7 +52,7 @@ const Provider = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
 
@@ -70,7 +70,7 @@ const Provider = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
 
@@ -86,7 +86,7 @@ const Provider = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
 
@@ -104,7 +104,7 @@ const Provider = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
 };

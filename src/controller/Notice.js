@@ -17,7 +17,7 @@ const Notice = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
 

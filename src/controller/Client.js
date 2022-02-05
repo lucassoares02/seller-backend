@@ -20,7 +20,7 @@ const Client = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
 
@@ -38,7 +38,7 @@ const Client = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
 
@@ -56,7 +56,7 @@ const Client = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
 
@@ -74,7 +74,7 @@ const Client = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
 
@@ -93,7 +93,7 @@ const Client = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
   async getStoresCategory(req, res) {
@@ -110,7 +110,7 @@ const Client = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
   async getAllStores(req, res) {
@@ -125,7 +125,7 @@ const Client = {
         return res.json(results);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
 
