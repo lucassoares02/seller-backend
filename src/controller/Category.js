@@ -6,7 +6,7 @@ const Insert = require("@insert");
 const Category = {
 
   async getCategoryConsult(req, res) {
-    logger.info("Get Clients to Category for Consult");
+    logger.info("Get Clients to Category for Consults");
 
     const { codconsult } = req.params;
 
@@ -14,7 +14,7 @@ const Category = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Clients to Category for Consult: ", error);
+        console.log("Error Select Clients to Category for Consults: ", error);
       } else {
         return res.json(results);
       }
