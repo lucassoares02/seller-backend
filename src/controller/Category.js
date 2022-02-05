@@ -19,6 +19,7 @@ const Category = {
         return res.json(results);
       }
     });
+    connection.end();
   },
 
 

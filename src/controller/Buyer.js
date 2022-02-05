@@ -18,6 +18,7 @@ const Buyer = {
         return res.json(results);
       }
     });
+    connection.end();
   },
 
   async getAllBuyers(req, res) {
@@ -32,6 +33,7 @@ const Buyer = {
         return res.json(results);
       }
     });
+    connection.end();
   },
 
 
