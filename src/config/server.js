@@ -11,6 +11,4 @@ var connection = mysql.createPool({
   insecureAuth: true,
 });
 
-connection.connect();
-
 module.exports = connection;
