@@ -29,7 +29,7 @@ const Merchandise = {
 
     const { codclient, codprovider, codnegotiation } = req.params;
 
-    const queryConsult = "select mercadoria.nomeMercadoria, mercadoria.embMercadoria, mercadoria.fatorMerc, IFNULL(SUM(pedido.quantMercPedido), 0) as 'quantMercPedido', FORMAT(mercadoria.precoMercadoria, 2, 'de_DE') as precoMercadoria, FORMAT(IFNULL(SUM(mercadoria.precoMercadoria * pedido.quantMercPedido), 0), 2, 'de_DE') as 'totalValor' from mercadoria join pedido on pedido.codMercPedido = mercadoria.codMercadoria where pedido.codAssocPedido = " + codclient + " and pedido.codfornpedido = " + codprovider + " and pedido.codNegoPedido = " + codnegotiation + " group by mercadoria.nomeMercadoria order by quantMercPedido";
+    const queryConsult = "select mercadoria.nomeMercadoria, mercadoria.embMercadoria, mercadoria.fatorMerc, IFNULL(SUM(pedido.quantMercPedido), 0) as 'quantMercadoria', mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(mercadoria.precoMercadoria * pedido.quantMercPedido), 0 as 'totalValor' from mercadoria join pedido on pedido.codMercPedido = mercadoria.codMercadoria where pedido.codAssocPedido = " + codclient + " and pedido.codfornpedido = " + codprovider + " and pedido.codNegoPedido = " + codnegotiation + " group by mercadoria.nomeMercadoria order by quantMercPedido";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
