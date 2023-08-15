@@ -1,3 +1,4 @@
+
 const router = require("express").Router();
 
 const Merchandise = require("@controller/Merchandise");
@@ -5,10 +6,15 @@ const Negotiation = require("@controller/Negotiation");
 const Provider = require("@controller/Provider");
 const Category = require("@controller/Category");
 const Request = require("@controller/Request");
+const Graphs = require("@controller/Graphs");
 const Client = require("@controller/Client");
 const Buyer = require("@controller/Buyer");
 const Notice = require("@controller/Notice");
 const User = require("@controller/User");
+
+
+
+
 
 
 
@@ -95,6 +101,10 @@ router.get("/requestproviderclient/:codclient", Request.getRequestProviderClient
 router.get("/requestsprovider/:codprovider", Request.getRequestsProvider); // localhost:3001/requestsprovider/333
 // getInserePedido.php
 router.post("/insertrequest", Request.postInsertRequest); // localhost:3001/insertrequest
+
+
+// getInserePedido.php
+router.get("/percentageclients/:codprovider", Graphs.getPercentageClients); // localhost:3001/percentageclients/333
 
 
 module.exports = router;
