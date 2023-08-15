@@ -32,6 +32,8 @@ router.get("/storescategory/:codprovider", Client.getStoresCategory); // localho
 // getTodasLojas.php
 router.get("/stores", Client.getAllStores); // localhost:3001/stores
 
+router.get("/storesbyprovider/:codprovider", Client.getStoresbyProvider); // localhost:3001/storesbyprovider/3333
+
 
 
 // Methods Categories

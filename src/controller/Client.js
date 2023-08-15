@@ -130,11 +130,23 @@ const Client = {
 
 
 
+  async getStoresbyProvider(req, res) {
+    logger.info("Get All Stores");
 
 
+    const { codprovider } = req.params;
 
+    const queryConsult = `select codAssociado, cnpjAssociado, razaoAssociado, codAssociado, FORMAT(ifnull(sum(mercadoria.precoMercadoria * pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', ifnull(sum(pedido.quantMercPedido), 0) as 'volumeTotal'  from associado left join pedido on pedido.codAssocPedido = associado.codAssociado  left join relacionaFornecedor on relacionaFornecedor.codFornecedor = pedido.codFornPedido  left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido  and relacionaFOrnecedor.codFornecedor = ${codprovider} group by associado.codAssociado  order by sum(mercadoria.precoMercadoria * pedido.quantMercPedido)  desc`;
 
-
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select Stores by Provider: ", error);
+      } else {
+        return res.json(results);
+      }
+    });
+    // connection.end();
+  },
 
 
   async postUser(req, res) {
