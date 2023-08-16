@@ -143,7 +143,7 @@ const Client = {
     from associado a
     left join pedido p on p.codAssocPedido = a.codAssociado 
     left join mercadoria m  on m.codMercadoria = p.codMercPedido
-    and p.codFornPedido = ${codeprovider}
+    and p.codFornPedido = ${codprovider}
     group by a.codAssociado 
     order by valor
     desc
