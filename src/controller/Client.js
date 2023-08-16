@@ -131,12 +131,30 @@ const Client = {
 
 
   async getStoresbyProvider(req, res) {
-    logger.info("Get All Stores");
+    logger.info("Get Stores by Provider");
 
 
     const { codprovider } = req.params;
 
-    const queryConsult = `select codAssociado, cnpjAssociado, razaoAssociado, codAssociado, FORMAT(ifnull(sum(mercadoria.precoMercadoria * pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', ifnull(sum(pedido.quantMercPedido), 0) as 'volumeTotal'  from associado left join pedido on pedido.codAssocPedido = associado.codAssociado  left join relacionaFornecedor on relacionaFornecedor.codFornecedor = pedido.codFornPedido  left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido  and relacionaFOrnecedor.codFornecedor = ${codprovider} group by associado.codAssociado  order by sum(mercadoria.precoMercadoria * pedido.quantMercPedido)  desc`;
+    const queryConsult = `SELECT  
+        associado.razaoAssociado, 
+        associado.cnpjAssociado, 
+        FORMAT(IFNULL(SUM(mercadoria.precoMercadoria * filtered_pedidos.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal'
+    FROM associado  
+    LEFT JOIN (
+        SELECT 
+            pedido.codAssocPedido,
+            SUM(pedido.quantMercPedido) AS quantMercPedido
+        FROM pedido
+        WHERE pedido.codFornPedido = ${codprovider}
+        GROUP BY pedido.codAssocPedido
+    ) filtered_pedidos ON associado.codAssociado = filtered_pedidos.codAssocPedido
+    LEFT JOIN pedido ON associado.codAssociado = pedido.codAssocPedido
+    LEFT JOIN mercadoria ON pedido.codMercPedido = mercadoria.codMercadoria
+    and pedido.codFornPedido  = ${codprovider}
+    GROUP BY associado.codAssociado  
+    ORDER BY IFNULL(SUM(mercadoria.precoMercadoria * filtered_pedidos.quantMercPedido), 0) DESC;
+    `;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
