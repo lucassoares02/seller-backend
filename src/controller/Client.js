@@ -136,24 +136,17 @@ const Client = {
 
     const { codprovider } = req.params;
 
-    const queryConsult = `SELECT  
-        associado.razaoAssociado, 
-        associado.cnpjAssociado, 
-        FORMAT(IFNULL(SUM(mercadoria.precoMercadoria * filtered_pedidos.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal'
-    FROM associado  
-    LEFT JOIN (
-        SELECT 
-            pedido.codAssocPedido,
-            SUM(pedido.quantMercPedido) AS quantMercPedido
-        FROM pedido
-        WHERE pedido.codFornPedido = ${codprovider}
-        GROUP BY pedido.codAssocPedido
-    ) filtered_pedidos ON associado.codAssociado = filtered_pedidos.codAssocPedido
-    LEFT JOIN pedido ON associado.codAssociado = pedido.codAssocPedido
-    LEFT JOIN mercadoria ON pedido.codMercPedido = mercadoria.codMercadoria
-    and pedido.codFornPedido  = ${codprovider}
-    GROUP BY associado.codAssociado  
-    ORDER BY IFNULL(SUM(mercadoria.precoMercadoria * filtered_pedidos.quantMercPedido), 0) DESC;
+    const queryConsult = `select  
+    a.razaoAssociado  ,
+    a.cnpjAssociado ,
+    FORMAT(sum(IFNULL(p.quantMercPedido * m.precoMercadoria, 0)), 2, 'de_DE') as 'valor'
+    from associado a
+    left join pedido p on p.codAssocPedido = a.codAssociado 
+    left join mercadoria m  on m.codMercadoria = p.codMercPedido
+    and p.codFornPedido = ${codeprovider}
+    group by a.codAssociado 
+    order by valor
+    desc
     `;
 
     connection.query(queryConsult, (error, results, fields) => {
