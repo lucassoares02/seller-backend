@@ -46,7 +46,24 @@ const Merchandise = {
 
     const { codprovider } = req.params;
 
-    const queryConsult = "select fornecedor.codForn, fornecedor.nomeForn, mercadoria.codMercadoria, mercadoria.nomeMercadoria, mercadoria.embMercadoria, mercadoria.fatorMerc, FORMAT(mercadoria.precoMercadoria, 2, 'de_DE') as precoMercadoria, FORMAT(mercadoria.precoUnit, 2, 'de_DE') as precoUnit, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from mercadoria join fornecedor on mercadoria.codFornMerc = fornecedor.codForn left join pedido on pedido.codMercPedido = mercadoria.codMercadoria where fornecedor.codForn = " + codprovider + " group by mercadoria.codMercadoria order by pedido.quantMercPedido desc";
+    const queryConsult = `
+    select fornecedor.codForn, 
+fornecedor.nomeForn, 
+mercadoria.codMercadoria, 
+mercadoria.nomeMercadoria,
+mercadoria.embMercadoria, 
+mercadoria.fatorMerc, 
+mercadoria.precoMercadoria as precoMercadoria, 
+mercadoria.precoUnit as precoUnit,
+IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal', 
+sum(pedido.quantMercPedido) as 'volumeTotal' 
+from mercadoria 
+join fornecedor on mercadoria.codFornMerc = fornecedor.codForn 
+left join pedido on pedido.codMercPedido = mercadoria.codMercadoria
+where fornecedor.codForn = ${codprovider}
+group by mercadoria.codMercadoria 
+order by pedido.quantMercPedido 
+desc`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
