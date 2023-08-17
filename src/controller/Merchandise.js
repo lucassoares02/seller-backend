@@ -62,7 +62,7 @@ join fornecedor on mercadoria.codFornMerc = fornecedor.codForn
 left join pedido on pedido.codMercPedido = mercadoria.codMercadoria
 where fornecedor.codForn = ${codprovider}
 group by mercadoria.codMercadoria 
-order by pedido.quantMercPedido 
+order by valorTotal 
 desc`;
 
     connection.query(queryConsult, (error, results, fields) => {
