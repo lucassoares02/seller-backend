@@ -22,6 +22,23 @@ const Graphs = {
     // connection.end();
   },
 
+  async getPercentageClientsOrganization(req, res) {
+    logger.info("Get Percentage Clients Organization");
+
+    const queryConsult = `SELECT 
+    (COUNT(DISTINCT pedido.codAssocPedido) * 100.0) / (SELECT COUNT(*) FROM associado) AS porcentagem, 
+    COUNT(DISTINCT pedido.codAssocPedido) AS totalAssociadosFornecedor, (SELECT COUNT(*) FROM associado) AS totalAssociados FROM pedido`;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select Percentage Clients: ", error);
+      } else {
+        return res.json(results);
+      }
+    });
+    // connection.end();
+  },
+
   async getTotalValueClients(req, res) {
     logger.info("Get Total Value Clients");
 
