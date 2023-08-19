@@ -25,7 +25,20 @@ const Provider = {
   async getProviderSells(req, res) {
     logger.info("Get Provider Sells");
 
-    const queryConsult = "select cnpjForn, nomeForn, razaoForn, codForn, FORMAT(IFNULL(sum(mercadoria.precoMercadoria * pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from fornecedor left join pedido on pedido.codFornPedido = fornecedor.codForn left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido group by fornecedor.codForn order by sum(mercadoria.precoMercadoria * pedido.quantMercPedido) desc";
+    const queryConsult = `
+    select 
+    cnpjForn,
+    nomeForn, 
+    razaoForn, 
+    codForn, 
+    IFNULL(sum(mercadoria.precoMercadoria * pedido.quantMercPedido), 0) as 'valorTotal',
+    IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal'
+    from fornecedor 
+    left join pedido on pedido.codFornPedido = fornecedor.codForn 
+    left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido 
+    group by fornecedor.codForn 
+    order by sum(mercadoria.precoMercadoria * pedido.quantMercPedido)
+    desc`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
