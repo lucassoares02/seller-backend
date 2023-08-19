@@ -55,6 +55,39 @@ const Request = {
   },
 
 
+  async getAllRequests(req, res) {
+    logger.info("Get All Requests");
+
+    const { codprovider } = req.params;
+
+    const queryConsult = `
+    select 
+    pedido.codPedido ,
+    associado.cnpjAssociado ,
+    associado.codAssociado ,
+    consultor.nomeConsult,
+    associado.razaoAssociado,
+    sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'valor',
+    TIME_FORMAT(pedido.dataPedido,'%H:%i') as 'horas' 
+    from consultor 
+    join pedido on consultor.codConsult = pedido.codComprPedido 
+    join associado on pedido.codAssocPedido = associado.codAssociado 
+    join mercadoria on pedido.codMercPedido = mercadoria.codMercadoria
+    group by associado.codAssociado 
+    order by valor 
+    desc`;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select All Requests: ", error);
+      } else {
+        return res.json(results);
+      }
+    });
+    // connection.end();
+  },
+
+
   async postInsertRequest(req, res) {
     logger.info("Post Insert Request");
 
