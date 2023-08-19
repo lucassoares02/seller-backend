@@ -56,7 +56,22 @@ const Provider = {
 
     const { codbuyer } = req.params;
 
-    const queryConsult = "select cnpjForn, nomeForn, razaoForn, codForn, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido),0) as 'volumeTotal' from fornecedor join comprador on comprador.codCompr = fornecedor.codComprFornecedor left join pedido on pedido.codFornPedido = fornecedor.codForn left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where comprador.codCompr = " + codbuyer + " group by fornecedor.codForn order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
+    const queryConsult = `
+    select 
+    cnpjForn, 
+    nomeForn,
+    razaoForn as razao, 
+    codForn, 
+    IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
+    IFNULL(sum(pedido.quantMercPedido),0) as 'volumeTotal'
+    from fornecedor 
+    join comprador on comprador.codCompr = fornecedor.codComprFornecedor
+    left join pedido on pedido.codFornPedido = fornecedor.codForn 
+    left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido
+    where comprador.codCompr = ${codbuyer}
+    group by fornecedor.codForn 
+    order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
+    desc`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
