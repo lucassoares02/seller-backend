@@ -82,7 +82,7 @@ const Client = {
   async getClientMerchandise(req, res) {
     logger.info("Get Clients to Merchandise");
 
-    const { codmercadoria } = req.params;
+    const { codmercadoria, codnegotiation } = req.params;
 
     const queryConsult = `
     select 
@@ -99,6 +99,7 @@ const Client = {
     left outer join pedido on mercadoria.codMercadoria = pedido.codMercPedido 
     left join associado on associado.codAssociado = pedido.codAssocPedido
     where mercadoria.codMercadoria = ${codmercadoria} 
+    and pedido.codNegoPedido = ${codnegotiation}
     group by pedido.codAssocPedido
     order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
     desc`;

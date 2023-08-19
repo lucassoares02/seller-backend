@@ -29,8 +29,12 @@ router.get("/allclient", Client.getAllClient);
 router.get("/client/:codacesso", Client.getOneClient); // localhost:3001/client/1000000024212
 //getAssociadoPorConsutor.php  | getAssociadosPorConsultor.php
 router.get("/clientconsult/:codconsultor", Client.getClientConsult); // localhost:3001/clientconsult/1
-//getAssociadoPorMercadoria.php | getAssociadosPorMercadoria.php
-router.get("/clientmerchandise/:codmercadoria", Client.getClientMerchandise); // localhost:3001/clientmerchandise/19049
+//getAssociadoPorMercadoria.php | getAssociadosPorMercadoria.php 
+
+
+
+
+router.get("/clientmerchandise/:codmercadoria/:codnegotiation", Client.getClientMerchandise); // localhost:3001/clientmerchandise/19049
 //getLojas.php
 router.get("/stores/:codconsultor", Client.getStoreConsultant); // localhost:3001/stores/1
 // getLojasPorCategoria.php
