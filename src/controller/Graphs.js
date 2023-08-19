@@ -10,7 +10,8 @@ const Graphs = {
 
     const { codprovider } = req.params;
 
-    const queryConsult = `SELECT (COUNT(DISTINCT pedido.codAssocPedido) * 100.0) / (SELECT COUNT(*) FROM associado) AS porcentagem, COUNT(DISTINCT pedido.codAssocPedido) AS totalAssociadosFornecedor, (SELECT COUNT(*) FROM associado) AS totalAssociados FROM pedido WHERE pedido.codFornPedido = ${codprovider}`;
+    const queryConsult = `
+    SELECT (COUNT(DISTINCT pedido.codAssocPedido) * 100.0) / (SELECT COUNT(*) FROM associado) AS porcentagem, COUNT(DISTINCT pedido.codAssocPedido) AS realizados, (SELECT COUNT(*) FROM associado) AS total FROM pedido WHERE pedido.codFornPedido = ${codprovider}`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -27,7 +28,7 @@ const Graphs = {
 
     const queryConsult = `SELECT 
     (COUNT(DISTINCT pedido.codAssocPedido) * 100.0) / (SELECT COUNT(*) FROM associado) AS porcentagem, 
-    COUNT(DISTINCT pedido.codAssocPedido) AS totalAssociadosFornecedor, (SELECT COUNT(*) FROM associado) AS totalAssociados FROM pedido`;
+    COUNT(DISTINCT pedido.codAssocPedido) AS realizados, (SELECT COUNT(*) FROM associado) AS total FROM pedido`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
