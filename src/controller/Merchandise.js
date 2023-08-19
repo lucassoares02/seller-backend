@@ -18,9 +18,9 @@ const Merchandise = {
     mercadoria.codFornMerc, 
     mercadoria.nomeMercadoria, 
     mercadoria.embMercadoria, 
-    FORMAT(mercadoria.precoMercadoria, 2, 'de_DE') as precoMercadoria, 
+    mercadoria.precoMercadoria as precoMercadoria, 
     IFNULL(SUM(pedido.quantMercPedido),  0) as quantMercadoria, 
-    FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal' 
+    IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal' 
     from mercadoria 
     join fornecedor on mercadoria.codFornMerc = fornecedor.codForn 
     left outer join pedido on mercadoria.codMercadoria = pedido.codMercPedido 
