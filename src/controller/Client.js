@@ -90,7 +90,7 @@ const Client = {
     mercadoria.codFornMerc,
     mercadoria.nomeMercadoria,
     mercadoria.embMercadoria,
-    associado.razaoAssociado,
+    associado.razaoAssociado as razao,
     associado.codAssociado,
     mercadoria.precoMercadoria as precoMercadoria, 
     IFNULL(SUM(pedido.quantMercPedido), 0) as fatorMerc,
