@@ -84,7 +84,24 @@ const Client = {
 
     const { codmercadoria } = req.params;
 
-    const queryConsult = "select mercadoria.codMercadoria, mercadoria.codFornMerc, mercadoria.nomeMercadoria, mercadoria.embMercadoria, associado.razaoAssociado, associado.codAssociado, FORMAT(mercadoria.precoMercadoria, 2, 'de_DE') as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as fatorMerc, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido),0), 2, 'de_DE') as 'valorTotal' from mercadoria left outer join pedido on mercadoria.codMercadoria = pedido.codMercPedido left join associado on associado.codAssociado = pedido.codAssocPedido where mercadoria.codMercadoria =" + codmercadoria + " group by pedido.codAssocPedido order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
+    const queryConsult = `
+    select 
+    mercadoria.codMercadoria, 
+    mercadoria.codFornMerc,
+    mercadoria.nomeMercadoria,
+    mercadoria.embMercadoria,
+    associado.razaoAssociado,
+    associado.codAssociado,
+    mercadoria.precoMercadoria as precoMercadoria, 
+    IFNULL(SUM(pedido.quantMercPedido), 0) as fatorMerc,
+    IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido),0) as 'valorTotal'
+    from mercadoria 
+    left outer join pedido on mercadoria.codMercadoria = pedido.codMercPedido 
+    left join associado on associado.codAssociado = pedido.codAssocPedido
+    where mercadoria.codMercadoria = ${codmercadoria} 
+    group by pedido.codAssocPedido
+    order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
+    desc`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
