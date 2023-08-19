@@ -54,6 +54,7 @@ router.get("/categoriesconsult/:codconsult", Category.getCategoryConsult); // lo
 // Methods Notices
 //getNotices.php
 router.get("/notices", Notice.getAllNotice); // localhost:3001/notices
+router.get("/schedule", Notice.getAllSchedule); // localhost:3001/notices
 
 
 // Methods Provider

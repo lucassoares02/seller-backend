@@ -21,6 +21,22 @@ const Notice = {
   },
 
 
+  async getAllSchedule(req, res) {
+    logger.info("Get All Schedule");
+
+    const queryConsult = "select * from schedule";
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select Schedule: ", error);
+      } else {
+        return res.json(results);
+      }
+    });
+    // connection.end();
+  },
+
+
 
 
 };
