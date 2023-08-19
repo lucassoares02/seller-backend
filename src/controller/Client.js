@@ -116,7 +116,23 @@ const Client = {
   async getAllStores(req, res) {
     logger.info("Get All Stores");
 
-    const queryConsult = "select relaciona.codAssocRelaciona, consultor.nomeConsult, relaciona.codConsultRelaciona, associado.razaoAssociado, associado.cnpjAssociado, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from associado join relaciona on relaciona.codConsultRelaciona = associado.codAssociado join consultor on consultor.codConsult = relaciona.codAssocRelaciona left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona left join mercadoria on codMercadoria = pedido.codMercPedido group by relaciona.codConsultRelaciona order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
+    const queryConsult = `
+    select 
+    relaciona.codAssocRelaciona,
+    consultor.nomeConsult, 
+    relaciona.codConsultRelaciona,
+    associado.razaoAssociado,
+    associado.cnpjAssociado, 
+    IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
+    IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' 
+    from associado 
+    join relaciona on relaciona.codConsultRelaciona = associado.codAssociado
+    join consultor on consultor.codConsult = relaciona.codAssocRelaciona 
+    left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona
+    left join mercadoria on codMercadoria = pedido.codMercPedido 
+    group by relaciona.codConsultRelaciona 
+    order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
+    desc`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
