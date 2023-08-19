@@ -141,7 +141,7 @@ const Client = {
     a.codAssociado ,
     a.razaoAssociado  ,
     a.cnpjAssociado ,
-    FORMAT(sum(IFNULL(p.quantMercPedido * m.precoMercadoria, 0)), 2, 'de_DE') as 'valorTotal',
+    sum(IFNULL(p.quantMercPedido * m.precoMercadoria, 0)) as 'valorTotal',
     sum(IFNULL(p.quantMercPedido, 0)) as 'volumeTotal'
     from associado a
     left join pedido p on p.codAssocPedido = a.codAssociado 
