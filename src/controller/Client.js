@@ -139,7 +139,7 @@ const Client = {
     relaciona.codAssocRelaciona,
     consultor.nomeConsult, 
     relaciona.codConsultRelaciona,
-    associado.razaoAssociado,
+    associado.razaoAssociado as razao,
     associado.cnpjAssociado, 
     IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
     IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' 
@@ -173,7 +173,7 @@ const Client = {
     const queryConsult = `select  
     p.codPedido ,
     a.codAssociado ,
-    a.razaoAssociado  ,
+    a.razaoAssociado  as razao,
     a.cnpjAssociado ,
     sum(IFNULL(p.quantMercPedido * m.precoMercadoria, 0)) as 'valorTotal',
     sum(IFNULL(p.quantMercPedido, 0)) as 'volumeTotal'
