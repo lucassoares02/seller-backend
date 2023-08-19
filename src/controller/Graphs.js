@@ -46,8 +46,8 @@ const Graphs = {
     const queryConsult = `
     SELECT 
     (COUNT(DISTINCT pedido.codFornPedido) * 100.0) / (SELECT COUNT(*) FROM fornecedor) AS porcentagem, 
-    COUNT(DISTINCT pedido.codFornPedido) AS totalPedidosFornecedor, 
-    (SELECT COUNT(*) FROM fornecedor f) AS totalFornecedor FROM pedido `;
+    COUNT(DISTINCT pedido.codFornPedido) AS realizados, 
+    (SELECT COUNT(*) FROM fornecedor f) AS total FROM pedido `;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
