@@ -18,6 +18,7 @@ const Merchandise = {
     mercadoria.codFornMerc, 
     mercadoria.nomeMercadoria, 
     mercadoria.embMercadoria, 
+    mercadoria.fatorMerc,
     mercadoria.precoMercadoria as precoMercadoria, 
     IFNULL(SUM(pedido.quantMercPedido),  0) as quantMercadoria, 
     IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal' 
