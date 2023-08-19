@@ -110,8 +110,8 @@ router.post("/insertrequest", Request.postInsertRequest); // localhost:3001/inse
 
 // getInserePedido.php
 router.get("/percentageclients/:codprovider", Graphs.getPercentageClients); // localhost:3001/percentageclients/333
+router.get("/percentageclientsOrganization", Graphs.getPercentageClientsOrganization); // localhost:3001/percentageclients
 router.get("/totalvalueclients/:codprovider", Graphs.getTotalValueClients); // localhost:3001/percentageclients/333
-router.get("/totalvalueclientsorganization", Graphs.getPercentageClientsOrganization); // localhost:3001/percentageclients
 
 
 module.exports = router;
