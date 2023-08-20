@@ -99,6 +99,41 @@ const Client = {
     left outer join pedido on mercadoria.codMercadoria = pedido.codMercPedido 
     left join associado on associado.codAssociado = pedido.codAssocPedido
     where mercadoria.codMercadoria = ${codmercadoria} 
+    group by pedido.codAssocPedido
+    order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
+    desc`;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select Clients to Merchandise: ", error);
+      } else {
+        return res.json(results);
+      }
+    });
+    // connection.end();
+  },
+
+
+  async getClientMerchandiseTrading(req, res) {
+    logger.info("Get Clients to Merchandise");
+
+    const { codmercadoria, codnegotiation } = req.params;
+
+    const queryConsult = `
+    select 
+    mercadoria.codMercadoria, 
+    mercadoria.codFornMerc,
+    mercadoria.nomeMercadoria,
+    mercadoria.embMercadoria,
+    associado.razaoAssociado as razao,
+    associado.codAssociado,
+    mercadoria.precoMercadoria as precoMercadoria, 
+    IFNULL(SUM(pedido.quantMercPedido), 0) as fatorMerc,
+    IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido),0) as 'valorTotal'
+    from mercadoria 
+    left outer join pedido on mercadoria.codMercadoria = pedido.codMercPedido 
+    left join associado on associado.codAssociado = pedido.codAssocPedido
+    where mercadoria.codMercadoria = ${codmercadoria} 
     and pedido.codNegoPedido = ${codnegotiation}
     group by pedido.codAssocPedido
     order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 

@@ -34,7 +34,8 @@ router.get("/clientconsult/:codconsultor", Client.getClientConsult); // localhos
 
 
 
-router.get("/clientmerchandise/:codmercadoria/:codnegotiation", Client.getClientMerchandise); // localhost:3001/clientmerchandise/19049
+router.get("/clientmerchandise/:codmercadoria", Client.getClientMerchandise); // localhost:3001/clientmerchandise/19049
+router.get("/clientmerchandisetrading/:codmercadoria/:codnegotiation", Client.getClientMerchandiseTrading); // localhost:3001/clientmerchandise/19049
 //getLojas.php
 router.get("/stores/:codconsultor", Client.getStoreConsultant); // localhost:3001/stores/1
 // getLojasPorCategoria.php
