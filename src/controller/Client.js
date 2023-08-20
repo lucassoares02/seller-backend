@@ -70,7 +70,7 @@ const Client = {
 relaciona.codAssocRelaciona,
 consultor.nomeConsult,
 relaciona.codConsultRelaciona, 
-associado.razaoAssociado, 
+associado.razaoAssociado as razao, 
 associado.cnpjAssociado, 
 IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido),0) as 'valorTotal',
 IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' 
