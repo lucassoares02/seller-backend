@@ -81,7 +81,7 @@ left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona
 left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido 
 where relaciona.codAssocRelaciona = ${codconsultor}
 group by relaciona.codConsultRelaciona 
-order by valorTotal 
+order by valor 
 desc`;
 
     connection.query(queryConsult, (error, results, fields) => {
