@@ -73,7 +73,7 @@ mercadoria.fatorMerc,
 mercadoria.precoMercadoria as precoMercadoria, 
 mercadoria.precoUnit as precoUnit,
 IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal', 
-sum(pedido.quantMercPedido) as 'volumeTotal' 
+IFNULL(sum(pedido.quantMercPedido),0) as 'volumeTotal' 
 from mercadoria 
 join fornecedor on mercadoria.codFornMerc = fornecedor.codForn 
 left join pedido on pedido.codMercPedido = mercadoria.codMercadoria
