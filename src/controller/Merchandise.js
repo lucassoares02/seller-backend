@@ -120,14 +120,15 @@ desc`;
     mercadoria.nomeMercadoria,
     mercadoria.embMercadoria, 
     mercadoria.fatorMerc, 
+    mercadoria.precoUnit ,
     mercadoria.precoMercadoria as precoMercadoria,
-    IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria 
+    IFNULL(SUM(pedido.quantMercPedido), 0) as volumeTotal 
     FROM mercadoria 
     left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) 
     and pedido.codAssocPedido = ${codclient}
-    where mercadoria.codFornMerc = ${codeprovider}
+    where mercadoria.codFornMerc = ${codprovider}
     GROUP BY mercadoria.codMercadoria
-    ORDER BY quantMercadoria 
+    ORDER BY volumeTotal 
     desc`;
 
     connection.query(queryConsult, (error, results, fields) => {
