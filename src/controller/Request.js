@@ -42,7 +42,23 @@ const Request = {
 
     const { codprovider } = req.params;
 
-    const queryConsult = "select pedido.codPedido , associado.cnpjAssociado , associado.codAssociado ,consultor.nomeConsult, associado.razaoAssociado, FORMAT(sum(pedido.quantMercPedido * mercadoria.precoMercadoria), 2, 'de_DE') as 'valor', TIME_FORMAT(pedido.dataPedido,'%H:%i') as 'horas' from consultor join pedido on consultor.codConsult = pedido.codComprPedido join associado on pedido.codAssocPedido = associado.codAssociado join mercadoria on pedido.codMercPedido = mercadoria.codMercadoria where pedido.codFornPedido = " + codprovider + " group by associado.codAssociado order by valor desc";
+    const queryConsult = `
+    select pedido.codPedido , 
+    associado.cnpjAssociado , 
+    associado.codAssociado ,
+    consultor.nomeConsult, 
+    associado.razaoAssociado, 
+    sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'valor', 
+    TIME_FORMAT(pedido.dataPedido,'%H:%i') as 'horas' 
+    from consultor 
+    join pedido on consultor.codConsult = pedido.codComprPedido 
+    join associado on pedido.codAssocPedido = associado.codAssociado 
+    join mercadoria on pedido.codMercPedido = mercadoria.codMercadoria 
+    where pedido.codFornPedido = ${codprovider} 
+    group by associado.codAssociado 
+    order by valor 
+    desc
+    `;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
