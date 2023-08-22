@@ -125,7 +125,7 @@ desc`;
     IFNULL(SUM(pedido.quantMercPedido), 0) as volumeTotal 
     FROM mercadoria 
     left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) 
-    and pedido.codAssocPedido = ${codclient}
+    and pedido.codComprPedido = ${codclient}
     where mercadoria.codFornMerc = ${codeprovider}
     GROUP BY mercadoria.codMercadoria
     ORDER BY volumeTotal 
