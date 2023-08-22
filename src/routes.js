@@ -99,6 +99,7 @@ router.get("/merchandiseprovider/:codprovider", Merchandise.getMerchandiseProvid
 router.get("/merchandiseproviderifclient/:codclient/:codprovider/:codnegotiation", Merchandise.getMerchandiseProviderIfClient); // localhost:3001/merchandiseproviderifclient/7/333/1
 router.get("/merchandisenegotiationprovider/:codprovider/:codnegotiation", Merchandise.getMerchandiseNegotiationProvider); // localhost:3001/merchandiseproviderifclient/7/333/1
 
+router.get("/merchandisepercustomer/:codclient/:codeprovider", Merchandise.getMerchandisePerCustomer); // localhost:3001/merchandiseproviderifclient/7/333/1
 
 
 // Methods Request

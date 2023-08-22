@@ -109,6 +109,37 @@ desc`;
     // connection.end();
   },
 
+  async getMerchandisePerCustomer(req, res) {
+    logger.info("Get Merchandise Provider If Client");
+
+    const { codclient, codeprovider } = req.params;
+
+    const queryConsult = `
+    SELECT 
+    mercadoria.codMercadoria,
+    mercadoria.nomeMercadoria,
+    mercadoria.embMercadoria, 
+    mercadoria.fatorMerc, 
+    mercadoria.precoMercadoria as precoMercadoria,
+    IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria 
+    FROM mercadoria 
+    left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) 
+    and pedido.codAssocPedido = ${codclient}
+    where mercadoria.codFornMerc = ${codeprovider}
+    GROUP BY mercadoria.codMercadoria
+    ORDER BY quantMercadoria 
+    desc`;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select Merchandise Provider If Client: ", error);
+      } else {
+        return res.json(results);
+      }
+    });
+    // connection.end();
+  },
+
 
   async getMerchandiseNegotiationProvider(req, res) {
     logger.info("Get Merchandise Provider If Client");
