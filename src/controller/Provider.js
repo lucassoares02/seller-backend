@@ -94,7 +94,7 @@ const Provider = {
     nomeForn,
     razaoForn as razao, 
     codForn, 
-    FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', 
+    IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal', 
     IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal'
     from fornecedor 
     left join pedido on pedido.codFornPedido = fornecedor.codForn
