@@ -126,7 +126,7 @@ desc`;
     FROM mercadoria 
     left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) 
     and pedido.codAssocPedido = ${codclient}
-    where mercadoria.codFornMerc = ${codprovider}
+    where mercadoria.codFornMerc = ${codeprovider}
     GROUP BY mercadoria.codMercadoria
     ORDER BY volumeTotal 
     desc`;
