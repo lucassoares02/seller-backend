@@ -115,7 +115,7 @@ router.get("/allrequestclients", Request.getAllRequests); // localhost:3001/allr
 
 // getInserePedido.php
 router.get("/percentageclients/:codprovider", Graphs.getPercentageClients); // localhost:3001/percentageclients/333
-router.get("/percentageclients/:codbuyer", Graphs.getPercentagePovidersByClients); // localhost:3001/percentageclients/333
+router.get("/percentageproviderbyclients/:codbuyer", Graphs.getPercentagePovidersByClients); // localhost:3001/percentageclients/333
 router.get("/percentageclientsorganization", Graphs.getPercentageClientsOrganization); // localhost:3001/percentageclients
 router.get("/percentageprovidersorganization", Graphs.getPercentageProvidersOrganization); // localhost:3001/percentageclients
 router.get("/totalvalueclients/:codprovider", Graphs.getTotalValueClients); // localhost:3001/percentageclients/333
