@@ -23,6 +23,30 @@ const Graphs = {
     // connection.end();
   },
 
+  async getPercentagePovidersByClients(req, res) {
+    logger.info("Get Percentage Providers by Clients");
+
+    const { codbuyer } = req.params;
+
+    const queryConsult = `
+    SELECT (COUNT(DISTINCT pedido.codFornPedido ) * 100.0) / (SELECT COUNT(*) 
+    FROM fornecedor f) AS porcentagem,
+    COUNT(DISTINCT pedido.codFornPedido) AS realizados, 
+    (SELECT COUNT(*) FROM fornecedor f2) AS total
+    FROM pedido 
+    WHERE pedido.codComprPedido  = ${codbuyer}
+    `;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select Percentage Providers by Clients: ", error);
+      } else {
+        return res.json(results);
+      }
+    });
+    // connection.end();
+  },
+
   async getPercentageClientsOrganization(req, res) {
     logger.info("Get Percentage Clients Organization");
 
