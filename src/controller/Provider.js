@@ -153,30 +153,19 @@ const Provider = {
   async postInsertProvider(req, res) {
     logger.info("Post Insert Provider");
 
-    console.log(req);
-
     const { codForn, nomeForn, razaoForn, cnpjForn, telForn } = req.body;
-
-
-    // Insert
-    // const queryInsert = "INSERT INTO fornecedor (codForn, nomeForn, razaoForn, cnpjForn, telForn, codCategoria, codComprFornecedor) VALUES (" + codForn + ", '" + nomeForn + "', '" + razaoForn + "', '" + cnpjForn + "', '" + telForn + "', " + 1 + " ," + 1 + " )";
 
     const queryInsert = `
     INSERT INTO 
     fornecedor 
     (codForn, nomeForn, razaoForn, cnpjForn, telForn, codCategoria, codComprFornecedor) 
-    VALUES (${codForn}, ${nomeForn}, ${razaoForn}, ${cnpjForn}, ${telForn}, '1', '1')
+    VALUES (${codForn}, '${nomeForn}', '${razaoForn}', '${cnpjForn}', '${telForn}', '1', '1')
     `;
 
-    console.log("teset");
-    console.log(queryInsert);
     connection.query(queryInsert, (error, results) => {
       if (error) {
-        console.log(error);
         return res.json({ "messaege": error.sqlMessage });
       } else {
-        console.log("PASSANDO AQUI!");
-        console.log(results);
         return res.json(results);
       }
     });
