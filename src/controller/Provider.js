@@ -163,6 +163,8 @@ const Provider = {
       if (error) {
         return ("Error Insert Provider Client: ", error);
       } else {
+        console.log("PASSANDO AQUI!");
+        console.log(results);
         return res.json(results);
       }
     });
