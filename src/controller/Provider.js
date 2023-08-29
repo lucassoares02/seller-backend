@@ -157,7 +157,14 @@ const Provider = {
 
 
     // Insert
-    const queryInsert = "INSERT INTO fornecedor (codForn , nomeForn, razaoForn, cnpjForn, telForn, codCategoria, codComprFornecedor) VALUES (" + codForn + ", '" + nomeForn + "', '" + razaoForn + "', '" + cnpjForn + "', '" + telForn + "', " + 1 + " ," + 1 + " )";
+    // const queryInsert = "INSERT INTO fornecedor (codForn, nomeForn, razaoForn, cnpjForn, telForn, codCategoria, codComprFornecedor) VALUES (" + codForn + ", '" + nomeForn + "', '" + razaoForn + "', '" + cnpjForn + "', '" + telForn + "', " + 1 + " ," + 1 + " )";
+
+    const queryInsert = `
+    INSERT INTO 
+    fornecedor 
+    (codForn, nomeForn, razaoForn, cnpjForn, telForn, codCategoria, codComprFornecedor) 
+    VALUES (${codForn}, ${nomeForn}, ${razaoForn}, ${cnpjForn}, ${telForn}, '1', '1')
+    `;
 
     console.log("teset");
     console.log(queryInsert);
