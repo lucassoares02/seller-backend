@@ -153,14 +153,21 @@ const Provider = {
   async postInsertProvider(req, res) {
     logger.info("Post Insert Provider");
 
-    const { codForn, nomeForn, razaoForn, cnpjForn, telForn } = req.body;
+    const { codForn, nomeForn, razaoForn, cnpjForn, telForn, type } = req.body;
 
-    const queryInsert = `
-    INSERT INTO 
-    fornecedor 
-    (codForn, nomeForn, razaoForn, cnpjForn, telForn, codCategoria, codComprFornecedor) 
-    VALUES (${codForn}, '${nomeForn}', '${razaoForn}', '${cnpjForn}', '${telForn}', '1', '1')
-    `;
+    let queryInsert = "";
+
+    if (type == 1) {
+      queryInsert = `INSERT INTO 
+      fornecedor 
+      (codForn, nomeForn, razaoForn, cnpjForn, telForn, codCategoria, codComprFornecedor) 
+      VALUES (${codForn}, '${nomeForn}', '${razaoForn}', '${cnpjForn}', '${telForn}', '1', '1')`;
+    } else {
+      queryInsert = `INSERT INTO 
+      associado 
+      (codAssociado, razaoAssociado, cnpjAssociado) 
+      VALUES (${codForn}, '${nomeForn}', '${razaoForn}')`;
+    }
 
     connection.query(queryInsert, (error, results) => {
       if (error) {
