@@ -70,6 +70,7 @@ router.get("/providersconsult/:codconsultclient", Provider.getProvidersClient); 
 // getTodosFornecedores.php
 router.get("/providerconsult/:codconsult", Provider.getProviderConsult); // localhost:3001/providerconsult/5
 
+router.post("/insertprovider", Provider.postInsertProvider);
 
 
 // Methods Negotiation
@@ -119,6 +120,7 @@ router.get("/percentageproviderbyclients/:codbuyer", Graphs.getPercentagePovider
 router.get("/percentageclientsorganization", Graphs.getPercentageClientsOrganization); // localhost:3001/percentageclients
 router.get("/percentageprovidersorganization", Graphs.getPercentageProvidersOrganization); // localhost:3001/percentageclients
 router.get("/totalvalueclients/:codprovider", Graphs.getTotalValueClients); // localhost:3001/percentageclients/333
+
 
 
 module.exports = router;

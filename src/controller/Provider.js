@@ -149,6 +149,36 @@ const Provider = {
     // connection.end();
   },
 
+
+  async postInsertProvider(req, res) {
+    logger.info("Post Insert Provider");
+
+    const { codForn, nomeForn, razaoForn, cnpjForn, telForn } = req.body;
+
+
+    connection.query(queryConsult, async (error, results, fields) => {
+      if (error) {
+        return ("Error Insert Provider: ", error);
+      } else {
+
+        // Insert
+        const queryInsert = "INSERT INTO fornecedor (codForn , nomeForn, razaoForn, cnpjForn, telForn, codCategoria, codComprFornecedor) VALUES (" + codForn + ", " + nomeForn + ", " + razaoForn + ", " + cnpjForn + ", " + telForn + ", " + 1 + " ," + 1 + " )";
+
+        connection.query(queryInsert, (error, results) => {
+          if (error) {
+            return ("Error Insert Provider Client: ", error);
+          } else {
+            return res.json(results);
+          }
+        });
+
+
+      };
+      return 0;
+    });
+    // connection.end();
+  },
+
 };
 
 module.exports = Provider;
