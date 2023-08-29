@@ -154,23 +154,25 @@ const Provider = {
     logger.info("Post Insert Provider");
 
     const { codForn, nomeForn, razaoForn, cnpjForn, telForn } = req.body;
-    try {
-      const queryInsert = "INSERT INTO fornecedor (codForn , nomeForn, razaoForn, cnpjForn, telForn, codCategoria, codComprFornecedor) VALUES (" + codForn + ", " + nomeForn + ", " + razaoForn + ", " + cnpjForn + ", " + telForn + ", " + 1 + " ," + 1 + " )";
 
-      return connection.query(queryInsert, (error, results) => {
-        if (error) {
-          return ("Error Insert Provider Client: ", error);
-        } else {
-          console.log("PASSANDO AQUI!");
-          console.log(results);
-          return res.json(results);
-        }
-      });
 
-    } catch (error) {
-      console.log(error);
-    }
     // Insert
+    const queryInsert = "INSERT INTO fornecedor (codForn , nomeForn, razaoForn, cnpjForn, telForn, codCategoria, codComprFornecedor) VALUES (" + codForn + ", '" + nomeForn + "', '" + razaoForn + "', '" + cnpjForn + "', '" + telForn + "', " + 1 + " ," + 1 + " )";
+
+    console.log("teset");
+    console.log(queryInsert);
+    connection.query(queryInsert, (error, results) => {
+      if (error) {
+        console.log(error);
+        return res.json({ "messaege": error.sqlMessage });
+      } else {
+        console.log("PASSANDO AQUI!");
+        console.log(results);
+        return res.json(results);
+      }
+    });
+
+
     // connection.end();
   },
 
