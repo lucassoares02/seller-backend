@@ -153,7 +153,7 @@ const Provider = {
   async postInsertProvider(req, res) {
     logger.info("Post Insert Provider");
 
-    console.log(JSON.stringify(req, 4));
+    console.log(req);
 
     const { codForn, nomeForn, razaoForn, cnpjForn, telForn } = req.body;
 
