@@ -2,6 +2,7 @@ const connection = require("@server");
 const logger = require("@logger");
 const Select = require("@select");
 const Insert = require("@insert");
+const Execute = require("../libs/execute");
 
 const Client = {
 
@@ -290,25 +291,98 @@ desc`;
       VALUES ("${nome}", "${empresa}", "123123123", "${tel}", "${email}")`;
     }
 
-    console.log("--------------------------------------------");
-    console.log(queryInsert);
-    console.log("--------------------------------------------");
+    //=============================================================
+    //=============================================================
+    //=============================================================
 
+    let result = true;
     connection.query(queryInsert, (error, results) => {
       if (error) {
+        result = false;
         return res.json({ "messaege": error.sqlMessage });
       } else {
-        return res.json(results);
+        return;
       }
     });
 
+    //=============================================================
+    //=============================================================
+    //=============================================================
 
-    // connection.end();
-  },
+    if (result) {
+
+      const queryAccess = `insert into acesso (codAcesso, direcAcesso, codUsuario, codOrganization) values(${cod}, ${type}, ${cod}, 158)`;
+      connection.query(queryAccess, (error, results) => {
+        if (error) {
+          result = false;
+          return;
+        } else {
+          return;
+        }
+      });
+    }
+
+    //=============================================================
+    //=============================================================
+    //=============================================================
+
+    if (result) {
+
+      // let querySave = ``;
+      // if (type == 1) {
+      //   querySave = `insert into relaciona (codAssocRelaciona, codConsultRelaciona) values(${cod},${empresa})`;
+      // } else {
+      //   querySave = `insert into relacionafornecedor (codConsultor, codFornecedor) values(${cod}, ${empresa})`;
+      // }
+
+      // console.log("====== Query Save =======");
+      // console.log(querySave);
+
+      // return connection.query(querySave, (error, results) => {
+      //   console.log("======== Results =========")
+      //   console.log(results);
+      //   if (error != null) {
+      //     console.log(error);
+      //     return;
+      //   } else {
+      //     return;
+      //   }
+      // });
 
 
 
+      let dataAssociado = {
+        codAssocRelaciona: cod,
+        codConsultRelaciona: empresa
+      }
 
+      let dataConsultor = {
+        codConsultor: cod,
+        codFornecedor: empresa,
+      }
+
+      let params = {
+        table: type == 1 ? "relacionaFornecedor" : "relaciona",
+        data: type == 1 ? dataConsultor : dataAssociado
+      }
+
+      console.log(params);
+
+      Insert(params)
+        .then(async (resp) => {
+          console.log(resp);
+        })
+        .catch((error) => {
+          console.log(error);
+          return res.json(error);
+        });
+
+      res.json({ message: "success" });
+
+    }
+  }
 };
 
 module.exports = Client;
+
+
