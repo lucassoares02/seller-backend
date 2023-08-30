@@ -311,7 +311,7 @@ desc`;
 
     if (result) {
 
-      const queryAccess = `insert into acesso (codAcesso, direcAcesso, codUsuario, codOrganization) values(${cod}, ${type}, ${cod}, 158)`;
+      const queryAccess = `insert into acesso (codAcesso, direcAcesso, codUsuario, codOrganization) values("${cod}", "${type}", "${cod}", 158)`;
       connection.query(queryAccess, (error, results) => {
         if (error) {
           result = false;
