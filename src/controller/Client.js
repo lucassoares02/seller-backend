@@ -270,9 +270,11 @@ desc`;
   },
 
   async postInsertPerson(req, res) {
-    logger.info("Post Insert Provider");
+    logger.info("Post Insert Person");
 
     const { cod, nome, email, empresa, tel, type } = req.body;
+
+    console.log(cod);
 
     let queryInsert = "";
 
@@ -287,6 +289,10 @@ desc`;
           (codCliente, nomeCliente,	codAssocCliente,	cpfCliente,	telCliente,	emailCliente) 
       VALUES (${cod}, ${nome}, ${empresa}, '123123123', ${tel}, ${email})`;
     }
+
+    console.log("--------------------------------------------");
+    console.log(queryInsert);
+    console.log("--------------------------------------------");
 
     connection.query(queryInsert, (error, results) => {
       if (error) {
