@@ -270,14 +270,20 @@ desc`;
   },
 
   async postInsertPerson(req, res) {
-    logger.info("Post Insert Provider");
+    logger.info("Post Insert Person");
 
     const { cod, nome, email, empresa, tel } = req.body;
 
+    console.log("=============================");
+    console.log(cod);
+    console.log(nome);
+    console.log(email);
+    console.log(empresa);
+    console.log(tel);
+    console.log("=============================");
+
     const queryInsert =
       `
-          DECLARE @Codigo INT = ${empresa};
-
       -- Verifica se o código está na tabela de fornecedores
       IF EXISTS (SELECT 1 FROM Fornecedores WHERE Codigo = ${empresa}) 
       BEGIN
