@@ -270,51 +270,27 @@ desc`;
   },
 
   async postInsertPerson(req, res) {
-    logger.info("Post Insert Person");
+    logger.info("Post Insert Provider");
 
-    const { cod, nome, email, empresa, tel } = req.body;
+    const { cod, nome, email, empresa, tel, type } = req.body;
 
-    console.log("=============================");
-    console.log(cod);
-    console.log(nome);
-    console.log(email);
-    console.log(empresa);
-    console.log(tel);
-    console.log("=============================");
+    let queryInsert = "";
 
-    const queryInsert =
-      `
-      -- Verifica se o código está na tabela de fornecedores
-      IF EXISTS (SELECT 1 FROM fornecedor WHERE codForn = ${empresa}) 
-      BEGIN
-          -- Insere um registro simples na tabela de consultores
-          INSERT INTO 
-              consultor 
-              (codConsult,	nomeConsult,	cpfConsult,	telConsult,	codFornConsult,	emailConsult) 
-              VALUES (${cod}, ${nome}, '123123123', ${tel}, ${empresa}, ${email});
-      END
-      ELSE
-      BEGIN
-          -- Verifica se o código está na tabela de associados
-          IF EXISTS (SELECT 1 FROM associado WHERE codAssociado = ${empresa})
-          BEGIN
-              -- Insere um registro na tabela de clientes
-              INSERT INTO 
-              cliente 
-              (codCliente, nomeCliente,	codAssocCliente,	cpfCliente,	telCliente,	emailCliente) 
-              VALUES (${cod}, ${nome}, ${empresa}, '123123123', ${tel}, ${email});
-          END
-          ELSE
-          BEGIN
-              PRINT 'Código não encontrado em nenhuma tabela.';
-          END
-      end
-    `;
-
+    if (type == 1) {
+      queryInsert = `INSERT INTO 
+      consultor 
+          (codConsult,	nomeConsult,	cpfConsult,	telConsult,	codFornConsult,	emailConsult) 
+      VALUES (${cod}, ${nome}, '123123123', ${tel}, ${empresa}, ${email})`;
+    } else {
+      queryInsert = `INSERT INTO 
+      cliente 
+          (codCliente, nomeCliente,	codAssocCliente,	cpfCliente,	telCliente,	emailCliente) 
+      VALUES (${cod}, ${nome}, ${empresa}, '123123123', ${tel}, ${email})`;
+    }
 
     connection.query(queryInsert, (error, results) => {
       if (error) {
-        return res.json({ "message": error.sqlMessage });
+        return res.json({ "messaege": error.sqlMessage });
       } else {
         return res.json(results);
       }
