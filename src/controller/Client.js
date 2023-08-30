@@ -282,12 +282,12 @@ desc`;
       queryInsert = `INSERT INTO 
       consultor 
           (codConsult,	nomeConsult,	cpfConsult,	telConsult,	codFornConsult,	emailConsult) 
-      VALUES (${cod}, ${nome}, '123123123', ${tel}, ${empresa}, ${email})`;
+      VALUES ("${cod}", "${nome}", "123123123", "${tel}", "${empresa}", "${email}")`;
     } else {
       queryInsert = `INSERT INTO 
       cliente 
           (codCliente, nomeCliente,	codAssocCliente,	cpfCliente,	telCliente,	emailCliente) 
-      VALUES (${cod}, ${nome}, ${empresa}, '123123123', ${tel}, ${email})`;
+      VALUES ("${cod}", "${nome}", "${empresa}", "123123123", "${tel}", "${email}")`;
     }
 
     console.log("--------------------------------------------");
