@@ -296,14 +296,22 @@ desc`;
     //=============================================================
 
     let result = true;
+    let response = "";
     connection.query(queryInsert, (error, results) => {
       if (error) {
         result = false;
         return res.json({ "messaege": error.sqlMessage });
       } else {
+        response = results;
         return;
       }
     });
+
+    console.log("======================================");
+    console.log("Response Insert");
+    console.log("======================================");
+    console.log(response);
+    console.log("======================================");
 
     //=============================================================
     //=============================================================
