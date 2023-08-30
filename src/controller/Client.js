@@ -285,18 +285,18 @@ desc`;
     const queryInsert =
       `
       -- Verifica se o código está na tabela de fornecedores
-      IF EXISTS (SELECT 1 FROM Fornecedores WHERE Codigo = ${empresa}) 
+      IF EXISTS (SELECT 1 FROM fornecedor WHERE codForn = ${empresa}) 
       BEGIN
           -- Insere um registro simples na tabela de consultores
           INSERT INTO 
-              cliente 
+              consultor 
               (codConsult,	nomeConsult,	cpfConsult,	telConsult,	codFornConsult,	emailConsult) 
               VALUES (${cod}, ${nome}, '123123123', ${tel}, ${empresa}, ${email});
       END
       ELSE
       BEGIN
           -- Verifica se o código está na tabela de associados
-          IF EXISTS (SELECT 1 FROM Associados WHERE Codigo = ${empresa})
+          IF EXISTS (SELECT 1 FROM associado WHERE codAssociado = ${empresa})
           BEGIN
               -- Insere um registro na tabela de clientes
               INSERT INTO 
