@@ -31,6 +31,8 @@ router.get("/client/:codacesso", Client.getOneClient); // localhost:3001/client/
 router.get("/clientconsult/:codconsultor", Client.getClientConsult); // localhost:3001/clientconsult/1
 //getAssociadoPorMercadoria.php | getAssociadosPorMercadoria.php 
 
+router.post("/insertperson", Client.postInsertPerson);
+
 
 
 

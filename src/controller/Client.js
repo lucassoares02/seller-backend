@@ -268,6 +268,59 @@ desc`;
         return res.json(error);
       });
   },
+
+  async postInsertPerson(req, res) {
+    logger.info("Post Insert Provider");
+
+    const { cod, nome, email, empresa, tel } = req.body;
+
+    const queryInsert =
+      `
+          DECLARE @Codigo INT = ${empresa};
+
+      -- Verifica se o código está na tabela de fornecedores
+      IF EXISTS (SELECT 1 FROM Fornecedores WHERE Codigo = ${empresa}) 
+      BEGIN
+          -- Insere um registro simples na tabela de consultores
+          INSERT INTO 
+              cliente 
+              (codConsult,	nomeConsult,	cpfConsult,	telConsult,	codFornConsult,	emailConsult) 
+              VALUES (${cod}, ${nome}, '123123123', ${tel}, ${empresa}, ${email});
+      END
+      ELSE
+      BEGIN
+          -- Verifica se o código está na tabela de associados
+          IF EXISTS (SELECT 1 FROM Associados WHERE Codigo = ${empresa})
+          BEGIN
+              -- Insere um registro na tabela de clientes
+              INSERT INTO 
+              cliente 
+              (codCliente, nomeCliente,	codAssocCliente,	cpfCliente,	telCliente,	emailCliente) 
+              VALUES (${cod}, ${nome}, ${empresa}, '123123123', ${tel}, ${email});
+          END
+          ELSE
+          BEGIN
+              PRINT 'Código não encontrado em nenhuma tabela.';
+          END
+      end
+    `;
+
+
+    connection.query(queryInsert, (error, results) => {
+      if (error) {
+        return res.json({ "message": error.sqlMessage });
+      } else {
+        return res.json(results);
+      }
+    });
+
+
+    // connection.end();
+  },
+
+
+
+
 };
 
 module.exports = Client;
