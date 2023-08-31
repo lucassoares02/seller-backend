@@ -307,12 +307,6 @@ desc`;
       }
     });
 
-    console.log("======================================");
-    console.log("Response Insert");
-    console.log("======================================");
-    console.log(response);
-    console.log("======================================");
-
     //=============================================================
     //=============================================================
     //=============================================================
@@ -335,30 +329,6 @@ desc`;
     //=============================================================
 
     if (result) {
-
-      // let querySave = ``;
-      // if (type == 1) {
-      //   querySave = `insert into relaciona (codAssocRelaciona, codConsultRelaciona) values(${cod},${empresa})`;
-      // } else {
-      //   querySave = `insert into relacionafornecedor (codConsultor, codFornecedor) values(${cod}, ${empresa})`;
-      // }
-
-      // console.log("====== Query Save =======");
-      // console.log(querySave);
-
-      // return connection.query(querySave, (error, results) => {
-      //   console.log("======== Results =========")
-      //   console.log(results);
-      //   if (error != null) {
-      //     console.log(error);
-      //     return;
-      //   } else {
-      //     return;
-      //   }
-      // });
-
-
-
       let dataAssociado = {
         codAssocRelaciona: cod,
         codConsultRelaciona: empresa

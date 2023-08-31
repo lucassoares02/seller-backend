@@ -109,6 +109,7 @@ desc`;
     // connection.end();
   },
 
+
   async getMerchandisePerCustomer(req, res) {
     logger.info("Get Merchandise Provider If Client");
 
@@ -173,6 +174,45 @@ desc`;
     // connection.end();
   },
 
+
+  async postInsertMerchandise(req, res) {
+    logger.info("Post Save Merchandise");
+
+    const { codMercadoria, nomeMercadoria, codFornMerc, embMercadoria, fatorMerc, precoMercadoria, precoUnit } = req.params;
+
+
+    let data = {
+      codMercadoria: codMercadoria,
+      nomeMercadoria: nomeMercadoria,
+      codFornMerc: codFornMerc,
+      embMercadoria: embMercadoria,
+      fatorMerc: fatorMerc,
+      precoMercadoria: precoMercadoria,
+      precoUnit: precoUnit,
+    }
+
+    let params = {
+      table: "mercadoria",
+      data: data
+    }
+
+    try {
+
+      Insert(params)
+        .then(async (resp) => {
+          res.json(resp);
+        })
+        .catch((error) => {
+          console.log(error);
+          return res.json(error);
+        });
+    } catch (error) {
+      return res.json(error);
+    }
+
+
+    // connection.end();
+  },
 
 };
 
