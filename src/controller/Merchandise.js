@@ -181,6 +181,17 @@ desc`;
     const { codMercadoria, nomeMercadoria, codFornMerc, embMercadoria, fatorMerc, precoMercadoria, precoUnit } = req.params;
 
 
+    console.log("***********************");
+    console.log(codMercadoria);
+    console.log(nomeMercadoria);
+    console.log(codFornMerc);
+    console.log(embMercadoria);
+    console.log(fatorMerc);
+    console.log(precoMercadoria);
+    console.log(precoUnit);
+    console.log("***********************");
+
+
     let data = {
       codMercadoria: codMercadoria,
       nomeMercadoria: nomeMercadoria,
