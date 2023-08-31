@@ -21,7 +21,7 @@ async function Insert(params) {
 
     return new Promise(function (resolve, reject) {
       connection.query(query, function (error, results, fields) {
-        if (error) throw error.message;
+        if (error) throw new error;
         return resolve(results);
       });
     });
