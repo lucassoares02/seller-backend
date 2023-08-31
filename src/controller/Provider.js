@@ -153,7 +153,7 @@ const Provider = {
   async postInsertProvider(req, res) {
     logger.info("Post Insert Provider");
 
-    const { codForn, nomeForn, razaoForn, cnpjForn, telForn, type } = req.body;
+    const { codForn, nomeForn, razaoForn, cnpjForn, telForn, type, categoria } = req.body;
     
 
     let queryInsert = "";
@@ -162,7 +162,7 @@ const Provider = {
       queryInsert = `INSERT INTO 
       fornecedor 
       (codForn, nomeForn, razaoForn, cnpjForn, telForn, codCategoria, codComprFornecedor) 
-      VALUES (${codForn}, '${nomeForn}', '${razaoForn}', '${cnpjForn}', '${telForn}', '1', '1')`;
+      VALUES (${codForn}, '${nomeForn}', '${razaoForn}', '${cnpjForn}', '${telForn}', '${categoria}', '1')`;
     } else {
       queryInsert = `INSERT INTO 
       associado 
