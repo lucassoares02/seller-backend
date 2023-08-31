@@ -222,7 +222,7 @@ desc`;
       })
       .catch((error) => {
         console.log(error);
-        return res.status(400).send(`message: deu algum erro`);
+        res.status(400).send(`message: deu algum erro`);
       });
 
 
