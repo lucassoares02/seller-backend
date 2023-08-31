@@ -154,6 +154,7 @@ const Provider = {
     logger.info("Post Insert Provider");
 
     const { codForn, nomeForn, razaoForn, cnpjForn, telForn, type } = req.body;
+    
 
     let queryInsert = "";
 

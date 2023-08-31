@@ -273,7 +273,7 @@ desc`;
   async postInsertPerson(req, res) {
     logger.info("Post Insert Person");
 
-    const { cod, nome, email, empresa, tel, type } = req.body;
+    const { cod, nome, email, empresa, tel, cpf, type, hash } = req.body;
 
     console.log(cod);
 
@@ -283,12 +283,12 @@ desc`;
       queryInsert = `INSERT INTO 
       consultor 
           (nomeConsult,	cpfConsult,	telConsult,	codFornConsult,	emailConsult) 
-      VALUES ("${nome}", "123123123", "${tel}", "${empresa}", "${email}")`;
+      VALUES ("${nome}", "${cpf}", "${tel}", "${empresa}", "${email}")`;
     } else {
       queryInsert = `INSERT INTO 
       cliente 
           (nomeCliente,	codAssocCliente,	cpfCliente,	telCliente,	emailCliente) 
-      VALUES ("${nome}", "${empresa}", "123123123", "${tel}", "${email}")`;
+      VALUES ("${nome}", "${empresa}", "${cpf}", "${tel}", "${email}")`;
     }
 
     //=============================================================
@@ -319,7 +319,7 @@ desc`;
 
     if (result) {
 
-      const queryAccess = `insert into acesso (codAcesso, direcAcesso, codUsuario, codOrganization) values("${cod}", "${type}", "${cod}", 158)`;
+      const queryAccess = `insert into acesso (codAcesso, direcAcesso, codUsuario, codOrganization) values("${hash}", "${type}", "${cod}", 158)`;
       connection.query(queryAccess, (error, results) => {
         if (error) {
           result = false;
