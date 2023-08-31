@@ -178,19 +178,7 @@ desc`;
   async postInsertMerchandise(req, res) {
     logger.info("Post Save Merchandise");
 
-    const { codMercadoria, nomeMercadoria, codFornMerc, embMercadoria, fatorMerc, precoMercadoria, precoUnit } = req.params;
-
-
-    console.log("***********************");
-    console.log(codMercadoria);
-    console.log(nomeMercadoria);
-    console.log(codFornMerc);
-    console.log(embMercadoria);
-    console.log(fatorMerc);
-    console.log(precoMercadoria);
-    console.log(precoUnit);
-    console.log("***********************");
-
+    const { codMercadoria, nomeMercadoria, codFornMerc, embMercadoria, fatorMerc, precoMercadoria, precoUnit } = req.body;
 
     let data = {
       codMercadoria: codMercadoria,
@@ -202,19 +190,11 @@ desc`;
       precoUnit: precoUnit,
     }
 
-    console.log("=================================");
-    console.log(data);
-    console.log("=================================");
 
     let params = {
       table: "mercadoria",
       data: data
     }
-
-    console.log("-------------------------------");
-    console.log("-------------------------------");
-    console.log(params);
-    console.log("-------------------------------");
 
     try {
 
