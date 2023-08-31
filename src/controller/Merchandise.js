@@ -191,10 +191,19 @@ desc`;
       precoUnit: precoUnit,
     }
 
+    console.log("=================================");
+    console.log(data);
+    console.log("=================================");
+
     let params = {
       table: "mercadoria",
       data: data
     }
+
+    console.log("-------------------------------");
+    console.log("-------------------------------");
+    console.log(params);
+    console.log("-------------------------------");
 
     try {
 
