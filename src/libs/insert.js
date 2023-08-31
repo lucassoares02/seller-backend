@@ -22,7 +22,7 @@ async function Insert(params) {
     return new Promise(function (resolve, reject) {
       connection.query(query, function (error, results, fields) {
         if (error) {
-          throw new Error(error.message);
+          return error.message;
         }
         return resolve(results);
       });
