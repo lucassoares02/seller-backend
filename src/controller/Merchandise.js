@@ -221,8 +221,10 @@ desc`;
         res.status(200).send(`message: Save Success!`);
       })
       .catch((error) => {
+        console.log("É esse o erro mesmo");
         console.log(error);
-        res.send(error);
+        console.log("(((((((((((((((((((((((((((((((())))))))))))))))))))))))))))))))");
+        res.status(400).send(error);
       });
 
 
