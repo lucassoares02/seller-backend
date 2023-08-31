@@ -216,20 +216,14 @@ desc`;
     console.log(params);
     console.log("-------------------------------");
 
-    try {
-
-      return Insert(params)
-        .then(async (resp) => {
-          res.json(resp);
-        })
-        .catch((error) => {
-          console.log(error);
-          return res.json({ "message": error.code, "messageSQL": error.sqlMessage });
-        });
-    } catch (error) {
-      return res.json({ "message": error.code, "messageSQL": error.sqlMessage });
-
-    }
+    return Insert(params)
+      .then(async (resp) => {
+        res.status(200).send(`message: Save Success!`);
+      })
+      .catch((error) => {
+        console.log(error);
+        return res.status(400).send(`message: ${error.message}`);
+      });
 
 
     // connection.end();
