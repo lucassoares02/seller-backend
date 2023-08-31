@@ -224,10 +224,11 @@ desc`;
         })
         .catch((error) => {
           console.log(error);
-          return res.error(error);
+          return res.json({ "message": error.code, "messageSQL": error.sqlMessage });
         });
     } catch (error) {
-      return res.error(error);
+      return res.json({ "message": error.code, "messageSQL": error.sqlMessage });
+
     }
 
 
