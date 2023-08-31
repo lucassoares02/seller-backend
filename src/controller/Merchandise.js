@@ -218,7 +218,7 @@ desc`;
 
     try {
 
-      Insert(params)
+      return Insert(params)
         .then(async (resp) => {
           res.json(resp);
         })
