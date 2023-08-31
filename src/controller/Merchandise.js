@@ -180,6 +180,18 @@ desc`;
 
     const { codMercadoria, nomeMercadoria, codFornMerc, embMercadoria, fatorMerc, precoMercadoria, precoUnit } = req.body;
 
+
+    console.log("***********************");
+    console.log(codMercadoria);
+    console.log(nomeMercadoria);
+    console.log(codFornMerc);
+    console.log(embMercadoria);
+    console.log(fatorMerc);
+    console.log(precoMercadoria);
+    console.log(precoUnit);
+    console.log("***********************");
+
+
     let data = {
       codMercadoria: codMercadoria,
       nomeMercadoria: nomeMercadoria,
@@ -190,11 +202,19 @@ desc`;
       precoUnit: precoUnit,
     }
 
+    console.log("=================================");
+    console.log(data);
+    console.log("=================================");
 
     let params = {
       table: "mercadoria",
       data: data
     }
+
+    console.log("-------------------------------");
+    console.log("-------------------------------");
+    console.log(params);
+    console.log("-------------------------------");
 
     try {
 
