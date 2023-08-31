@@ -224,10 +224,10 @@ desc`;
         })
         .catch((error) => {
           console.log(error);
-          return res.json(error);
+          return res.error(error);
         });
     } catch (error) {
-      return res.json(error);
+      return res.error(error);
     }
 
 
