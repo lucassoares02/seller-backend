@@ -61,6 +61,33 @@ const Negotiation = {
     // connection.end();
   },
 
+  async postInsertNegotiation(req, res) {
+    logger.info("Post Save Negotiation");
+
+    const { codNegociacao, descNegociacao, codFornNegociacao } = req.body;
+
+
+    let data = {
+      codNegociacao: codNegociacao,
+      descNegociacao: descNegociacao,
+      codFornNegociacao: codFornNegociacao,
+    }
+
+
+    let params = {
+      table: "negociacao",
+      data: data
+    }
+    return Insert(params)
+      .then(async (resp) => {
+        res.status(200).send(`message: Save Success!`);
+      })
+      .catch((error) => {
+        res.status(400).send(error);
+      });
+
+    // connection.end();
+  },
 
 
 

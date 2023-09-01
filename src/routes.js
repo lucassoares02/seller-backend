@@ -81,6 +81,7 @@ router.get("/negotiationprovider/:codforn", Negotiation.getNegotiationProvider);
 // getNegociacoesAssociados.php
 router.get("/negotiationclient/:codclient/:codforn", Negotiation.getNegotiationClient); // localhost:3001/negotiationclient/9/333
 
+router.post("/insertnegotiation", Negotiation.PostInsertNegotiation);
 
 
 // Methods Buyer
