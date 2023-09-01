@@ -61,7 +61,7 @@ const Negotiation = {
     // connection.end();
   },
 
-  async postInsertNegotiation(req, res) {
+  async PostInsertNegotiation(req, res) {
     logger.info("Post Save Negotiation");
 
     const { codNegociacao, descNegociacao, codFornNegociacao } = req.body;
