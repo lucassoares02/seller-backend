@@ -282,13 +282,13 @@ desc`;
     if (type == 1) {
       queryInsert = `INSERT INTO 
       consultor 
-          (nomeConsult,	cpfConsult,	telConsult,	codFornConsult,	emailConsult) 
-      VALUES ("${nome}", "${cpf}", "${tel}", "${empresa}", "${email}")`;
+          (codConsult, nomeConsult,	cpfConsult,	telConsult,	codFornConsult,	emailConsult) 
+      VALUES ("${cod}","${nome}", "${cpf}", "${tel}", "${empresa}", "${email}")`;
     } else {
       queryInsert = `INSERT INTO 
       cliente 
-          (nomeCliente,	codAssocCliente,	cpfCliente,	telCliente,	emailCliente) 
-      VALUES ("${nome}", "${empresa}", "${cpf}", "${tel}", "${email}")`;
+          (codCliente, nomeCliente,	codAssocCliente,	cpfCliente,	telCliente,	emailCliente) 
+      VALUES ("${cod}","${nome}", "${empresa}", "${cpf}", "${tel}", "${email}")`;
     }
 
     //=============================================================
@@ -300,7 +300,7 @@ desc`;
     connection.query(queryInsert, (error, results) => {
       if (error) {
         result = false;
-        return res.json({ "messaege": error.sqlMessage });
+        return res.json({ "message": error.sqlMessage });
       } else {
         response = results;
         return;
