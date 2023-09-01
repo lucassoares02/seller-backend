@@ -277,19 +277,10 @@ desc`;
 
     console.log(cod);
 
-    let queryInsert = "";
-
-    if (type == 1) {
-      queryInsert = `INSERT INTO 
-      consultor 
-          (codConsult, nomeConsult,	cpfConsult,	telConsult,	codFornConsult,	emailConsult) 
-      VALUES ("${cod}","${nome}", "${cpf}", "${tel}", "${empresa}", "${email}")`;
-    } else {
-      queryInsert = `INSERT INTO 
-      cliente 
-          (codCliente, nomeCliente,	codAssocCliente,	cpfCliente,	telCliente,	emailCliente) 
-      VALUES ("${cod}","${nome}", "${empresa}", "${cpf}", "${tel}", "${email}")`;
-    }
+    const queryInsert = `INSERT INTO 
+    consultor 
+        (codConsult, nomeConsult,	cpfConsult,	telConsult,	codFornConsult,	emailConsult) 
+    VALUES ("${cod}","${nome}", "${cpf}", "${tel}", "${empresa}", "${email}")`;
 
     //=============================================================
     //=============================================================
