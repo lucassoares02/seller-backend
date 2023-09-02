@@ -429,6 +429,28 @@ desc`;
 
 
 
+  async getValueTotalFair(req, res) {
+    logger.info("Get All Value Fair");
+
+    const queryConsult = `select 
+    SUM(p.quantMercPedido * m.precoMercadoria) as value
+    from pedido p
+    join mercadoria m on m.codMercadoria = p.codMercPedido 
+    order by value`;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select All Value Fair: ", error);
+      } else {
+
+        return res.json(results);
+      }
+    });
+    // connection.end();
+  },
+
+
+
 
 };
 

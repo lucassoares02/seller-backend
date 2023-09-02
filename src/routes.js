@@ -45,7 +45,10 @@ router.get("/storescategory/:codprovider", Client.getStoresCategory); // localho
 // getTodasLojas.php
 router.get("/stores", Client.getAllStores); // localhost:3001/stores
 router.get("/storesgraph", Client.getAllStoresGraph); // localhost:3001/stores
+
 router.get("/valueminutegraph", Client.getAllStoresGraphHour); // localhost:3001/stores
+
+router.get("/valuefair", Client.getValueTotalFair); // localhost:3001/stores
 
 router.get("/storesbyprovider/:codprovider", Client.getStoresbyProvider); // localhost:3001/storesbyprovider/3333
 
