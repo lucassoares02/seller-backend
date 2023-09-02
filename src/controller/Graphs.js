@@ -126,7 +126,8 @@ const Graphs = {
       if (error) {
         console.log("Error Select Total Informations: ", error);
       } else {
-        return res.json(results);
+
+        res.json(results);
       }
     });
     // connection.end();

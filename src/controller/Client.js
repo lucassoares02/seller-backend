@@ -216,7 +216,6 @@ desc`;
   },
 
 
-
   async getStoresbyProvider(req, res) {
     logger.info("Get Stores by Provider");
 
@@ -349,7 +348,65 @@ desc`;
       res.json({ message: "success" });
 
     }
-  }
+  },
+
+
+  async getAllStoresGraph(req, res) {
+    logger.info("Get All Stores Graphs");
+
+    const queryConsult = `
+    select 
+    relaciona.codAssocRelaciona,
+    consultor.nomeConsult, 
+    relaciona.codConsultRelaciona,
+    associado.razaoAssociado as razao,
+    associado.cnpjAssociado, 
+    IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
+    IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' 
+    from associado 
+    join relaciona on relaciona.codConsultRelaciona = associado.codAssociado
+    join consultor on consultor.codConsult = relaciona.codAssocRelaciona 
+    left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona
+    left join mercadoria on codMercadoria = pedido.codMercPedido 
+    group by relaciona.codConsultRelaciona 
+    order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
+    desc`;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select All Stores Graphs: ", error);
+      } else {
+        let item = [];
+
+        let total = 0;
+
+        for (let j = 0; j < results.length; j++) {
+          total += results[j]["valorTotal"];
+        }
+
+
+        i = 0;
+        for (i = 0; i < results.length; i++) {
+          item.push({
+            razao: results[i]["razao"],
+            percentage: Math.floor((results[i]["valorTotal"] / total) * 100) + "%"
+          });
+        }
+
+        response = {
+          item: item,
+          total: total
+        }
+
+        return res.json(response);
+      }
+    });
+    // connection.end();
+  },
+
+
+
+
 };
 
 module.exports = Client;

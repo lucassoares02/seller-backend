@@ -44,6 +44,7 @@ router.get("/stores/:codconsultor", Client.getStoreConsultant); // localhost:300
 router.get("/storescategory/:codprovider", Client.getStoresCategory); // localhost:3001/storescategory/333
 // getTodasLojas.php
 router.get("/stores", Client.getAllStores); // localhost:3001/stores
+router.get("/storesgraphs", Client.getAllStoresGraph); // localhost:3001/stores
 
 router.get("/storesbyprovider/:codprovider", Client.getStoresbyProvider); // localhost:3001/storesbyprovider/3333
 
