@@ -126,6 +126,7 @@ router.get("/percentageproviderbyclients/:codbuyer", Graphs.getPercentagePovider
 router.get("/percentageclientsorganization", Graphs.getPercentageClientsOrganization); // localhost:3001/percentageclients
 router.get("/percentageprovidersorganization", Graphs.getPercentageProvidersOrganization); // localhost:3001/percentageclients
 router.get("/totalvalueclients/:codprovider", Graphs.getTotalValueClients); // localhost:3001/percentageclients/333
+router.get("/information", Graphs.getTotalInformations); // localhost:3001/percentageclients/333
 
 
 

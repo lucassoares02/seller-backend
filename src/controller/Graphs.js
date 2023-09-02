@@ -100,6 +100,38 @@ const Graphs = {
     // connection.end();
   },
 
+  async getTotalInformations(req, res) {
+    logger.info("Get Total Informations");
+
+    const queryConsult = `
+      select
+      sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as total
+      from pedido 
+      join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido 
+      union
+      select 
+      count(fornecedor.codForn) as fornecedores
+      from fornecedor
+      union 
+      select
+      count(associado.codAssociado) as associados
+      from associado
+      union
+      select 
+      count(mercadoria.codMercadoria) as mercadorias
+      from mercadoria
+    `;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select Total Informations: ", error);
+      } else {
+        return res.json(results);
+      }
+    });
+    // connection.end();
+  },
+
 
 
 

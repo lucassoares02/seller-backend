@@ -154,7 +154,7 @@ const Provider = {
     logger.info("Post Insert Provider");
 
     const { codForn, nomeForn, razaoForn, cnpjForn, telForn, type, categoria } = req.body;
-    
+
 
     let queryInsert = "";
 
@@ -163,12 +163,20 @@ const Provider = {
       fornecedor 
       (codForn, nomeForn, razaoForn, cnpjForn, telForn, codCategoria, codComprFornecedor) 
       VALUES (${codForn}, '${nomeForn}', '${razaoForn}', '${cnpjForn}', '${telForn}', '${categoria}', '1')`;
-    } else {
+    } else if (type == 2) {
       queryInsert = `INSERT INTO 
       associado 
       (codAssociado, razaoAssociado, cnpjAssociado) 
       VALUES (${codForn}, '${nomeForn}', '${razaoForn}')`;
+    } else if (type == 3) {
+      queryInsert = `INSERT INTO 
+      organizador 
+      (codOrg, nomeOrg, razaoOrg, cnpjOrg, telOrg, emailOrg) 
+      VALUES (${codForn}, '${nomeForn}', '${razaoForn}', '${cnpjForn}', '${telForn}', 'contato@profair', '1')`;
     }
+
+
+
 
     connection.query(queryInsert, (error, results) => {
       if (error) {
