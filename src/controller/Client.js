@@ -389,7 +389,8 @@ desc`;
         for (i = 0; i < results.length; i++) {
           item.push({
             razao: results[i]["razao"],
-            percentage: Math.floor((results[i]["valorTotal"] / total) * 100) + "%"
+            percentage: Math.floor((results[i]["valorTotal"] / total) * 100) + "%",
+            value: results[i]["valorTotal"]
           });
         }
 
