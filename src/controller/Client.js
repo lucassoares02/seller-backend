@@ -405,6 +405,28 @@ desc`;
     // connection.end();
   },
 
+  async getAllStoresGraphHour(req, res) {
+    logger.info("Get All Stores Graphs");
+
+    const queryConsult = `select 
+    date_format(dataPedido, '%Y-%m-%d %H:%i:00')  as hora,
+    SUM(p.quantMercPedido * m.precoMercadoria)
+    from pedido p
+    join mercadoria m on m.codMercadoria = p.codMercPedido 
+    group by hora
+    order by hora`;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select All Stores Graphs: ", error);
+      } else {
+
+        return res.json(results);
+      }
+    });
+    // connection.end();
+  },
+
 
 
 
