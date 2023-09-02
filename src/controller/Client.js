@@ -409,12 +409,12 @@ desc`;
     logger.info("Get All Stores Graphs");
 
     const queryConsult = `select 
-    date_format(dataPedido, '%Y-%m-%d %H:%i:00')  as hora,
-    SUM(p.quantMercPedido * m.precoMercadoria)
+    date_format(dataPedido, '%Y-%m-%d %H:%i:00')  as hour,
+    SUM(p.quantMercPedido * m.precoMercadoria) as value
     from pedido p
     join mercadoria m on m.codMercadoria = p.codMercPedido 
-    group by hora
-    order by hora`;
+    group by hour
+    order by hour`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
