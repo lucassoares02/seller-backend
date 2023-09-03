@@ -70,6 +70,39 @@ const Request = {
     // connection.end();
   },
 
+  async getRequestsClients(req, res) {
+    logger.info("Get Requests Provider");
+
+    const { codconsult } = req.params;
+
+    const queryConsult = `
+    select pedido.codPedido , 
+    associado.cnpjAssociado , 
+    associado.codAssociado ,
+    consultor.nomeConsult, 
+    associado.razaoAssociado, 
+    sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'valor', 
+    TIME_FORMAT(pedido.dataPedido,'%H:%i') as 'horas' 
+    from consultor 
+    join pedido on consultor.codConsult = pedido.codComprPedido 
+    join associado on pedido.codAssocPedido = associado.codAssociado 
+    join mercadoria on pedido.codMercPedido = mercadoria.codMercadoria 
+    where consultor.codConsult  = ${codconsult} 
+    group by associado.codAssociado 
+    order by valor 
+    desc
+    `;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select Requests Provider: ", error);
+      } else {
+        return res.json(results);
+      }
+    });
+    // connection.end();
+  },
+
 
   async getAllRequests(req, res) {
     logger.info("Get All Requests");

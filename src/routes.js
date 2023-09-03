@@ -125,6 +125,8 @@ router.post("/insertmerchandise", Merchandise.postInsertMerchandise);
 router.get("/requestproviderclient/:codclient", Request.getRequestProviderClient); // localhost:3001/requestproviderclient/9
 // getPedidos.php
 router.get("/requestsprovider/:codprovider", Request.getRequestsProvider); // localhost:3001/requestsprovider/333
+
+router.get("/requestsclients/:codconsult", Request.getRequestsClients); // localhost:3001/requestsprovider/333
 // getInserePedido.php
 router.post("/insertrequest", Request.postInsertRequest); // localhost:3001/insertrequest
 
