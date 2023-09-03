@@ -88,6 +88,9 @@ router.get("/negotiationclient/:codclient/:codforn", Negotiation.getNegotiationC
 
 router.post("/insertnegotiation", Negotiation.PostInsertNegotiation);
 
+router.get("/exportnegotiations", Negotiation.GetExportNegotiations);
+
+
 
 // Methods Buyer
 // getCompradoresAssociados

@@ -41,6 +41,37 @@ const Negotiation = {
     // connection.end();
   },
 
+  async GetExportNegotiations(req, res) {
+    logger.info("Get Export Negotiation ");
+
+    const { codforn } = req.params;
+
+
+    const queryConsult = `
+      select
+      p.codMercPedido,
+      m.nomeMercadoria ,
+      p.codFornPedido,
+      p.codAssocPedido,
+      p.codNegoPedido ,
+      p.codMercPedido
+      from pedido p
+      join mercadoria m 
+      where m.codMercadoria = p.codMercPedido 
+      order by p.codNegoPedido 
+    `;
+
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Export Negotiation : ", error);
+      } else {
+        return res.json(results);
+      }
+    });
+    // connection.end();
+  },
+
 
   async getNegotiationClient(req, res) {
     logger.info("Get Negotiation to Client");
