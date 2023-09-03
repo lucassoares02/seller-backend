@@ -153,7 +153,7 @@ const Provider = {
   async postInsertProvider(req, res) {
     logger.info("Post Insert Provider");
 
-    const { codForn, nomeForn, razaoForn, cnpjForn, telForn, type, categoria } = req.body;
+    const { codForn, nomeForn, razaoForn, cnpjForn, telForn, type, categoria, codComprFornecedor } = req.body;
 
 
     let queryInsert = "";
@@ -162,7 +162,7 @@ const Provider = {
       queryInsert = `INSERT INTO 
       fornecedor 
       (codForn, nomeForn, razaoForn, cnpjForn, telForn, codCategoria, codComprFornecedor) 
-      VALUES (${codForn}, '${nomeForn}', '${razaoForn}', '${cnpjForn}', '${telForn}', '${categoria}', '1')`;
+      VALUES (${codForn}, '${nomeForn}', '${razaoForn}', '${cnpjForn}', '${telForn}', '${categoria}', ${codComprFornecedor})`;
     } else if (type == 2) {
       queryInsert = `INSERT INTO 
       associado 
@@ -172,7 +172,7 @@ const Provider = {
       queryInsert = `INSERT INTO 
       organizador 
       (codOrg, nomeOrg, razaoOrg, cnpjOrg, telOrg, emailOrg) 
-      VALUES (${codForn}, '${nomeForn}', '${razaoForn}', '${cnpjForn}', '${telForn}', 'contato@profair', '1')`;
+      VALUES (${codForn}, '${nomeForn}', '${razaoForn}', '${cnpjForn}', '${telForn}', 'contato@profair')`;
     }
 
 
