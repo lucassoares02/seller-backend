@@ -127,14 +127,27 @@ const Graphs = {
         console.log("Error Select Total Informations: ", error);
       } else {
 
-        res.json(results);
+        let data = [];
+        const titles = ["Total negociado", "Associados", "Fonecedores", "Mercadorias"];
+
+        i = 0;
+        for (i = 0; i < results.length; i++) {
+          data.push({
+            title: titles[i],
+            addInfo: "",
+            icon: "",
+            color: "",
+            total: results[i]["total"],
+          });
+        }
+
+
+
+        res.json(data);
       }
     });
     // connection.end();
   },
-
-
-
 
 };
 
