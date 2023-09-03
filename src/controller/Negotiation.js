@@ -68,11 +68,13 @@ const Negotiation = {
       } else {
 
         const csvData = results.map((row) => {
-          return `${row.codFornPedido},${row.codMercPedido},${row.nomeMercadoria}`; // Substitua com os nomes das colunas do seu banco de dados
+          return ` ${row.nomeMercadoria},${row.codMercPedido},${row.codFornPedido},${row.codAssocPedido},${row.codNegoPedido},${row.codMercPedido}`; // Substitua com os nomes das colunas do seu banco de dados
         }).join('\n');
 
+        const dateNow = Date.now();
+
         // Configurar os cabeçalhos de resposta para fazer o download
-        res.setHeader('Content-Disposition', 'attachment; filename=seuarquivo.csv');
+        res.setHeader('Content-Disposition', `attachment; filename=${dateNow}_negociacoes.csv`);
         res.setHeader('Content-Type', 'text/csv');
 
         // Transmitir o arquivo CSV como resposta
