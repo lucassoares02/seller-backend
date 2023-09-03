@@ -66,7 +66,20 @@ const Negotiation = {
       if (error) {
         console.log("Error Export Negotiation : ", error);
       } else {
-        return res.json(results);
+
+        const csvData = results.map((row) => {
+          return `${row.codFornPedido},${row.codMercPedido},${row.nomeMercadoria}`; // Substitua com os nomes das colunas do seu banco de dados
+        }).join('\n');
+
+        // Configurar os cabeçalhos de resposta para fazer o download
+        res.setHeader('Content-Disposition', 'attachment; filename=seuarquivo.csv');
+        res.setHeader('Content-Type', 'text/csv');
+
+        // Transmitir o arquivo CSV como resposta
+        return res.send(csvData);
+
+
+        // return res.json(results);
       }
     });
     // connection.end();
