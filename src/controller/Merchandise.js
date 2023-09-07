@@ -79,8 +79,12 @@ join fornecedor on mercadoria.codFornMerc = fornecedor.codForn
 left join pedido on pedido.codMercPedido = mercadoria.codMercadoria
 where fornecedor.codForn = ${codprovider}
 group by mercadoria.codMercadoria 
-order by valorTotal 
-desc`;
+order by mercadoria.nomeMercadoria  
+asc
+`;
+    // order by valorTotal 
+    // desc
+    // `;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -129,8 +133,10 @@ desc`;
     and pedido.codComprPedido = ${codclient}
     where mercadoria.codFornMerc = ${codeprovider}
     GROUP BY mercadoria.codMercadoria
-    ORDER BY volumeTotal 
-    desc`;
+    order by mercadoria.nomeMercadoria  
+    asc`;
+    // ORDER BY volumeTotal 
+    // desc`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
