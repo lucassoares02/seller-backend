@@ -119,8 +119,7 @@ asc
 
     const { codclient, codeprovider } = req.params;
 
-    const queryConsult = `
-    SELECT 
+    const queryConsult = `SELECT 
     mercadoria.codMercadoria,
     mercadoria.nomeMercadoria,
     mercadoria.embMercadoria, 
