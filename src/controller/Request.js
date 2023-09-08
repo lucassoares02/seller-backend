@@ -136,24 +136,69 @@ const Request = {
     // connection.end();
   },
 
+  // async postInserRequestNew(req, res) {
+  //   logger.info("Get All Requests");
+
+  //   const { codMercadoria, quantMercadoria, codFornecedor, codAssociado, codComprador, codNegociacao, codOrganizacao } = req.body;
+
+
+  //   const queryConsult = `INSERT INTO pedido (codMercPedido, codNegoPedido, codAssocPedido, codFornPedido, codComprPedido, quantMercPedido, codOrganizador)
+  //   VALUES (${codMercadoria}, ${codNegociacao}, ${codAssociado},  ${codFornecedor}, ${codComprador}, ${quantMercadoria}, ${codOrganizacao})
+  //   ON DUPLICATE KEY UPDATE quantMercPedido = VALUES(quantMercPedido);`;
+
+  //   connection.query(queryConsult, (error, results, fields) => {
+  //     if (error) {
+  //       console.log("Error Select All Requests: ", error);
+  //     } else {
+  //       return res.json(results);
+  //     }
+  //   });
+  //   // connection.end();
+  // },
   async postInserRequestNew(req, res) {
     logger.info("Get All Requests");
 
-    const { codMercadoria, quantMercadoria, codFornecedor, codAssociado, codComprador, codNegociacao, codOrganizacao } = req.body;
+    const { codAssociado, codFornecedor, codComprador, codNegociacao, codOrganizacao, items } = req.body;
 
+    console.log("codAssociado");
+    console.log(codAssociado);
+    console.log("codFornecedor");
+    console.log(codFornecedor);
+    console.log("codComprador");
+    console.log(codComprador);
+    console.log("codNegociacao");
+    console.log(codNegociacao);
+    console.log("codOrganizacao");
+    console.log(codOrganizacao);
+    console.log("items");
+    console.log(items);
+    console.log(items[0]);
+    console.log(items[0]["codeProduct"]);
+    console.log(items[0]["codMercadoria"]);
+    console.log(items[0].codMercadoria);
 
-    const queryConsult = `INSERT INTO pedido (codMercPedido, codNegoPedido, codAssocPedido, codFornPedido, codComprPedido, quantMercPedido, codOrganizador)
-    VALUES (${codMercadoria}, ${codNegociacao}, ${codAssociado},  ${codFornecedor}, ${codComprador}, ${quantMercadoria}, ${codOrganizacao})
-    ON DUPLICATE KEY UPDATE quantMercPedido = VALUES(quantMercPedido);`;
+    for (let i = 0; i < items.length; i++) {
+      const element = items[i];
+      const queryConsult = `INSERT INTO pedido (codMercPedido, codNegoPedido, codAssocPedido, codFornPedido, codComprPedido, quantMercPedido, codOrganizador)
+      VALUES (${items[i]["codMercadoria"]}, ${codNegociacao}, ${codAssociado},  ${codFornecedor}, ${codComprador}, ${items[i]["quantMercadoria"]}, ${codOrganizacao})
+      ON DUPLICATE KEY UPDATE quantMercPedido = VALUES(quantMercPedido);`;
 
-    connection.query(queryConsult, (error, results, fields) => {
-      if (error) {
-        console.log("Error Select All Requests: ", error);
-      } else {
-        return res.json(results);
-      }
-    });
+      console.log("==================================");
+      console.log(queryConsult);
+      console.log("==================================");
+
+      connection.query(queryConsult, (error, results, fields) => {
+        if (error) {
+          console.log("Error Select All Requests: ", error);
+        } else {
+          console.log(error);
+          // return res.json(results);
+        }
+      });
+
+    }
     // connection.end();
+    return res.json({ "message": "Salvo com sucesso!" });
   },
 
 
