@@ -155,37 +155,24 @@ const Request = {
   //   });
   //   // connection.end();
   // },
+
+
+
   async postInserRequestNew(req, res) {
     logger.info("Get All Requests");
 
     const { codAssociado, codFornecedor, codComprador, codNegociacao, codOrganizacao, items } = req.body;
 
-    console.log("codAssociado");
-    console.log(codAssociado);
-    console.log("codFornecedor");
-    console.log(codFornecedor);
-    console.log("codComprador");
-    console.log(codComprador);
-    console.log("codNegociacao");
-    console.log(codNegociacao);
-    console.log("codOrganizacao");
-    console.log(codOrganizacao);
-    console.log("items");
-    console.log(items);
-    console.log(items[0]);
-    console.log(items[0]["codeProduct"]);
-    console.log(items[0]["codMercadoria"]);
-    console.log(items[0].codMercadoria);
 
     let values = "";
-
     for (let i = 0; i < items.length; i++) {
-      values += `(${items[i]["codMercadoria"]}, ${codNegociacao}, ${codAssociado},  ${codFornecedor}, ${codComprador}, ${items[i]["quantMercadoria"]}, ${codOrganizacao})` + i == items.length - 1 ? "" : ",";
+      console.log(items[i]["codMercadoria"]);
+      values = values + `(${items[i]["codMercadoria"]}, ${codNegociacao}, ${codAssociado},  ${codFornecedor}, ${codComprador}, ${items[i]["quantMercadoria"]}, ${codOrganizacao})`;
+      values = values + (i == items.length - 1 ? " " : ",");
     }
 
 
-    const queryConsult = `INSERT INTO pedido (codMercPedido, codNegoPedido, codAssocPedido, codFornPedido, codComprPedido, quantMercPedido, codOrganizador)
-      VALUES ${values} ON DUPLICATE KEY UPDATE quantMercPedido = VALUES(quantMercPedido);`;
+    const queryConsult = "INSERT INTO pedido (codMercPedido, codNegoPedido, codAssocPedido, codFornPedido, codComprPedido, quantMercPedido, codOrganizador) VALUES" + values + "ON DUPLICATE KEY UPDATE quantMercPedido = VALUES(quantMercPedido);";
 
     console.log("==================================");
     console.log(queryConsult);
@@ -203,6 +190,7 @@ const Request = {
     // connection.end();
     return res.json({ "message": "Salvo com sucesso!" });
   },
+
 
 
   async postInsertRequest(req, res) {
