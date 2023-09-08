@@ -132,6 +132,8 @@ router.get("/requestsclients/:codconsult", Request.getRequestsClients); // local
 // getInserePedido.php
 router.post("/insertrequest", Request.postInsertRequest); // localhost:3001/insertrequest
 
+router.post("/insertrequestnew", Request.postInserRequestNew); // localhost:3001/insertrequest
+
 router.get("/allrequestclients", Request.getAllRequests); // localhost:3001/allrequestclients
 
 

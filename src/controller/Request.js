@@ -136,6 +136,26 @@ const Request = {
     // connection.end();
   },
 
+  async postInserRequestNew(req, res) {
+    logger.info("Get All Requests");
+
+    const { codMercadoria, quantMercadoria, codFornecedor, codAssociado, codComprador, codNegociacao, codOrganizacao } = req.body;
+
+
+    const queryConsult = `INSERT INTO pedido (codMercPedido, codNegoPedido, codAssocPedido, codFornPedido, codComprPedido, quantMercPedido, codOrganizador)
+    VALUES (${codMercadoria}, ${codNegociacao}, ${codAssociado},  ${codFornecedor}, ${codComprador}, ${quantMercadoria}, ${codOrganizacao})
+    ON DUPLICATE KEY UPDATE quantMercPedido = VALUES(quantMercPedido);`;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select All Requests: ", error);
+      } else {
+        return res.json(results);
+      }
+    });
+    // connection.end();
+  },
+
 
   async postInsertRequest(req, res) {
     logger.info("Post Insert Request");
