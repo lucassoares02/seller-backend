@@ -180,15 +180,14 @@ const Request = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
+        console.log(error);
         console.log("Error Select All Requests: ", error);
       } else {
-        console.log(error);
         return res.json(results);
       }
     });
-
+    return 0;
     // connection.end();
-    return res.json({ "message": "Salvo com sucesso!" });
   },
 
 
