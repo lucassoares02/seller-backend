@@ -22,10 +22,12 @@ async function Insert(params) {
     return new Promise(function (resolve, reject) {
       connection.query(query, function (error, results, fields) {
         if (error) return reject(error);
+        connection.release();
         return resolve(results);
       });
     });
   } else {
+    connection.release();
     return "No Data Received!";
   }
 }

@@ -293,6 +293,7 @@ desc`;
         return res.json({ "message": error.sqlMessage });
       } else {
         response = results;
+        connection.release();
         return;
       }
     });
@@ -309,6 +310,8 @@ desc`;
           result = false;
           return;
         } else {
+
+          connection.release();
           return;
         }
       });
@@ -344,7 +347,7 @@ desc`;
           console.log(error);
           return res.json(error);
         });
-      connection.release();
+
       res.json({ message: "success" });
 
     }
