@@ -345,6 +345,7 @@ desc`;
           return res.json(error);
         });
 
+      connection.end();
       res.json({ message: "success" });
 
     }
