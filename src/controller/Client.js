@@ -344,13 +344,13 @@ desc`;
       Insert(params)
         .then(async (resp) => {
           console.log(resp);
+          res.status(200).send(`message: Save Success!`);
         })
         .catch((error) => {
           console.log(error);
-          return res.json(error);
+          return res.status(400).send(error);
         });
 
-      res.json({ message: "success" });
 
     }
   },
