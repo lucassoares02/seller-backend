@@ -177,27 +177,30 @@ const Request = {
     console.log(items[0]["codMercadoria"]);
     console.log(items[0].codMercadoria);
 
+    let values = "";
+
     for (let i = 0; i < items.length; i++) {
-      const element = items[i];
-      const queryConsult = `INSERT INTO pedido (codMercPedido, codNegoPedido, codAssocPedido, codFornPedido, codComprPedido, quantMercPedido, codOrganizador)
-      VALUES (${items[i]["codMercadoria"]}, ${codNegociacao}, ${codAssociado},  ${codFornecedor}, ${codComprador}, ${items[i]["quantMercadoria"]}, ${codOrganizacao})
-      ON DUPLICATE KEY UPDATE quantMercPedido = VALUES(quantMercPedido);`;
-
-      console.log("==================================");
-      console.log(queryConsult);
-      console.log("==================================");
-
-      connection.query(queryConsult, (error, results, fields) => {
-        if (error) {
-          console.log("Error Select All Requests: ", error);
-        } else {
-          console.log(error);
-          // return res.json(results);
-        }
-      });
-
+      values += `(${items[i]["codMercadoria"]}, ${codNegociacao}, ${codAssociado},  ${codFornecedor}, ${codComprador}, ${items[i]["quantMercadoria"]}, ${codOrganizacao})` + i == items.length() - 1 ? "" : ",";
     }
-    // connection.end();
+
+
+    const queryConsult = `INSERT INTO pedido (codMercPedido, codNegoPedido, codAssocPedido, codFornPedido, codComprPedido, quantMercPedido, codOrganizador)
+      VALUES ${values} ON DUPLICATE KEY UPDATE quantMercPedido = VALUES(quantMercPedido);`;
+
+    console.log("==================================");
+    console.log(queryConsult);
+    console.log("==================================");
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select All Requests: ", error);
+      } else {
+        console.log(error);
+        // return res.json(results);
+        connection.end();
+      }
+    });
+
     return res.json({ "message": "Salvo com sucesso!" });
   },
 
