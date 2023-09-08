@@ -20,10 +20,12 @@ async function Insert(params) {
       "')";
 
     return new Promise(function (resolve, reject) {
-      connection.promise().query(query, function (error, results, fields) {
-        if (error) return reject(error);
-        connection.release();
-        return resolve(results);
+      connection.getConnection(function (err, connectionTeste) {
+        connectionTeste.query(query, function (error, results, fields) {
+          if (error) return reject(error);
+          connectionTeste.release();
+          return resolve(results);
+        });
       });
     });
   } else {

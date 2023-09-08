@@ -14,6 +14,7 @@ const Client = {
 
     const queryConsult = "select relaciona.codAssocRelaciona, consultor.nomeConsult, relaciona.codConsultRelaciona, associado.razaoAssociado,  associado.cnpjAssociado, FORMAT(ifnull(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0 ), 2, 'de_DE') as 'valorTotal', ifnull(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from associado join relaciona on relaciona.codConsultRelaciona = associado.codAssociado join consultor on consultor.codConsult = relaciona.codAssocRelaciona left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona left join mercadoria on codMercadoria = pedido.codMercPedido group by relaciona.codConsultRelaciona order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
 
+
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
         console.log("Error Select Users: ", error);
@@ -287,34 +288,40 @@ desc`;
 
     let result = true;
     let response = "";
-    connection.promise().query(queryInsert, (error, results) => {
-      if (error) {
-        result = false;
-        connection.release();
-        return res.json({ "message": error.sqlMessage });
-      } else {
-        response = results;
-        connection.release();
-        return;
-      }
+
+
+    connection.getConnection(function (err, connectionTeste) {
+      connectionTeste.query(queryInsert, (error, results) => {
+        if (error) {
+          result = false;
+          return res.json({ "message": error.sqlMessage });
+        } else {
+          connectionTeste.release();
+          response = results;
+          return;
+        }
+      });
     });
+
 
     //=============================================================
     //=============================================================
     //=============================================================
 
     if (result) {
-
       const queryAccess = `insert into acesso (codAcesso, direcAcesso, codUsuario, codOrganization) values("${hash}", "${type}", "${cod}", 158)`;
-      connection.promise().query(queryAccess, (error, results) => {
-        if (error) {
-          result = false;
-          connection.release();
-          return;
-        } else {
-          connection.release();
-          return;
-        }
+
+      connection.getConnection(function (err, connectionTeste) {
+        connectionTeste.query(queryAccess, (error, results) => {
+          if (error) {
+            result = false;
+            return;
+          } else {
+            connectionTeste.release();
+            return;
+          }
+        });
+
       });
     }
 
