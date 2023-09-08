@@ -180,7 +180,7 @@ const Request = {
     let values = "";
 
     for (let i = 0; i < items.length; i++) {
-      values += `(${items[i]["codMercadoria"]}, ${codNegociacao}, ${codAssociado},  ${codFornecedor}, ${codComprador}, ${items[i]["quantMercadoria"]}, ${codOrganizacao})` + i == items.length() - 1 ? "" : ",";
+      values += `(${items[i]["codMercadoria"]}, ${codNegociacao}, ${codAssociado},  ${codFornecedor}, ${codComprador}, ${items[i]["quantMercadoria"]}, ${codOrganizacao})` + i == items.length - 1 ? "" : ",";
     }
 
 
@@ -196,11 +196,11 @@ const Request = {
         console.log("Error Select All Requests: ", error);
       } else {
         console.log(error);
-        // return res.json(results);
-        connection.end();
+        return res.json(results);
       }
     });
 
+    // connection.end();
     return res.json({ "message": "Salvo com sucesso!" });
   },
 
