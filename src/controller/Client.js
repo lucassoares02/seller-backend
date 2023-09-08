@@ -287,9 +287,10 @@ desc`;
 
     let result = true;
     let response = "";
-    connection.query(queryInsert, (error, results) => {
+    connection.promise().query(queryInsert, (error, results) => {
       if (error) {
         result = false;
+        connection.release();
         return res.json({ "message": error.sqlMessage });
       } else {
         response = results;
@@ -305,12 +306,12 @@ desc`;
     if (result) {
 
       const queryAccess = `insert into acesso (codAcesso, direcAcesso, codUsuario, codOrganization) values("${hash}", "${type}", "${cod}", 158)`;
-      connection.query(queryAccess, (error, results) => {
+      connection.promise().query(queryAccess, (error, results) => {
         if (error) {
           result = false;
+          connection.release();
           return;
         } else {
-
           connection.release();
           return;
         }
