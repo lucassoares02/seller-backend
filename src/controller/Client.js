@@ -290,17 +290,14 @@ desc`;
     let response = "";
 
 
-    connection.getConnection(function (err, connectionTeste) {
-      connectionTeste.query(queryInsert, (error, results) => {
-        if (error) {
-          result = false;
-          return res.json({ "message": error.sqlMessage });
-        } else {
-          connectionTeste.release();
-          response = results;
-          return;
-        }
-      });
+    connection.query(queryInsert, (error, results) => {
+      if (error) {
+        result = false;
+        return res.json({ "message": error.sqlMessage });
+      } else {
+        response = results;
+        return;
+      }
     });
 
 
@@ -311,18 +308,15 @@ desc`;
     if (result) {
       const queryAccess = `insert into acesso (codAcesso, direcAcesso, codUsuario, codOrganization) values("${hash}", "${type}", "${cod}", 158)`;
 
-      connection.getConnection(function (err, connectionTeste) {
-        connectionTeste.query(queryAccess, (error, results) => {
-          if (error) {
-            result = false;
-            return;
-          } else {
-            connectionTeste.release();
-            return;
-          }
-        });
-
+      connection.query(queryAccess, (error, results) => {
+        if (error) {
+          result = false;
+          return;
+        } else {
+          return;
+        }
       });
+
     }
 
     //=============================================================
