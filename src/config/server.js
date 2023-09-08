@@ -25,6 +25,7 @@ if (process.env.DATABASE == "POSTGRESQL") {
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE,
     insecureAuth: true,
+    connectionLimit : 10,
   });
 }
 
