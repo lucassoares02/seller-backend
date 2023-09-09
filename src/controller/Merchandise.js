@@ -13,7 +13,7 @@ const Merchandise = {
     const { codprovider, codnegotiation } = req.params;
 
     const queryConsult = `
-    select 
+    SET sql_mode = ''; select 
     mercadoria.codMercadoria, 
     mercadoria.codFornMerc, 
     mercadoria.nomeMercadoria, 
@@ -64,7 +64,7 @@ const Merchandise = {
     const { codprovider } = req.params;
 
     const queryConsult = `
-    select fornecedor.codForn, 
+    SET sql_mode = ''; select fornecedor.codForn, 
 fornecedor.nomeForn, 
 mercadoria.codMercadoria, 
 mercadoria.nomeMercadoria,

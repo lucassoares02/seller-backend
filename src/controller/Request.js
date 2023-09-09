@@ -11,7 +11,7 @@ const Request = {
     const { codclient } = req.params;
 
     const queryConsult = `
-      select 
+    SET sql_mode = ''; select 
       cnpjForn, 
       nomeForn,
       razaoForn, 
@@ -43,7 +43,7 @@ const Request = {
     const { codprovider } = req.params;
 
     const queryConsult = `
-    select pedido.codPedido , 
+    SET sql_mode = ''; select pedido.codPedido , 
     associado.cnpjAssociado , 
     associado.codAssociado ,
     consultor.nomeConsult, 
@@ -76,7 +76,7 @@ const Request = {
     const { codconsult } = req.params;
 
     const queryConsult = `
-    select pedido.codPedido , 
+    SET sql_mode = ''; select pedido.codPedido , 
     associado.cnpjAssociado , 
     associado.codAssociado ,
     consultor.nomeConsult, 
@@ -110,7 +110,7 @@ const Request = {
     const { codprovider } = req.params;
 
     const queryConsult = `
-    select 
+    SET sql_mode = ''; select 
     pedido.codPedido ,
     associado.cnpjAssociado ,
     associado.codAssociado ,

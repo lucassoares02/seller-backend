@@ -26,7 +26,7 @@ const Provider = {
     logger.info("Get Provider Sells");
 
     const queryConsult = `
-    select 
+    SET sql_mode = ''; select 
     cnpjForn,
     nomeForn, 
     razaoForn as razao, 
@@ -57,7 +57,7 @@ const Provider = {
     const { codbuyer } = req.params;
 
     const queryConsult = `
-    select 
+    SET sql_mode = ''; select 
     cnpjForn, 
     nomeForn,
     razaoForn as razao, 
@@ -90,7 +90,7 @@ const Provider = {
     const { codconsultclient } = req.params;
 
     const queryConsult = `
-    select cnpjForn, 
+    SET sql_mode = ''; select cnpjForn, 
     nomeForn,
     razaoForn as razao, 
     codForn, 

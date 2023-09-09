@@ -25,7 +25,7 @@ const Buyer = {
     logger.info("Get All Buyers");
 
     const queryConsult = `
-    select 
+    SET sql_mode = ''; select 
     comprador.codCompr, 
     comprador.nomeCompr,
     comprador.descCatComprador,

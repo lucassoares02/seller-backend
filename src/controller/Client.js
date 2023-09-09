@@ -68,23 +68,23 @@ const Client = {
     const { codconsultor } = req.params;
 
     const queryConsult = `
-    select
-relaciona.codAssocRelaciona as codAssociado,
-consultor.nomeConsult, 
-relaciona.codConsultRelaciona,
-associado.razaoAssociado,
-associado.cnpjAssociado, 
-IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido),0) as 'valor',
-IFNULL(sum(pedido.quantMercPedido), 0) as 'volume'
-from consultor
-inner join relaciona on consultor.codConsult = relaciona.codAssocRelaciona
-inner join associado on associado.codAssociado = relaciona.codConsultRelaciona 
-left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona 
-left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido 
-where relaciona.codAssocRelaciona = ${codconsultor}
-group by relaciona.codConsultRelaciona 
-order by valor 
-desc`;
+    SET sql_mode = ''; select
+    relaciona.codAssocRelaciona as codAssociado,
+    consultor.nomeConsult, 
+    relaciona.codConsultRelaciona,
+    associado.razaoAssociado,
+    associado.cnpjAssociado, 
+    IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido),0) as 'valor',
+    IFNULL(sum(pedido.quantMercPedido), 0) as 'volume'
+    from consultor
+    inner join relaciona on consultor.codConsult = relaciona.codAssocRelaciona
+    inner join associado on associado.codAssociado = relaciona.codConsultRelaciona 
+    left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona 
+    left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido 
+    where relaciona.codAssocRelaciona = ${codconsultor}
+    group by relaciona.codConsultRelaciona 
+    order by valor 
+    desc`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -104,7 +104,7 @@ desc`;
     const { codmercadoria, codnegotiation } = req.params;
 
     const queryConsult = `
-    select 
+    SET sql_mode = ''; select 
     mercadoria.codMercadoria, 
     mercadoria.codFornMerc,
     mercadoria.nomeMercadoria,
@@ -139,7 +139,7 @@ desc`;
     const { codmercadoria, codnegotiation } = req.params;
 
     const queryConsult = `
-    select 
+    SET sql_mode = ''; select 
     mercadoria.codMercadoria, 
     mercadoria.codFornMerc,
     mercadoria.nomeMercadoria,
@@ -189,7 +189,7 @@ desc`;
     logger.info("Get All Stores");
 
     const queryConsult = `
-    select 
+    SET sql_mode = ''; select 
     relaciona.codAssocRelaciona,
     consultor.nomeConsult, 
     relaciona.codConsultRelaciona,
@@ -360,7 +360,7 @@ desc`;
     logger.info("Get All Stores Graphs");
 
     const queryConsult = `
-    select 
+    SET sql_mode = ''; select 
     relaciona.codAssocRelaciona,
     consultor.nomeConsult, 
     relaciona.codConsultRelaciona,

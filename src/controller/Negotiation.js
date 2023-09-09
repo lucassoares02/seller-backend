@@ -48,7 +48,7 @@ const Negotiation = {
 
 
     const queryConsult = `
-      select
+    SET sql_mode = ''; select
       p.codMercPedido,
       m.nomeMercadoria ,
       p.codFornPedido,
