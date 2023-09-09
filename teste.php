@@ -35,8 +35,8 @@ from acesso where codAcesso = $codAcessoa";
 	$segundoTeste = "
 select codMercPedido
 from pedido join fornecedor on pedido.codFornPedido = fornecedor.codForn
-join relacionaFornecedor on relacionaFornecedor.codFornecedor = fornecedor.codForn
-join consultor on consultor.codConsult = relacionaFornecedor.codConsultor
+join relacionafornecedor on relacionafornecedor.codFornecedor = fornecedor.codForn
+join consultor on consultor.codConsult = relacionafornecedor.codConsultor
 join acesso on acesso.codUsuario = consultor.codConsult
 where acesso.codAcesso = $codAcessoa
 limit 1";
@@ -54,8 +54,8 @@ limit 1";
 	sum(mercadoria.precoMercadoria*pedido.quantMercPedido) as 'valorPedido'
 	from acesso 
 	join consultor on acesso.codUsuario = consultor.codConsult 
-	join relacionaFornecedor on consultor.codConsult = relacionaFornecedor.codConsultor	
-	join fornecedor on relacionaFornecedor.codFornecedor = fornecedor.codForn
+	join relacionafornecedor on consultor.codConsult = relacionafornecedor.codConsultor	
+	join fornecedor on relacionafornecedor.codFornecedor = fornecedor.codForn
 	join pedido on pedido.codFornPedido = fornecedor.codForn
 	join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido
 	where acesso.codAcesso = $codAcessoa";
