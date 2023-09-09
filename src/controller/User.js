@@ -54,7 +54,7 @@ const User = {
                 console.log("======== results query client ========");
                 console.log(results);
                 console.log("======== results query client ========");
-                return res.json(results);
+                return res.json(results[0]);
               }
             });
             // connection.end();
