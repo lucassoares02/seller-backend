@@ -28,6 +28,7 @@ if (process.env.DATABASE == "POSTGRESQL") {
     database: process.env.MYSQL_DATABASE,
     // insecureAuth: true,
     // connectionLimit: 10,
+    multipleStatements: true
   });
 }
 
