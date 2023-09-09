@@ -13,10 +13,15 @@ const User = {
 
     const queryConsult = "select codAcesso, codOrganization, direcAcesso from acesso where codAcesso = " + codacesso;
 
+    console.log(queryConsult);
+
     connection.query(queryConsult, async (error, results, fields) => {
       if (error) {
         return ("Error Request User: ", error);
       } else {
+        console.log("======== results ========");
+        console.log(results);
+        console.log("======== results ========");
 
         if (results.length > 0) {
           if (results[0].direcAcesso == 1) {
