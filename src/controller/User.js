@@ -13,15 +13,10 @@ const User = {
 
     const queryConsult = "select codAcesso, codOrganization, direcAcesso from acesso where codAcesso = " + codacesso;
 
-    console.log(queryConsult);
-
     connection.query(queryConsult, async (error, results, fields) => {
       if (error) {
         return ("Error Request User: ", error);
       } else {
-        console.log("======== results ========");
-        console.log(results);
-        console.log("======== results ========");
 
         if (results.length > 0) {
           if (results[0].direcAcesso == 1) {
@@ -42,19 +37,12 @@ const User = {
 
             const queryClient = `SET sql_mode = ''; SELECT acesso.codAcesso, acesso.direcAcesso, associado.razaoAssociado AS nomeForn, associado.cnpjAssociado AS cnpjForn, acesso.codUsuario, associado.codAssociado AS codForn, consultor.nomeConsult, consultor.cpfConsult, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as valorPedido FROM acesso join consultor on acesso.codUsuario = consultor.codConsult join relaciona on relaciona.codAssocRelaciona = consultor.codConsult join associado on associado.codAssociado = relaciona.codConsultRelaciona left join pedido on pedido.codAssocPedido = associado.codAssociado left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido WHERE acesso.codAcesso = '${codacesso}'`;
 
-            console.log("======== results ========");
-            console.log(queryClient);
-            console.log("======== results ========");
-
             connection.query(queryClient, (error, results) => {
               if (error) {
                 return res.status(400).send(error);
               } else {
 
-                console.log("======== results query client ========");
-                console.log(results);
-                console.log("======== results query client ========");
-                return res.json(results[0]);
+                return res.json(results[1]);
               }
             });
             // connection.end();
