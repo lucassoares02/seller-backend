@@ -10,8 +10,7 @@ const Graphs = {
 
     const { codprovider } = req.params;
 
-    const queryConsult = `
-    SELECT (COUNT(DISTINCT pedido.codAssocPedido) * 100.0) / (SELECT COUNT(*) FROM associado) AS porcentagem, COUNT(DISTINCT pedido.codAssocPedido) AS realizados, (SELECT COUNT(*) FROM associado) AS total FROM pedido WHERE pedido.codFornPedido = ${codprovider}`;
+    const queryConsult = `SET sql_mode = ''; SELECT (COUNT(DISTINCT pedido.codAssocPedido) * 100.0) / (SELECT COUNT(*) FROM associado) AS porcentagem, COUNT(DISTINCT pedido.codAssocPedido) AS realizados, (SELECT COUNT(*) FROM associado) AS total FROM pedido WHERE pedido.codFornPedido = ${codprovider}`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -29,7 +28,7 @@ const Graphs = {
     const { codbuyer } = req.params;
 
     const queryConsult = `
-    SELECT (COUNT(DISTINCT pedido.codFornPedido ) * 100.0) / (SELECT COUNT(*) 
+    SET sql_mode = ''; SELECT (COUNT(DISTINCT pedido.codFornPedido ) * 100.0) / (SELECT COUNT(*) 
     FROM fornecedor f) AS porcentagem,
     COUNT(DISTINCT pedido.codFornPedido) AS realizados, 
     (SELECT COUNT(*) FROM fornecedor f2) AS total
@@ -50,7 +49,7 @@ const Graphs = {
   async getPercentageClientsOrganization(req, res) {
     logger.info("Get Percentage Clients Organization");
 
-    const queryConsult = `SELECT 
+    const queryConsult = ` SET sql_mode = ''; SELECT 
     (COUNT(DISTINCT pedido.codAssocPedido) * 100.0) / (SELECT COUNT(*) FROM associado) AS porcentagem, 
     COUNT(DISTINCT pedido.codAssocPedido) AS realizados, (SELECT COUNT(*) FROM associado) AS total FROM pedido`;
 
@@ -68,7 +67,7 @@ const Graphs = {
     logger.info("Get Percentage Providers Organization");
 
     const queryConsult = `
-    SELECT 
+    SET sql_mode = ''; SELECT 
     (COUNT(DISTINCT pedido.codFornPedido) * 100.0) / (SELECT COUNT(*) FROM fornecedor) AS porcentagem, 
     COUNT(DISTINCT pedido.codFornPedido) AS realizados, 
     (SELECT COUNT(*) FROM fornecedor f) AS total FROM pedido `;

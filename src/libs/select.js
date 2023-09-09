@@ -25,7 +25,7 @@ async function Select(params) {
     }
   }
 
-  const query = "SELECT * FROM " + table + concatWhere;
+  const query = "SET sql_mode = '';* FROM " + table + concatWhere;
   
 
 
