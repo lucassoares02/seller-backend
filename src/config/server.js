@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { Pool } = require('pg');
-const mysql = require("mysql2");
+const mysql2 = require("mysql2");
+const mysql = require("mysql");
 
 
 if (process.env.DATABASE == "POSTGRESQL") {
@@ -18,14 +19,15 @@ if (process.env.DATABASE == "POSTGRESQL") {
   });
 } else {
   console.log("MYSQL");
-  var connection = mysql.createPool({
+  // var connection = mysql.createPool({
+  var connection = mysql.createConnection({
     port: process.env.MYSQL_PORT,
     host: process.env.MYSQL_HOSTNAME,
     user: process.env.MYSQL_USERNAME,
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE,
     insecureAuth: true,
-    connectionLimit : 10,
+    connectionLimit: 10,
   });
 }
 
