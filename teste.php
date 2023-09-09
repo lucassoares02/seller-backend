@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	}
 	$codAcessoa = "" . $access->codAcesso . "";
 
-	$testeCodAcesso = "select codAcesso, direcAcesso 
+	$testeCodAcesso = "SET sql_mode = ''; select codAcesso, direcAcesso 
 from acesso where codAcesso = $codAcessoa";
 
 	$primerResult = $conn->query($testeCodAcesso);
@@ -50,7 +50,7 @@ limit 1";
 	if ($resultadoDirec['direcAcesso'] == 1) {
 
 
-		$sql = "select acesso.codAcesso, acesso.direcAcesso,fornecedor.nomeForn,fornecedor.cnpjForn, acesso.codUsuario, fornecedor.codForn, consultor.nomeConsult,consultor.cpfConsult,
+		$sql = "SET sql_mode = ''; select acesso.codAcesso, acesso.direcAcesso,fornecedor.nomeForn,fornecedor.cnpjForn, acesso.codUsuario, fornecedor.codForn, consultor.nomeConsult,consultor.cpfConsult,
 	sum(mercadoria.precoMercadoria*pedido.quantMercPedido) as 'valorPedido'
 	from acesso 
 	join consultor on acesso.codUsuario = consultor.codConsult 
@@ -79,7 +79,7 @@ limit 1";
 		} else {
 
 
-			$sql = "select acesso.codAcesso, acesso.direcAcesso,fornecedor.nomeForn,fornecedor.cnpjForn, acesso.codUsuario, fornecedor.codForn, consultor.nomeConsult,consultor.cpfConsult
+			$sql = "SET sql_mode = ''; select acesso.codAcesso, acesso.direcAcesso,fornecedor.nomeForn,fornecedor.cnpjForn, acesso.codUsuario, fornecedor.codForn, consultor.nomeConsult,consultor.cpfConsult
 		from acesso 
 		join consultor on acesso.codUsuario = consultor.codConsult 
 		join fornecedor on consultor.codFornConsult = fornecedor.codForn
@@ -110,7 +110,7 @@ limit 1";
 		}
 	} else if ($resultadoDirec['direcAcesso'] == 2) {
 
-		$sqlTeste = "select codMercPedido
+		$sqlTeste = "SET sql_mode = ''; select codMercPedido
 		from pedido join associado on pedido.codAssocPedido = associado.codAssociado
 		join relaciona on relaciona.codConsultRelaciona = associado.codAssociado
 		join consultor on consultor.codConsult = relaciona.codAssocRelaciona
@@ -191,7 +191,7 @@ limit 1";
 
 
 
-		$sqlTeste = "select codMercPedido
+		$sqlTeste = "SET sql_mode = ''; select codMercPedido
 		from pedido join organizador on pedido.codOrganizador = organizador.codOrg
 		join consultor on consultor.codFornConsult = organizador.codOrg
 		join acesso on acesso.codUsuario = consultor.codConsult

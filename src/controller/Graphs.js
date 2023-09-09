@@ -17,7 +17,7 @@ const Graphs = {
       if (error) {
         console.log("Error Select Percentage Clients: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
@@ -41,7 +41,7 @@ const Graphs = {
       if (error) {
         console.log("Error Select Percentage Providers by Clients: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
@@ -58,7 +58,7 @@ const Graphs = {
       if (error) {
         console.log("Error Select Percentage Clients: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
@@ -77,7 +77,7 @@ const Graphs = {
       if (error) {
         console.log("Error Select Percentage Providers: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
@@ -94,7 +94,7 @@ const Graphs = {
       if (error) {
         console.log("Error Select Total Value Clients: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();

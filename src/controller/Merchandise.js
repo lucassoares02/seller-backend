@@ -35,7 +35,7 @@ const Merchandise = {
       if (error) {
         console.log("Error Select Merchandise to Negotiation to Provider: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
@@ -46,13 +46,13 @@ const Merchandise = {
 
     const { codclient, codprovider, codnegotiation } = req.params;
 
-    const queryConsult = "select mercadoria.nomeMercadoria, mercadoria.embMercadoria, mercadoria.fatorMerc, IFNULL(SUM(pedido.quantMercPedido), 0) as 'quantMercadoria', mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(mercadoria.precoMercadoria * pedido.quantMercPedido), 0) as 'valorTotal' from mercadoria join pedido on pedido.codMercPedido = mercadoria.codMercadoria where pedido.codAssocPedido = " + codclient + " and pedido.codfornpedido = " + codprovider + " and pedido.codNegoPedido = " + codnegotiation + " group by mercadoria.nomeMercadoria order by quantMercPedido";
+    const queryConsult = "SET sql_mode = ''; select mercadoria.nomeMercadoria, mercadoria.embMercadoria, mercadoria.fatorMerc, IFNULL(SUM(pedido.quantMercPedido), 0) as 'quantMercadoria', mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(mercadoria.precoMercadoria * pedido.quantMercPedido), 0) as 'valorTotal' from mercadoria join pedido on pedido.codMercPedido = mercadoria.codMercadoria where pedido.codAssocPedido = " + codclient + " and pedido.codfornpedido = " + codprovider + " and pedido.codNegoPedido = " + codnegotiation + " group by mercadoria.nomeMercadoria order by quantMercPedido";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
         console.log("Error Select Merchandise to Client Negotiation to Provider: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
@@ -90,7 +90,7 @@ asc
       if (error) {
         console.log("Error Select Merchandise Provider: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
@@ -107,7 +107,7 @@ asc
       if (error) {
         console.log("Error Select Merchandise Provider If Client: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
@@ -141,7 +141,7 @@ asc
       if (error) {
         console.log("Error Select Merchandise Provider If Client: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
@@ -176,7 +176,7 @@ asc
       if (error) {
         console.log("Error Select Merchandise Provider If Client: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
@@ -209,7 +209,7 @@ asc
       if (error) {
         console.log("Error Select Merchandise Provider If Client: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();

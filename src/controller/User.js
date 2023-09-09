@@ -11,7 +11,7 @@ const User = {
 
     const { codacesso } = req.body;
 
-    const queryConsult = "select codAcesso, codOrganization, direcAcesso from acesso where codAcesso = " + codacesso;
+    const queryConsult = "SET sql_mode = ''; select codAcesso, codOrganization, direcAcesso from acesso where codAcesso = " + codacesso;
 
     connection.query(queryConsult, async (error, results, fields) => {
       if (error) {
@@ -27,7 +27,7 @@ const User = {
               if (error) {
                 return res.status(400).send(error);
               } else {
-                return res.json(results);
+                return res.json(results[1]);
               }
             });
             // connection.end();
@@ -55,7 +55,7 @@ const User = {
               if (error) {
                 return res.status(400).send(error);
               } else {
-                return res.json(results);
+                return res.json(results[1]);
               }
             });
             // connection.end();
@@ -91,7 +91,7 @@ const User = {
             if (error) {
               return ("Error Insert User Client: ", error);
             } else {
-              return res.json(results);
+              return res.json(results[1]);
             }
           });
           // connection.end();
@@ -104,7 +104,7 @@ const User = {
             if (error) {
               return ("Error Update User Client: ", error);
             } else {
-              return res.json(results);
+              return res.json(results[1]);
             }
           });
           // connection.end();
@@ -130,7 +130,7 @@ const User = {
             if (error) {
               return ("Error Update User Client: ", error);
             } else {
-              return res.json(results);
+              return res.json(results[1]);
             }
           });
           // connection.end();

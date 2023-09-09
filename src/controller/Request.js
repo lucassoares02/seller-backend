@@ -30,7 +30,7 @@ const Request = {
       if (error) {
         console.log("Error Select Associate Supliers Orders: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
@@ -64,7 +64,7 @@ const Request = {
       if (error) {
         console.log("Error Select Requests Provider: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
@@ -97,7 +97,7 @@ const Request = {
       if (error) {
         console.log("Error Select Requests Provider: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
@@ -130,7 +130,7 @@ const Request = {
       if (error) {
         console.log("Error Select All Requests: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
@@ -150,7 +150,7 @@ const Request = {
   //     if (error) {
   //       console.log("Error Select All Requests: ", error);
   //     } else {
-  //       return res.json(results);
+  //       return res.json(results[1]);
   //     }
   //   });
   //   // connection.end();
@@ -183,7 +183,7 @@ const Request = {
         console.log(error);
         console.log("Error Select All Requests: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     return 0;
@@ -198,7 +198,7 @@ const Request = {
     const { codMercadoria, quantMercadoria, codFornecedor, codAssociado, codComprador, codNegociacao, codOrganizacao } = req.body;
 
 
-    const queryConsult = "select quantMercPedido from pedido where codMercPedido = " + codMercadoria + " and codAssocPedido = " + codAssociado + " and codNegoPedido =  " + codNegociacao + " group by quantMercPedido";
+    const queryConsult = "SET sql_mode = ''; select quantMercPedido from pedido where codMercPedido = " + codMercadoria + " and codAssocPedido = " + codAssociado + " and codNegoPedido =  " + codNegociacao + " group by quantMercPedido";
 
     connection.query(queryConsult, async (error, results, fields) => {
       if (error) {
@@ -213,7 +213,7 @@ const Request = {
             if (error) {
               return ("Error Insert Request Client: ", error);
             } else {
-              return res.json(results);
+              return res.json(results[1]);
             }
           });
 
@@ -225,7 +225,7 @@ const Request = {
             if (error) {
               return ("Error Update Request Client: ", error);
             } else {
-              return res.json(results);
+              return res.json(results[1]);
             }
           });
         }

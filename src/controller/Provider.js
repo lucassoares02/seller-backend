@@ -10,13 +10,13 @@ const Provider = {
 
     const { codconsultor } = req.params;
 
-    const queryConsult = "select cnpjForn, nomeForn, razaoForn, codForn, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from relaciona join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona join fornecedor on fornecedor.codForn = pedido.codFornPedido left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relaciona.codAssocRelaciona =" + codconsultor + " group by fornecedor.codForn order by valorTotal desc";
+    const queryConsult = "SET sql_mode = ''; select cnpjForn, nomeForn, razaoForn, codForn, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from relaciona join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona join fornecedor on fornecedor.codForn = pedido.codFornPedido left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relaciona.codAssocRelaciona =" + codconsultor + " group by fornecedor.codForn order by valorTotal desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
         console.log("Error Select Provider Client: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
@@ -44,7 +44,7 @@ const Provider = {
       if (error) {
         console.log("Error Select Provider Sells: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
@@ -77,7 +77,7 @@ const Provider = {
       if (error) {
         console.log("Error Select Providers Categories: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
@@ -109,7 +109,7 @@ const Provider = {
       if (error) {
         console.log("Error Select Providers Client: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
@@ -125,7 +125,7 @@ const Provider = {
       if (error) {
         console.log("Error Select All Providers: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
@@ -137,13 +137,13 @@ const Provider = {
 
     const { codconsult } = req.params;
 
-    const queryConsult = "select cnpjForn, nomeForn, razaoForn, codForn, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from fornecedor join relacionafornecedor on relacionafornecedor.codFornecedor = fornecedor.codForn left join pedido on pedido.codFornPedido = relacionafornecedor.codFornecedor left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relacionafornecedor.codConsultor = " + codconsult + " group by fornecedor.codForn order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
+    const queryConsult = "SET sql_mode = ''; select cnpjForn, nomeForn, razaoForn, codForn, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from fornecedor join relacionafornecedor on relacionafornecedor.codFornecedor = fornecedor.codForn left join pedido on pedido.codFornPedido = relacionafornecedor.codFornecedor left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relacionafornecedor.codConsultor = " + codconsult + " group by fornecedor.codForn order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
         console.log("Error Select Provider Consult: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[1]);
       }
     });
     // connection.end();
