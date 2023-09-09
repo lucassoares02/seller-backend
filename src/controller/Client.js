@@ -359,8 +359,7 @@ const Client = {
   async getAllStoresGraph(req, res) {
     logger.info("Get All Stores Graphs");
 
-    const queryConsult = `
-    SET sql_mode = ''; select 
+    const queryConsult = `SET sql_mode = ''; select 
     relaciona.codAssocRelaciona,
     consultor.nomeConsult, 
     relaciona.codConsultRelaciona,
@@ -385,17 +384,17 @@ const Client = {
 
         let total = 0;
 
-        for (let j = 0; j < results.length; j++) {
-          total += results[j]["valorTotal"];
+        for (let j = 0; j < results[1].length; j++) {
+          total += results[1][j]["valorTotal"];
         }
 
 
         i = 0;
-        for (i = 0; i < results.length; i++) {
+        for (i = 0; i < results[1].length; i++) {
           item.push({
-            razao: results[i]["razao"],
-            percentage: Math.floor((results[i]["valorTotal"] / total) * 100) + "%",
-            value: results[i]["valorTotal"]
+            razao: results[1][i]["razao"],
+            percentage: Math.floor((results[1][i]["valorTotal"] / total) * 100) + "%",
+            value: results[1][i]["valorTotal"]
           });
         }
 
