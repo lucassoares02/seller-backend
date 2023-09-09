@@ -102,8 +102,7 @@ const Graphs = {
   async getTotalInformations(req, res) {
     logger.info("Get Total Informations");
 
-    const queryConsult = `
-    SET sql_mode = ''; select
+    const queryConsult = `SET sql_mode = ''; select
       sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as total
       from pedido 
       join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido 
@@ -130,18 +129,15 @@ const Graphs = {
         const titles = ["Total negociado", "Associados", "Fonecedores", "Mercadorias"];
 
         i = 0;
-        for (i = 0; i < results.length; i++) {
+        for (i = 0; i < results[1].length; i++) {
           data.push({
             title: titles[i],
             addInfo: "",
             icon: "",
             color: "",
-            total: results[i]["total"],
+            total: results[1][i]["total"],
           });
         }
-
-
-
         res.json(data);
       }
     });
