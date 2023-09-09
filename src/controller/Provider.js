@@ -180,9 +180,9 @@ const Provider = {
 
     connection.query(queryInsert, (error, results) => {
       if (error) {
-        return res.json({ "messaege": error.sqlMessage });
+        return res.status(200).send(`message: Save Success!`);
       } else {
-        return res.json(results);
+        return res.status(400).send(error);
       }
     });
 
