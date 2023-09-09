@@ -59,7 +59,7 @@ const User = {
             join relaciona on relaciona.codAssocRelaciona = consultor.codConsult 
             join associado on associado.codAssociado = relaciona.codConsultRelaciona 
             left join pedido on pedido.codAssocPedido = associado.codAssociado 
-            left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido WHERE acesso.codAcesso = ${codacesso}/;`;
+            left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido WHERE acesso.codAcesso = ${codacesso};`;
 
             console.log("======== results ========");
             console.log(queryClient);
