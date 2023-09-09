@@ -67,7 +67,7 @@ const Negotiation = {
         console.log("Error Export Negotiation : ", error);
       } else {
 
-        const csvData = results.map((row) => {
+        const csvData = results[1].map((row) => {
           return ` ${row.nomeMercadoria},${row.codMercPedido},${row.codFornPedido},${row.codAssocPedido},${row.codNegoPedido},${row.codMercPedido}`; // Substitua com os nomes das colunas do seu banco de dados
         }).join('\n');
 
