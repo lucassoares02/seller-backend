@@ -11,7 +11,7 @@ const User = {
 
     const { codacesso } = req.body;
 
-    const queryConsult = "SET sql_mode = ''; select codAcesso, codOrganization, direcAcesso from acesso where codAcesso = " + codacesso;
+    const queryConsult = "select codAcesso, codOrganization, direcAcesso from acesso where codAcesso = " + codacesso;
 
     connection.query(queryConsult, async (error, results, fields) => {
       if (error) {
