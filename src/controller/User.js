@@ -15,7 +15,7 @@ const User = {
 
     connection.query(queryConsult, async (error, results, fields) => {
       if (error) {
-        return ("Error Request User: ", error);
+        return res.status(400).send(error);
       } else {
 
         if (results.length > 0) {
