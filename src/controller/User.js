@@ -21,6 +21,30 @@ const User = {
         if (results.length > 0) {
           if (results[0].direcAcesso == 1) {
 
+            //             set sql_mode='';
+            // select 
+            // acesso.codAcesso, 
+            // acesso.direcAcesso,
+            //  fornecedor.nomeForn, 
+            // fornecedor.cnpjForn,
+            //  acesso.codUsuario, 
+            // fornecedor.codForn, 
+            // consultor.nomeConsult,
+            //  consultor.cpfConsult, 
+            // FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorPedido' 
+            // from acesso 
+
+            // join consultor on acesso.codUsuario = consultor.codConsult 
+            // join relacionafornecedor on consultor.codConsult = relacionafornecedor.codConsultor	
+            // join fornecedor on relacionafornecedor.codFornecedor = fornecedor.codForn 
+            // left join pedido on pedido.codFornPedido = fornecedor.codForn 
+            // left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido 
+            // where acesso.codAcesso = 1000000059091
+            // group by fornecedor.codForn
+            // order by valorPedido desc;
+
+
+
             const queryProvider = "SET sql_mode = ''; select acesso.codAcesso, acesso.direcAcesso, fornecedor.nomeForn, fornecedor.cnpjForn, acesso.codUsuario, fornecedor.codForn, consultor.nomeConsult, consultor.cpfConsult, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorPedido' from acesso join consultor on acesso.codUsuario = consultor.codConsult join relacionafornecedor on consultor.codConsult = relacionafornecedor.codConsultor	join fornecedor on relacionafornecedor.codFornecedor = fornecedor.codForn left join pedido on pedido.codFornPedido = fornecedor.codForn left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where acesso.codAcesso = " + codacesso;
 
             connection.query(queryProvider, (error, results) => {
@@ -80,7 +104,7 @@ const User = {
 
     connection.query(queryConsult, async (error, results, fields) => {
       if (error) {
-        return ("Error Request User: ", error);
+        return res.status(400).send(error);
       } else {
 
         if (results[0].direcAcesso == 1) {
