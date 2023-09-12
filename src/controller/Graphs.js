@@ -135,7 +135,7 @@ const Graphs = {
             addInfo: "",
             icon: "",
             color: "",
-            total: results[1][i]["total"],
+            total: results[1][i]["total"] != null ? results[1][i]["total"] : 0,
           });
         }
         res.json(data);
