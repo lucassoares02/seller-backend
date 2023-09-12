@@ -103,7 +103,7 @@ const User = {
     const queryConsult = "select codAcesso, codOrganization, direcAcesso from acesso where codAcesso = " + codacesso;
 
     connection.query(queryConsult, async (error, results, fields) => {
-      if (error) {
+      if (error || results.length == 0) {
         return res.status(400).send(error);
       } else {
 
