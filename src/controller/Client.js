@@ -374,7 +374,7 @@ const Client = {
     left join mercadoria on codMercadoria = pedido.codMercPedido 
     group by relaciona.codConsultRelaciona 
     order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
-    desc`;
+    desc limit 10`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
