@@ -106,14 +106,14 @@ const Graphs = {
       sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as total
       from pedido 
       join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido 
-      union
-      select 
-      count(fornecedor.codForn) as fornecedores
-      from fornecedor
       union 
       select
       count(associado.codAssociado) as associados
       from associado
+      union
+      select 
+      count(fornecedor.codForn) as fornecedores
+      from fornecedor
       union
       select 
       count(mercadoria.codMercadoria) as mercadorias
