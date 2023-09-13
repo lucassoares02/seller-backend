@@ -120,8 +120,8 @@ const Negotiation = {
     from negociacao 
     left outer join pedido on (negociacao.codNegociacao = pedido.codNegoPedido)
     left join mercadoria on pedido.codMercPedido = mercadoria.codMercadoria
-    and pedido.codAssocPedido = 1	
-    where negociacao.codFornNegociacao  = 19062
+    and pedido.codAssocPedido = ${codclient}
+    where negociacao.codFornNegociacao  = ${codforn}
     GROUP BY negociacao.codNegociacao 
     ORDER BY confirma desc`;
 
