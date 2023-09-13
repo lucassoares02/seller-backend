@@ -23,6 +23,8 @@ const User = require("@controller/User");
 // getUsuarios.php
 router.post("/getuser", User.getUser); // localhost:3001/getuser
 
+router.post("/getusermore", User.getUserDoubleCompany); // localhost:3001/getuser
+
 router.post("/getuserweb", User.getUserWeb); // localhost:3001/getuser
 
 router.get("/getallusersorg", User.getAllUsersOrg); // localhost:3001/getuser
