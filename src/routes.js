@@ -84,6 +84,8 @@ router.get("/providersconsult/:codconsultclient", Provider.getProvidersClient); 
 // getTodosFornecedores.php
 router.get("/providerconsult/:codconsult", Provider.getProviderConsult); // localhost:3001/providerconsult/5
 
+router.get("/providerdetails/:codforn", Provider.getProviderDetails); // localhost:3001/providerconsult/5
+
 router.post("/insertprovider", Provider.postInsertProvider);
 
 

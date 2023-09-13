@@ -149,6 +149,25 @@ const Provider = {
     // connection.end();
   },
 
+  async getProviderDetails(req, res) {
+    logger.info("Get Provider Consult");
+
+    const { codforn } = req.params;
+
+    const queryConsult = `select * from fornecedor
+    join consultor on consultor.codFornConsult = fornecedor.codForn
+    where codForn = ${codforn}`;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        return res.status(400).send(error);
+      } else {
+        return res.json(results[1]);
+      }
+    });
+    // connection.end();
+  },
+
 
   async postInsertProvider(req, res) {
     logger.info("Post Insert Provider");
