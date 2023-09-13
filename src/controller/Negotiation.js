@@ -107,6 +107,35 @@ const Negotiation = {
     // connection.end();
   },
 
+  async getNegotiationClientWithPrice(req, res) {
+    logger.info("Get Negotiation to Client");
+
+    const { codclient, codforn } = req.params;
+
+
+    const queryConsult = `SET sql_mode = ''; 
+    select codNegociacao,
+    sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'total',
+    descNegociacao, (pedido.codNegoPedido) as 'confirma'
+    from negociacao 
+    left outer join pedido on (negociacao.codNegociacao = pedido.codNegoPedido)
+    left join mercadoria on pedido.codMercPedido = mercadoria.codMercadoria
+    and pedido.codAssocPedido = 1	
+    where negociacao.codFornNegociacao  = 19062
+    GROUP BY negociacao.codNegociacao 
+    ORDER BY confirma desc`;
+
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select Negotiation to Client: ", error);
+      } else {
+        return res.json(results[1]);
+      }
+    });
+    // connection.end();
+  },
+
   async PostInsertNegotiation(req, res) {
     logger.info("Post Save Negotiation");
 
