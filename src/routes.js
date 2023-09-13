@@ -25,7 +25,9 @@ router.post("/getuser", User.getUser); // localhost:3001/getuser
 
 router.post("/getuserweb", User.getUserWeb); // localhost:3001/getuser
 
-router.get("/getallusers", User.getAllUsersAccess); // localhost:3001/getuser
+router.get("/getallusersorg", User.getAllUsersOrg); // localhost:3001/getuser
+router.get("/getallusersprovider", User.getAllUsersProvider); // localhost:3001/getuser
+router.get("/getallusersassociate", User.getAllUsersAssociate); // localhost:3001/getuser
 
 
 // Methods Clients
