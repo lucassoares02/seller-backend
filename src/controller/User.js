@@ -93,8 +93,6 @@ const User = {
     // connection.end();
   },
 
-
-
   async getUserWeb(req, res) {
     logger.info("Post Request User");
 
@@ -161,6 +159,34 @@ const User = {
         }
       };
       return 0;
+    });
+    // connection.end();
+  },
+
+
+  async getAllUsersAccess(req, res) {
+    logger.info("Get All Users Fair");
+
+    const queryConsult = `SET sql_mode = ''; 
+    SELECT acesso.codAcesso, 
+    acesso.direcAcesso, organizador.nomeOrg AS nomeForn, 
+    organizador.cnpjOrg AS cnpjForn, acesso.codUsuario,  
+    organizador.codOrg AS codForn, consultor.nomeConsult, 
+    consultor.cpfConsult, 
+    FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorPedido' 
+    FROM acesso 
+    join consultor on acesso.codUsuario = consultor.codConsult 
+    join organizador on organizador.codOrg = consultor.codFornConsult
+     left join pedido on pedido.codOrganizador = organizador.codOrg 
+     left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where codOrganizador = 158 
+     group by consultor.codConsult`;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        return res.status(400).send(error);
+      } else {
+        return res.json(results[1]);
+      }
     });
     // connection.end();
   },
