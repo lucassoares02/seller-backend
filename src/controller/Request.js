@@ -2,6 +2,8 @@ const connection = require("@server");
 const logger = require("@logger");
 const Select = require("@select");
 const Insert = require("@insert");
+const pdfkit = require('pdfkit');
+const qr = require('qrcode');
 
 const Request = {
 
@@ -236,6 +238,38 @@ const Request = {
     // connection.end();
   },
 
+
+
+  async exportQrCode(req, res) {
+    const codigos = ["codigo1", "codigo2", "codigo3"];
+
+    const doc = new pdfkit();
+
+
+    // Defina o cabeçalho de resposta para forçar o download do PDF
+    res.setHeader('Content-Disposition', 'attachment; filename=qrcodes.pdf');
+    res.setHeader('Content-Type', 'application/pdf');
+
+    // Pipe o PDF para a resposta
+    doc.pipe(res);
+
+    // Função para gerar e adicionar QR code ao PDF
+    async function adicionarQRCode(codigo) {
+      doc.addPage()
+        .text(codigo, { align: 'center' });
+
+      const qrCodeDataUrl = await qr.toDataURL(codigo);
+      doc.image(qrCodeDataUrl, { width: 200, align: 'center' });
+    }
+
+    // Adicione os QR codes ao PDF
+    for (const codigo of codigos) {
+      await adicionarQRCode(codigo);
+    }
+
+    // Finalize o PDF e encerre a resposta
+    doc.end();
+  }
 
 
 

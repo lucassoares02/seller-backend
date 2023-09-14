@@ -4,6 +4,7 @@ const mysql2 = require("mysql2");
 const mysql = require("mysql");
 
 
+
 if (process.env.DATABASE == "POSTGRESQL") {
   console.log("POSTGRESQL");
   var connection = new Pool({
