@@ -219,7 +219,7 @@ asc
   async postInsertMerchandise(req, res) {
     logger.info("Post Save Merchandise");
 
-    const { codMercadoria, nomeMercadoria, codFornMerc, embMercadoria, fatorMerc, precoMercadoria, precoUnit } = req.body;
+    const { codMercadoria, nomeMercadoria, codFornMerc, embMercadoria, fatorMerc, precoMercadoria, precoUnit, barcode, marca, complemento, erpcode } = req.body;
 
 
     let data = {
@@ -230,6 +230,10 @@ asc
       fatorMerc: fatorMerc,
       precoMercadoria: precoMercadoria,
       precoUnit: precoUnit,
+      barcode: barcode,
+      marca: marca,
+      complemento: complemento,
+      erpcode: erpcode,
     }
 
     let params = {
