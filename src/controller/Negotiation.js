@@ -59,7 +59,7 @@ const Negotiation = {
       p.codFornPedido,
       p.codAssocPedido,
       p.codNegoPedido ,
-      p.codMercPedido
+      p.codMercPedidow
       from pedido p
       join mercadoria m 
       where m.codMercadoria = p.codMercPedido 

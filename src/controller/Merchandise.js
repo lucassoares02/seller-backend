@@ -236,6 +236,10 @@ asc
       erpcode: erpcode,
     }
 
+    console.log("============= DATA =============");
+    console.log(data);
+    console.log("============= DATA =============");
+
     let params = {
       table: "mercadoria",
       data: data
