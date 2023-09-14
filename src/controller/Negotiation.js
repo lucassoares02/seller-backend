@@ -67,16 +67,13 @@ const Negotiation = {
         console.log("Error Export Negotiation : ", error);
       } else {
 
-        console.log("==================================");
-        console.log(results[0]);
-        console.log(results[1]);
-        console.log("==================================");
-
-
-        let csvData = ` ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade"`
+        let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
 
         csvData += results[1].map((row) => {
-          return ` ${row.nomeMercadoria};${row.codMercPedido};${row.codFornPedido};;;;;;;${row.codAssocPedido};;;;;;;${row.codNegoPedido};${row.codMercPedido}`; // Substitua com os nomes das colunas do seu banco de dados
+          return ` ${row.codMercPedido};${row.codNegoPedido};${row.nomeMercadoria};${row.codFornPedido};;;;;;;${row.codAssocPedido};;;;;;;;${row.codMercPedido}`; // Substitua com os nomes das colunas do seu banco de dados
+
+
+
         }).join('\n');
 
         const dateNow = Date.now();
