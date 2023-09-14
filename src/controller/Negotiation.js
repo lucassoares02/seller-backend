@@ -63,8 +63,7 @@ const Negotiation = {
       from pedido p
       join mercadoria m 
       where m.codMercadoria = p.codMercPedido 
-      order by p.codNegoPedido 
-    `;
+      order by p.codNegoPedido;`;
 
 
     connection.query(queryConsult, (error, results, fields) => {
