@@ -55,6 +55,7 @@ const Negotiation = {
       m.barcode,
       m.erpcode,
       m.marca,
+      p.quantMercPedido as quantidade,
       p.codFornPedido,
       p.codAssocPedido,
       p.codNegoPedido ,
