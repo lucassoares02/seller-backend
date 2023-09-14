@@ -155,7 +155,4 @@ router.get("/percentageprovidersorganization", Graphs.getPercentageProvidersOrga
 router.get("/totalvalueclients/:codprovider", Graphs.getTotalValueClients); // localhost:3001/percentageclients/333
 router.get("/information", Graphs.getTotalInformations); // localhost:3001/percentageclients/333
 
-router.get("/exportqrcode", Graphs.exportQrCode); // localhost:3001/percentageclients/333
-
-
 module.exports = router;
