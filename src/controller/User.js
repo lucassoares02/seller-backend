@@ -274,14 +274,12 @@ const User = {
     acesso.direcAcesso, organizador.nomeOrg AS nomeForn, 
     organizador.cnpjOrg AS cnpjForn, acesso.codUsuario,  
     organizador.codOrg AS codForn, consultor.nomeConsult, 
-    consultor.cpfConsult, 
-    FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorPedido' 
+    consultor.cpfConsult 
     FROM acesso 
     join consultor on acesso.codUsuario = consultor.codConsult 
     join organizador on organizador.codOrg = consultor.codFornConsult
-     left join pedido on pedido.codOrganizador = organizador.codOrg 
-     left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where codOrganizador = 158 
-     group by consultor.codConsult`;
+    where organizador.codOrg = 158 
+    group by consultor.codConsult`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
