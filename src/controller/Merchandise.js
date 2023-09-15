@@ -18,6 +18,8 @@ const Merchandise = {
     mercadoria.codFornMerc, 
     mercadoria.nomeMercadoria, 
     mercadoria.embMercadoria, 
+    mercadoria.complemento, 
+    mercadoria.marca, 
     mercadoria.fatorMerc,
     mercadoria.precoMercadoria as precoMercadoria, 
     IFNULL(SUM(pedido.quantMercPedido),  0) as quantMercadoria, 
@@ -46,7 +48,7 @@ const Merchandise = {
 
     const { codclient, codprovider, codnegotiation } = req.params;
 
-    const queryConsult = "SET sql_mode = ''; select mercadoria.nomeMercadoria, mercadoria.embMercadoria, mercadoria.fatorMerc, IFNULL(SUM(pedido.quantMercPedido), 0) as 'quantMercadoria', mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(mercadoria.precoMercadoria * pedido.quantMercPedido), 0) as 'valorTotal' from mercadoria join pedido on pedido.codMercPedido = mercadoria.codMercadoria where pedido.codAssocPedido = " + codclient + " and pedido.codfornpedido = " + codprovider + " and pedido.codNegoPedido = " + codnegotiation + " group by mercadoria.nomeMercadoria order by quantMercPedido";
+    const queryConsult = "SET sql_mode = ''; select mercadoria.nomeMercadoria, mercadoria.embMercadoria, mercadoria.fatorMerc,mercadoria.complemento, mercadoria.marca, IFNULL(SUM(pedido.quantMercPedido), 0) as 'quantMercadoria', mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(mercadoria.precoMercadoria * pedido.quantMercPedido), 0) as 'valorTotal' from mercadoria join pedido on pedido.codMercPedido = mercadoria.codMercadoria where pedido.codAssocPedido = " + codclient + " and pedido.codfornpedido = " + codprovider + " and pedido.codNegoPedido = " + codnegotiation + " group by mercadoria.nomeMercadoria order by quantMercPedido";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -103,7 +105,7 @@ const Merchandise = {
 
     const { codclient, codprovider, codnegotiation } = req.params;
 
-    const queryConsult = "SET sql_mode = ''; select mercadoria.codMercadoria, mercadoria.nomeMercadoria,mercadoria.complemento,mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido = " + codclient + " and pedido.codNegoPedido = " + codnegotiation + " where mercadoria.codFornMerc = " + codprovider + " GROUP BY mercadoria.codMercadoria ORDER BY quantMercadoria desc";
+    const queryConsult = "SET sql_mode = ''; select mercadoria.codMercadoria, mercadoria.nomeMercadoria,mercadoria.complemento, mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido = " + codclient + " and pedido.codNegoPedido = " + codnegotiation + " where mercadoria.codFornMerc = " + codprovider + " GROUP BY mercadoria.codMercadoria ORDER BY quantMercadoria desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
