@@ -65,22 +65,24 @@ const Merchandise = {
 
     const queryConsult = `
     SET sql_mode = ''; select fornecedor.codForn, 
-fornecedor.nomeForn, 
-mercadoria.codMercadoria, 
-mercadoria.nomeMercadoria,
-mercadoria.embMercadoria, 
-mercadoria.fatorMerc, 
-mercadoria.precoMercadoria as precoMercadoria, 
-mercadoria.precoUnit as precoUnit,
-IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal', 
-IFNULL(sum(pedido.quantMercPedido),0) as 'volumeTotal' 
-from mercadoria 
-join fornecedor on mercadoria.codFornMerc = fornecedor.codForn 
-left join pedido on pedido.codMercPedido = mercadoria.codMercadoria
-where fornecedor.codForn = ${codprovider}
-group by mercadoria.codMercadoria 
-order by mercadoria.nomeMercadoria  
-asc
+    fornecedor.nomeForn, 
+    mercadoria.codMercadoria, 
+    mercadoria.nomeMercadoria,
+    mercadoria.embMercadoria, 
+    mercadoria.marca, 
+    mercadoria.complemento, 
+    mercadoria.fatorMerc, 
+    mercadoria.precoMercadoria as precoMercadoria, 
+    mercadoria.precoUnit as precoUnit,
+    IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal', 
+    IFNULL(sum(pedido.quantMercPedido),0) as 'volumeTotal' 
+    from mercadoria 
+    join fornecedor on mercadoria.codFornMerc = fornecedor.codForn 
+    left join pedido on pedido.codMercPedido = mercadoria.codMercadoria
+    where fornecedor.codForn = ${codprovider}
+    group by mercadoria.codMercadoria 
+    order by mercadoria.nomeMercadoria  
+    asc
 `;
     // order by valorTotal 
     // desc
@@ -159,6 +161,8 @@ asc
     mercadoria.nomeMercadoria,
     mercadoria.embMercadoria, 
     mercadoria.fatorMerc, 
+    mercadoria.marca,
+    mercadoria.complemento,
     mercadoria.precoUnit ,
     mercadoria.precoMercadoria as precoMercadoria,
     IFNULL(SUM(pedido.quantMercPedido), 0) as volumeTotal 
