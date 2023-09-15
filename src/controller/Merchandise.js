@@ -21,6 +21,7 @@ const Merchandise = {
     mercadoria.complemento, 
     mercadoria.marca, 
     mercadoria.fatorMerc,
+    mercadoria.precoUnitario
     mercadoria.precoMercadoria as precoMercadoria, 
     IFNULL(SUM(pedido.quantMercPedido),  0) as quantMercadoria, 
     IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal' 
@@ -48,7 +49,7 @@ const Merchandise = {
 
     const { codclient, codprovider, codnegotiation } = req.params;
 
-    const queryConsult = "SET sql_mode = ''; select mercadoria.nomeMercadoria, mercadoria.embMercadoria, mercadoria.fatorMerc,mercadoria.complemento, mercadoria.marca, IFNULL(SUM(pedido.quantMercPedido), 0) as 'quantMercadoria', mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(mercadoria.precoMercadoria * pedido.quantMercPedido), 0) as 'valorTotal' from mercadoria join pedido on pedido.codMercPedido = mercadoria.codMercadoria where pedido.codAssocPedido = " + codclient + " and pedido.codfornpedido = " + codprovider + " and pedido.codNegoPedido = " + codnegotiation + " group by mercadoria.nomeMercadoria order by quantMercPedido";
+    const queryConsult = "SET sql_mode = ''; select mercadoria.nomeMercadoria, mercadoria.embMercadoria, mercadoria.fatorMerc,mercadoria.complemento, mercadoria.marca, IFNULL(SUM(pedido.quantMercPedido), 0) as 'quantMercadoria', mercadoria.precoMercadoria as precoMercadoria, mercadoria.precoUnit, IFNULL(SUM(mercadoria.precoMercadoria * pedido.quantMercPedido), 0) as 'valorTotal' from mercadoria join pedido on pedido.codMercPedido = mercadoria.codMercadoria where pedido.codAssocPedido = " + codclient + " and pedido.codfornpedido = " + codprovider + " and pedido.codNegoPedido = " + codnegotiation + " group by mercadoria.nomeMercadoria order by quantMercPedido";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -199,6 +200,7 @@ const Merchandise = {
     SET sql_mode = ''; SELECT mercadoria.codMercadoria, 
     mercadoria.nomeMercadoria, 
     mercadoria.embMercadoria, 
+    mercadoria.precoUnit,
     mercadoria.fatorMerc, 
     mercadoria.precoMercadoria as precoMercadoria, 
     IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria 
