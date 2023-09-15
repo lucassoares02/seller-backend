@@ -101,7 +101,7 @@ asc
 
     const { codclient, codprovider, codnegotiation } = req.params;
 
-    const queryConsult = "SET sql_mode = ''; select mercadoria.codMercadoria, mercadoria.nomeMercadoria, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido = " + codclient + " and pedido.codNegoPedido = " + codnegotiation + " where mercadoria.codFornMerc = " + codprovider + " GROUP BY mercadoria.codMercadoria ORDER BY quantMercadoria desc";
+    const queryConsult = "SET sql_mode = ''; select mercadoria.codMercadoria, mercadoria.nomeMercadoria,mercadoria.complemento,mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido = " + codclient + " and pedido.codNegoPedido = " + codnegotiation + " where mercadoria.codFornMerc = " + codprovider + " GROUP BY mercadoria.codMercadoria ORDER BY quantMercadoria desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
