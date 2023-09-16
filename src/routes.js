@@ -115,13 +115,14 @@ router.get("/buyers", Buyer.getAllBuyers); // localhost:3001/buyers
 
 // Methods Merchandise
 // getMercadoriasPorNegociacaoPorFornecedorInfo.php
-router.get("/merchandisenegotitationprovider/:codprovider/:codnegotiation", Merchandise.getMerchandiseNegotiationProvider); // localhost:3001/merchandisenegotitationprovider/333
+// router.get("/merchandisenegotitationprovider/:codprovider/:codnegotiation", Merchandise.getMerchandiseNegotiationProvider); // localhost:3001/merchandisenegotitationprovider/333
 // getPedidosInfo.php
 router.get("/merchandiseclientprovidernegotiation/:codclient/:codprovider/:codnegotiation", Merchandise.getMerchandiseClientProviderNegotiation); // localhost:3001/merchandiseclientprovidernegotiation/7/333/1
 // getMercadoriasFornecedorInfo.php
 router.get("/merchandiseprovider/:codprovider", Merchandise.getMerchandiseProvider); // localhost:3001/merchandiseprovider/333
 // getMercadorias.php
 router.get("/merchandiseproviderifclient/:codclient/:codprovider/:codnegotiation", Merchandise.getMerchandiseProviderIfClient); // localhost:3001/merchandiseproviderifclient/7/333/1
+
 router.get("/merchandisenegotiationprovider/:codprovider/:codnegotiation", Merchandise.getMerchandiseNegotiationProvider); // localhost:3001/merchandiseproviderifclient/7/333/1
 
 router.get("/merchandisepercustomer/:codclient/:codeprovider", Merchandise.getMerchandisePerCustomer); // localhost:3001/merchandiseproviderifclient/7/333/1

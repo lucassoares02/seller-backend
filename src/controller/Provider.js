@@ -10,7 +10,7 @@ const Provider = {
 
     const { codconsultor } = req.params;
 
-    const queryConsult = "SET sql_mode = ''; select cnpjForn, nomeForn, razaoForn, codForn, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from relaciona join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona join fornecedor on fornecedor.codForn = pedido.codFornPedido left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relaciona.codAssocRelaciona =" + codconsultor + " group by fornecedor.codForn order by valorTotal desc";
+    const queryConsult = "SET sql_mode = ''; select cnpjForn, nomeForn, razaoForn, codForn, image, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from relaciona join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona join fornecedor on fornecedor.codForn = pedido.codFornPedido left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relaciona.codAssocRelaciona =" + codconsultor + " group by fornecedor.codForn order by valorTotal desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -31,6 +31,7 @@ const Provider = {
     nomeForn, 
     razaoForn as razao, 
     codForn, 
+    image,
     IFNULL(sum(mercadoria.precoMercadoria * pedido.quantMercPedido), 0) as 'valorTotal',
     IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal'
     from fornecedor 
@@ -61,6 +62,7 @@ const Provider = {
     cnpjForn, 
     nomeForn,
     razaoForn as razao, 
+    image,
     codForn, 
     IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
     IFNULL(sum(pedido.quantMercPedido),0) as 'volumeTotal'
@@ -94,6 +96,7 @@ const Provider = {
     nomeForn,
     razaoForn as razao, 
     codForn, 
+    image,
     IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal', 
     IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal'
     from fornecedor 
@@ -137,7 +140,7 @@ const Provider = {
 
     const { codconsult } = req.params;
 
-    const queryConsult = "SET sql_mode = ''; select cnpjForn, nomeForn, razaoForn, codForn, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from fornecedor join relacionafornecedor on relacionafornecedor.codFornecedor = fornecedor.codForn left join pedido on pedido.codFornPedido = relacionafornecedor.codFornecedor left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relacionafornecedor.codConsultor = " + codconsult + " group by fornecedor.codForn order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
+    const queryConsult = "SET sql_mode = ''; select cnpjForn, nomeForn, razaoForn, image, codForn, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from fornecedor join relacionafornecedor on relacionafornecedor.codFornecedor = fornecedor.codForn left join pedido on pedido.codFornPedido = relacionafornecedor.codFornecedor left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relacionafornecedor.codConsultor = " + codconsult + " group by fornecedor.codForn order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -172,7 +175,7 @@ const Provider = {
   async postInsertProvider(req, res) {
     logger.info("Post Insert Provider");
 
-    const { codForn, nomeForn, razaoForn, cnpjForn, telForn, type, categoria, codComprFornecedor } = req.body;
+    const { codForn, nomeForn, razaoForn, cnpjForn, telForn, type, categoria, codComprFornecedor, image } = req.body;
 
 
     let queryInsert = "";
@@ -180,8 +183,8 @@ const Provider = {
     if (type == 1) {
       queryInsert = `INSERT INTO 
       fornecedor 
-      (codForn, nomeForn, razaoForn, cnpjForn, telForn, codCategoria, codComprFornecedor) 
-      VALUES (${codForn}, '${nomeForn}', '${razaoForn}', '${cnpjForn}', '${telForn}', '${categoria}', ${codComprFornecedor})`;
+      (codForn, nomeForn, razaoForn, cnpjForn, telForn, codCategoria, codComprFornecedor, image) 
+      VALUES (${codForn}, '${nomeForn}', '${razaoForn}', '${cnpjForn}', '${telForn}', '${categoria}', ${codComprFornecedor}, ${image})`;
     } else if (type == 2) {
       queryInsert = `INSERT INTO 
       associado 
