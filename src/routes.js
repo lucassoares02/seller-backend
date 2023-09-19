@@ -103,6 +103,8 @@ router.post("/insertnegotiation", Negotiation.PostInsertNegotiation);
 
 router.get("/exportnegotiations", Negotiation.GetExportNegotiations);
 
+router.get("/exportnegotiationsclient/:codeclient", Negotiation.GetExportNegotiationsClient);
+
 
 
 // Methods Buyer

@@ -97,6 +97,63 @@ const Negotiation = {
   },
 
 
+  async GetExportNegotiationsClient(req, res) {
+    logger.info("Get Export Negotiation ");
+
+    const { codeclient } = req.params;
+
+
+    const queryConsult = `
+    SET sql_mode = ''; select
+      p.codMercPedido,
+      m.nomeMercadoria,
+      m.complemento,
+      m.barcode,
+      m.erpcode,
+      m.marca,
+      p.quantMercPedido as quantidade,
+      p.codFornPedido,
+      p.codAssocPedido,
+      p.codNegoPedido ,
+      p.codMercPedido
+      from pedido p
+      join mercadoria m 
+      where m.codMercadoria = p.codMercPedido 
+      and p.codAssocPedido = ${codeclient}
+      order by p.codNegoPedido`;
+
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Export Negotiation : ", error);
+      } else {
+
+        let csvData = `ID; Negociacao;Codigo ERP;Codigo de barras; Produto; Complemento; Valor; Valor(NF unitario); Valor(NF embalagem);Tipo Embalagem; Qtde.Embalagem; Qtde.Minima; Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao; Marca; Estoque; Quantidade\n`;
+
+        csvData += results[1].map((row) => {
+          return ` ${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade} `; // Substitua com os nomes das colunas do seu banco de dados
+
+
+
+        }).join('\n');
+
+        const dateNow = Date.now();
+
+        // Configurar os cabeçalhos de resposta para fazer o download
+        res.setHeader('Content-Disposition', `attachment; filename = ${dateNow} _negociacoes.csv`);
+        res.setHeader('Content-Type', 'text/csv');
+
+        // Transmitir o arquivo CSV como resposta
+        return res.send(csvData);
+
+
+        // return res.json(results[1]);
+      }
+    });
+    // connection.end();
+  },
+
+
   async getNegotiationClient(req, res) {
     logger.info("Get Negotiation to Client");
 
@@ -124,13 +181,13 @@ const Negotiation = {
 
     const queryConsult = `SET sql_mode = ''; 
     select codNegociacao,
-    sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'total',
-    descNegociacao, (pedido.codNegoPedido) as 'confirma'
+      sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'total',
+      descNegociacao, (pedido.codNegoPedido) as 'confirma'
     from negociacao 
-    left outer join pedido on (negociacao.codNegociacao = pedido.codNegoPedido)
+    left outer join pedido on(negociacao.codNegociacao = pedido.codNegoPedido)
     left join mercadoria on pedido.codMercPedido = mercadoria.codMercadoria
     and pedido.codAssocPedido = ${codclient}
-    where negociacao.codFornNegociacao  = ${codforn}
+    where negociacao.codFornNegociacao = ${codforn}
     GROUP BY negociacao.codNegociacao 
     ORDER BY confirma desc`;
 
