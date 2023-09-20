@@ -70,10 +70,11 @@ const Client = {
     const queryConsult = `
     SET sql_mode = ''; select
     relaciona.codAssocRelaciona as codAssociado,
+    concat(relaciona.codConsultRelaciona, ' - ', associado.razaoAssociado) as cnpjAssociado,
     consultor.nomeConsult, 
     relaciona.codConsultRelaciona,
     associado.razaoAssociado,
-    associado.cnpjAssociado, 
+    associado.cnpjAssociado as cnpj, 
     IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido),0) as 'valor',
     IFNULL(sum(pedido.quantMercPedido), 0) as 'volume'
     from consultor
