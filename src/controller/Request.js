@@ -51,7 +51,7 @@ const Request = {
     consultor.nomeConsult, 
     associado.razaoAssociado, 
     sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'valor', 
-    TIME_FORMAT(pedido.dataPedido,'%H:%i') as 'horas' 
+    TIME_FORMAT(SUBTIME(pedido.dataPedido, '03:00:00'),'%H:%i') as 'horas' 
     from consultor 
     join pedido on consultor.codConsult = pedido.codComprPedido 
     join associado on pedido.codAssocPedido = associado.codAssociado 
@@ -84,7 +84,7 @@ const Request = {
     consultor.nomeConsult, 
     associado.razaoAssociado, 
     sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'valor', 
-    TIME_FORMAT(pedido.dataPedido,'%H:%i') as 'horas' 
+    TIME_FORMAT(SUBTIME(pedido.dataPedido, '03:00:00'),'%H:%i') as 'horas' 
     from consultor 
     join pedido on consultor.codConsult = pedido.codComprPedido 
     join associado on pedido.codAssocPedido = associado.codAssociado 
@@ -120,7 +120,7 @@ const Request = {
     pedido.codFornPedido,
     associado.razaoAssociado,
     sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'valor',
-    TIME_FORMAT(pedido.dataPedido,'%H:%i') as 'horas' 
+    TIME_FORMAT(SUBTIME(pedido.dataPedido, '03:00:00'), '%H:%i') as 'horas' 
     from consultor 
     join pedido on consultor.codConsult = pedido.codComprPedido 
     join associado on pedido.codAssocPedido = associado.codAssociado 

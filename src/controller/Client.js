@@ -368,7 +368,7 @@ const Client = {
     pedido.codFornPedido,
     associado.razaoAssociado as razao,
     sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'valorTotal',
-    TIME_FORMAT(pedido.dataPedido,'%H:%i') as 'horas' 
+    TIME_FORMAT(SUBTIME(pedido.dataPedido, '03:00:00'),'%H:%i') as 'horas' 
     from consultor 
     join pedido on consultor.codConsult = pedido.codComprPedido 
     join associado on pedido.codAssocPedido = associado.codAssociado 
@@ -433,7 +433,7 @@ const Client = {
     logger.info("Get All Stores Graphs");
 
     const queryConsult = `SET sql_mode = ''; select 
-    date_format(dataPedido, '%Y-%m-%d %H:%i')  as hour,
+    date_format(SUBTIME(dataPedido, '03:00:00'), '%Y-%m-%d %H:%i')  as hour,
     SUM(p.quantMercPedido * m.precoMercadoria) as value
     from pedido p
     join mercadoria m on m.codMercadoria = p.codMercPedido 
