@@ -359,22 +359,42 @@ const Client = {
   async getAllStoresGraph(req, res) {
     logger.info("Get All Stores Graphs");
 
-    const queryConsult = `SET sql_mode = ''; select 
-    relaciona.codAssocRelaciona,
-    consultor.nomeConsult, 
-    relaciona.codConsultRelaciona,
+    const queryConsult = `
+    SET sql_mode = ''; select 
+    pedido.codPedido ,
+    associado.cnpjAssociado ,
+    associado.codAssociado ,
+    consultor.nomeConsult,
+    pedido.codFornPedido,
     associado.razaoAssociado as razao,
-    associado.cnpjAssociado, 
-    IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
-    IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' 
-    from associado 
-    join relaciona on relaciona.codConsultRelaciona = associado.codAssociado
-    join consultor on consultor.codConsult = relaciona.codAssocRelaciona 
-    left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona
-    left join mercadoria on codMercadoria = pedido.codMercPedido 
-    group by relaciona.codConsultRelaciona 
-    order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
-    desc limit 10`;
+    sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'valorTotal',
+    TIME_FORMAT(pedido.dataPedido,'%H:%i') as 'horas' 
+    from consultor 
+    join pedido on consultor.codConsult = pedido.codComprPedido 
+    join associado on pedido.codAssocPedido = associado.codAssociado 
+    join mercadoria on pedido.codMercPedido = mercadoria.codMercadoria
+    group by associado.codAssociado 
+    order by valor 
+    desc limit 10
+    `;
+    
+    
+    // `SET sql_mode = ''; select 
+    // relaciona.codAssocRelaciona,
+    // consultor.nomeConsult, 
+    // relaciona.codConsultRelaciona,
+    // associado.razaoAssociado as razao,
+    // associado.cnpjAssociado, 
+    // IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
+    // IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' 
+    // from associado 
+    // join relaciona on relaciona.codConsultRelaciona = associado.codAssociado
+    // join consultor on consultor.codConsult = relaciona.codAssocRelaciona 
+    // left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona
+    // left join mercadoria on codMercadoria = pedido.codMercPedido 
+    // group by relaciona.codConsultRelaciona 
+    // order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
+    // desc limit 10`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
