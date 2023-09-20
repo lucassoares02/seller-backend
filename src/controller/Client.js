@@ -374,7 +374,7 @@ const Client = {
     join associado on pedido.codAssocPedido = associado.codAssociado 
     join mercadoria on pedido.codMercPedido = mercadoria.codMercadoria
     group by associado.codAssociado 
-    order by valor 
+    order by valorTotal 
     desc limit 10
     `;
     
