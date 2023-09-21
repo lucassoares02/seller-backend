@@ -161,13 +161,13 @@ const Negotiation = {
                     console.log("data");
                     console.log(data[0]);
                     csvData +=
-                      `${row.codMercPedido};${data[0]};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados;
+                      `${row.codMercPedido};${data[0]};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}\n`; // Substitua com os nomes das colunas do seu banco de dados;
 
                   } else {
                     console.log("row codnego");
                     console.log(row.codNegoPedido);
                     csvData +=
-                      `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados;
+                      `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}\n`; // Substitua com os nomes das colunas do seu banco de dados;
                   }
                 }
                 resolve();
