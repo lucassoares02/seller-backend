@@ -137,29 +137,52 @@ const Negotiation = {
         //=============================================================
         //=============================================================
 
+        count = 0;
+        const queryReusult = await new Promise(async (resolve, reject) => {
+          await results[1].map(async (row) => {
+            console.log("11111111111111111111111111");
+            console.log(count);
+            console.log(results[1].length);
+            console.log("---------------------------------aaaaaaaaaaaaaaaaaaa");
+            console.log(row.codMercPedido);
 
-        await results[1].map((row) => {
-          const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${row.codMercPedido}`;
-          connection.query(internQuery, (error, resultssss, fields) => {
-            if (error) {
-              console.log("Error Select Negotiation to Client: ", error);
-            } else {
-              let data = [];
-              for (i = 0; i < resultssss.length; i++) {
-                data.push(results[i]["codNegociacao"]);
-              }
-              if (data.indexOf(row.codNegoPedido) == -1) {
-                csvData +=
-                  `${row.codMercPedido};${data[0]};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados;
+            const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${row.codMercPedido}`;
 
-              } else {
-                csvData +=
-                  `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados;
+            const asfdasf = await new Promise(async (resolve, reject) => {
+              connection.query(internQuery, (error, resultssss, fields) => {
+                if (error) {
+                  console.log("Error Select Negotiation to Client: ", error);
+                } else {
+                  let data = [];
+                  for (i = 0; i < resultssss.length; i++) {
+                    data.push(resultssss[i]["codNegociacao"]);
+                  }
+                  if (data.indexOf(row.codNegoPedido) == -1) {
+                    console.log("data");
+                    console.log(data[0]);
+                    csvData +=
+                      `${row.codMercPedido};${data[0]};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados;
 
-              }
+                  } else {
+                    console.log("row codnego");
+                    console.log(row.codNegoPedido);
+                    csvData +=
+                      `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados;
+                  }
+                }
+                resolve();
+                console.log("---------------------------------aaaaaaaaa11111");
+              });
+            })
+            count += 1;
+            if (count == results[1].length - 1) {
+              console.log("dentro do item");
+              resolve();
             }
           });
         });
+
+
 
         //=============================================================
         //=============================================================
@@ -168,6 +191,10 @@ const Negotiation = {
         // csvData += results[1].map((row) => {
         //   return `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados;
         // }).join('\n');
+
+        console.log("000");
+        console.log(csvData);
+        console.log("000");
 
         const dateNow = Date.now();
 
