@@ -144,9 +144,9 @@ const Negotiation = {
             if (error) {
               console.log("Error Select Negotiation to Client: ", error);
             } else {
-              let mercadoriaNego = [{ mercadoria: row.codMercPedido, negociacao: [] }];
+              let data = [];
               for (i = 0; i < resultssss.length; i++) {
-                mercadoriaNego[0].negociacao.push(resultssss[i]["codNegociacao"]);
+                data.push(results[i]["codNegociacao"]);
               }
               if (data.indexOf(row.codNegoPedido) == -1) {
                 csvData +=
