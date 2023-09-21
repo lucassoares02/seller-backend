@@ -129,11 +129,7 @@ const Negotiation = {
       } else {
 
         let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
-        let dataRelaciona = [];
 
-        results[1].map(async (row) => {
-          dataRelaciona.push(await this.getRelacionaNegociacaoMercadoria(row.codMercPedido));
-        });
 
         csvData += await Promise.all(results[1].map(async (row) => {
           letRow = "";
@@ -157,7 +153,7 @@ const Negotiation = {
             }
           });
           return letRow;
-        }));
+        }))
 
         csvData.join('\n');
 
