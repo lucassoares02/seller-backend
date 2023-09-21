@@ -139,16 +139,14 @@ const Negotiation = {
         console.log(dataNovo);
         console.log("000000000000000000000000000000000");
 
-        csvData += results[1].map(async (row) => {
-
+        csvData += results[1].map((row) => {
           return `${row.codMercPedido};${negociacao};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
-
         }).join('\n');
 
         const dateNow = Date.now();
 
         // Configurar os cabeçalhos de resposta para fazer o download
-        res.setHeader('Content-Disposition', `attachment; filename = ${dateNow} _negociacoes.csv`);
+        res.setHeader('Content-Disposition', `attachment; filename = ${dateNow}negociacao.csv`);
         res.setHeader('Content-Type', 'text/csv');
 
         // Transmitir o arquivo CSV como resposta
