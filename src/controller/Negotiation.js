@@ -139,7 +139,6 @@ const Negotiation = {
               console.log("Error Select Negotiation to Client: ", error);
             } else {
               let data = [];
-              let negoUse;
               for (i = 0; i < results.length; i++) {
                 data.push(results[i]["codNegociacao"]);
               }
@@ -147,19 +146,14 @@ const Negotiation = {
               console.log("-----------------------------------------");
               if (data.indexOf(row.codNegoPedido) != -1) {
                 console.log(row.codNegoPedido);
-                negoUse = row.codNegoPedido;
               } else {
                 console.log("Falso");
                 console.log(data[0]);
-                negoUse = data[0];
               }
               console.log("-----------------------------------------");
             }
           });
           
-          console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-          console.log(negoUse);
-          console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 
 
 
