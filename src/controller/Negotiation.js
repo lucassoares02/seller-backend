@@ -129,20 +129,19 @@ const Negotiation = {
       } else {
 
         let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
+        let dataRelaciona = [];
+
+        results[1].map(async (row) => {
+          dataRelaciona.push(await Promise.all(this.getRelacionaNegociacaoMercadoria(row.codMercPedido)));
+
+        });
+        console.log("000000000000000000000000000000000");
+        console.log(dataNovo);
+        console.log("000000000000000000000000000000000");
 
         csvData += results[1].map(async (row) => {
 
-
-          let dataNovo = await this.getRelacionaNegociacaoMercadoria(row.codMercPedido);
-
-
-          console.log("000000000000000000000000000000000");
-          console.log(dataNovo);
-          console.log("000000000000000000000000000000000");
-
-
           return `${row.codMercPedido};${negociacao};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
-
 
         }).join('\n');
 
