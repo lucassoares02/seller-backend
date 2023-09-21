@@ -123,7 +123,7 @@ const Negotiation = {
       order by p.codNegoPedido`;
 
 
-    connection.query(queryConsult, (error, results, fields) => {
+    connection.query(queryConsult, async (error, results, fields) => {
       if (error) {
         console.log("Error Export Negotiation : ", error);
       } else {
@@ -135,35 +135,29 @@ const Negotiation = {
           dataRelaciona.push(await this.getRelacionaNegociacaoMercadoria(row.codMercPedido));
         });
 
-        console.log("000000000000000000000000000000000");
-        console.log(dataNovo);
-        console.log("000000000000000000000000000000000");
-
-        csvData += results[1].map(async (row) => {
+        await Promise.all(csvData += results[1].map(async (row) => {
           letRow = "";
-          await Promise.all(() => {
-            let data = [];
-            const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${row.codMercPedido}`;
-            connection.query(internQuery, (error, results, fields) => {
-              if (error) {
-                console.log("Error Select Negotiation to Client: ", error);
-              } else {
-                for (i = 0; i < results.length; i++) {
-                  data.push(results[i]["codNegociacao"]);
-                }
-
-                if (data.indexOf(row.codNegoPedido) == -1) {
-                  negociacao = data[0];
-                  letRow = `${row.codMercPedido};${data[0]};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
-                } else {
-                  letRow = `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
-
-                }
+          let data = [];
+          const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${row.codMercPedido}`;
+          connection.query(internQuery, (error, results, fields) => {
+            if (error) {
+              console.log("Error Select Negotiation to Client: ", error);
+            } else {
+              for (i = 0; i < results.length; i++) {
+                data.push(results[i]["codNegociacao"]);
               }
-            });
+
+              if (data.indexOf(row.codNegoPedido) == -1) {
+                negociacao = data[0];
+                letRow = `${row.codMercPedido};${data[0]};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+              } else {
+                letRow = `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+
+              }
+            }
           });
           return letRow;
-        }).join('\n');
+        }).join('\n'));
 
         const dateNow = Date.now();
 
