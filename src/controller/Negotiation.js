@@ -135,7 +135,7 @@ const Negotiation = {
           dataRelaciona.push(await this.getRelacionaNegociacaoMercadoria(row.codMercPedido));
         });
 
-        await Promise.all(csvData += results[1].map(async (row) => {
+        csvData += await Promise.all(results[1].map(async (row) => {
           letRow = "";
           let data = [];
           const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${row.codMercPedido}`;
@@ -157,7 +157,9 @@ const Negotiation = {
             }
           });
           return letRow;
-        }).join('\n'));
+        }));
+
+        csvData.join('\n');
 
         const dateNow = Date.now();
 
