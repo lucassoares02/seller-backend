@@ -130,33 +130,33 @@ const Negotiation = {
         let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
         let data = [];
 
-        await results[1].map((row) => {
-          const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${row.codMercPedido}`;
-          connection.query(internQuery, (error, results, fields) => {
-            if (error) {
-              console.log("Error Select Negotiation to Client: ", error);
-            } else {
-              let mercadoriaNego = [{ mercadoria: row.codMercPedido, negociacao: [] }];
-              for (i = 0; i < results.length; i++) {
-                mercadoriaNego[0].negociacao.push(results[i]["codNegociacao"]);
-              }
-              data.push(mercadoriaNego);
-              // if (data.indexOf(row.codNegoPedido) == -1) {
-              //   negociacao = data[0];
-              //   letRow = `${row.codMercPedido};${data[0]};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
-              // } else {
-              //   letRow = `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+        // await results[1].map((row) => {
+        //   const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${row.codMercPedido}`;
+        //   connection.query(internQuery, (error, results, fields) => {
+        //     if (error) {
+        //       console.log("Error Select Negotiation to Client: ", error);
+        //     } else {
+        //       let mercadoriaNego = [{ mercadoria: row.codMercPedido, negociacao: [] }];
+        //       for (i = 0; i < results.length; i++) {
+        //         mercadoriaNego[0].negociacao.push(results[i]["codNegociacao"]);
+        //       }
+        //       data.push(mercadoriaNego);
+        //       // if (data.indexOf(row.codNegoPedido) == -1) {
+        //       //   negociacao = data[0];
+        //       //   letRow = `${row.codMercPedido};${data[0]};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+        //       // } else {
+        //       //   letRow = `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
 
-              // }
-            }
-          });
-        });
+        //       // }
+        //     }
+        //   });
+        // });
 
         console.log("==================================================");
         console.log(data);
         console.log("==================================================");
 
-        csvData += results[1].map(async (row) => {
+        csvData += results[1].map((row) => {
           // letRow = "";
           // let data = [];
           // const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${row.codMercPedido}`;
