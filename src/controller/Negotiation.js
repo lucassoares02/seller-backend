@@ -129,25 +129,40 @@ const Negotiation = {
       } else {
 
         let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
-        let dataNovo = [];
-        
-        csvData += results[1].map((row) => {
-          new Promise((resolve, reject) => {
+        let dataRelaciona = [];
+
+        results[1].map(async (row) => {
+          dataRelaciona.push(await this.getRelacionaNegociacaoMercadoria(row.codMercPedido));
+        });
+
+        console.log("000000000000000000000000000000000");
+        console.log(dataNovo);
+        console.log("000000000000000000000000000000000");
+
+        csvData += results[1].map(async (row) => {
+          letRow = "";
+          await Promise.all(() => {
+            let data = [];
+            const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${row.codMercPedido}`;
             connection.query(internQuery, (error, results, fields) => {
               if (error) {
                 console.log("Error Select Negotiation to Client: ", error);
               } else {
                 for (i = 0; i < results.length; i++) {
-                  dataNovo.push(results[i]["codNegociacao"]);
+                  data.push(results[i]["codNegociacao"]);
+                }
+
+                if (data.indexOf(row.codNegoPedido) == -1) {
+                  negociacao = data[0];
+                  letRow = `${row.codMercPedido};${data[0]};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+                } else {
+                  letRow = `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+
                 }
               }
             });
           });
-
-          console.log("000000000000000000000000000000000");
-          console.log(dataNovo);
-          console.log("000000000000000000000000000000000");
-          return `${row.codMercPedido};${negociacao};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+          return letRow;
         }).join('\n');
 
         const dateNow = Date.now();
@@ -178,6 +193,15 @@ const Negotiation = {
         for (i = 0; i < results.length; i++) {
           data.push(results[i]["codNegociacao"]);
         }
+
+        // console.log("-----------------------------------------");
+        // if (data.indexOf(row.codNegoPedido) == -1) {
+        //   console.log(row.codMercPedido);
+        //   console.log(data[0]);
+        //   negociacao = data[0];
+
+        // }
+        // console.log("-----------------------------------------");
       }
     });
     return data;
