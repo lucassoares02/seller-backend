@@ -134,7 +134,7 @@ const Negotiation = {
 
           const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${row.codMercPedido}`;
           let data = [];
-          let negociacao = row.codNegoPedido;
+          let negociacao = "";
 
           connection.query(internQuery, (error, results, fields) => {
             if (error) {
@@ -149,6 +149,8 @@ const Negotiation = {
                 console.log(data[0]);
                 negociacao = data[0];
                 
+              } else {
+                negociacao = row.codNegoPedido;
               }
               console.log("-----------------------------------------");
             }
