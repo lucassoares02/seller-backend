@@ -123,28 +123,28 @@ const Negotiation = {
       order by p.codNegoPedido`;
 
 
-    connection.query(queryConsult, async (error, results, fields) => {
+    connection.query(queryConsult, (error, results, fields) => {
       if (error) {
         console.log("Error Export Negotiation : ", error);
       } else {
 
         let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
 
-        csvData += await Promise.all(results[1].map(async (row) => {
-          try {
-            const internQuery = `SELECT codNegociacao FROM relacionaMercadoria WHERE codMercadoria = ${row.codMercPedido}`;
-            const data = await query(internQuery);
-      
-            let negociacao = data.length > 0 ? data[0].codNegociacao : row.codNegoPedido;
-      
-            return `${row.codMercPedido};${negociacao};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`;
-          } catch (error) {
-            console.error("Erro ao realizar consulta ao banco de dados: ", error);
-            return ""; // Retornar uma string vazia em caso de erro
-          }
-        }));
-      
-        csvData.join('\n');
+        csvData += results[1].map((row) => {
+
+
+          let dataNovo = this.getRelacionaNegociacaoMercadoria(row.codMercPedido);
+
+
+          console.log("000000000000000000000000000000000");
+          console.log(dataNovo);
+          console.log("000000000000000000000000000000000");
+
+
+          return `${row.codMercPedido};${negociacao};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+
+
+        }).join('\n');
 
         const dateNow = Date.now();
 
@@ -160,6 +160,32 @@ const Negotiation = {
       }
     });
     // connection.end();
+  },
+
+  async getRelacionaNegociacaoMercadoria(codMercPedido) {
+    const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${codMercPedido}`;
+    let negociacao = row.codNegoPedido;
+    let data = [];
+
+    connection.query(internQuery, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select Negotiation to Client: ", error);
+      } else {
+        for (i = 0; i < results.length; i++) {
+          data.push(results[i]["codNegociacao"]);
+        }
+
+        // console.log("-----------------------------------------");
+        // if (data.indexOf(row.codNegoPedido) == -1) {
+        //   console.log(row.codMercPedido);
+        //   console.log(data[0]);
+        //   negociacao = data[0];
+
+        // }
+        // console.log("-----------------------------------------");
+      }
+    });
+    return data;
   },
 
 
