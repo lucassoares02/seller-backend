@@ -142,6 +142,11 @@ const Negotiation = {
             console.log("Error Select Negotiation to Client: ", error);
           } else {
             for (i = 0; i < results.length; i++) {
+              console.log("222222222222222222222222222222222222222222222222");
+              console.log(results[i]);
+              console.log(results[i]["codMercadoria"]);
+              console.log(results[i]["codNegociacao"]);
+              console.log("222222222222222222222222222222222222222222222222");
               dataNovo.push({ mercadoria: results[i]["codMercadoria"], negociacao: results[i]["codNegociacao"] });
             }
           }
