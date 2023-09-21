@@ -138,9 +138,15 @@ const Negotiation = {
             if (error) {
               console.log("Error Select Negotiation to Client: ", error);
             } else {
+              let data = [];
+              for (i = 0; i < results.length; i++) {
+                data.push(results[i]["codNegocicao"]);
+              }
               console.log("-----------------------------------------");
               console.log("-----------------------------------------");
-              console.log(results);
+              console.log(data);
+              console.log(`Valor Procurado: ${row.codMercPedido} - Correspondente: ${results[i]["codNegocicao"]}`);
+              console.log(data.indexOf(row.codMercPedido));
               console.log("-----------------------------------------");
             }
           });
