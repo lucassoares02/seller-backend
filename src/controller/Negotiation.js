@@ -123,25 +123,25 @@ const Negotiation = {
       order by p.codNegoPedido`;
 
 
-    connection.query(queryConsult, (error, results, fields) => {
+    connection.query(queryConsult, async (error, results, fields) => {
       if (error) {
         console.log("Error Export Negotiation : ", error);
       } else {
 
         let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
-        let dataRelaciona = [];
+        // let dataRelaciona = [];
 
-        results[1].map(async (row) => {
-          dataRelaciona.push(await this.getRelacionaNegociacaoMercadoria(row.codMercPedido));
-        });
-        
+        // results[1].map(async (row) => {
+        //   dataRelaciona.push(await this.getRelacionaNegociacaoMercadoria(row.codMercPedido));
+        // });
+        let dataNovo = await this.getRelacionaNegociacaoMercadoria("123");
         console.log("000000000000000000000000000000000");
         console.log(dataNovo);
         console.log("000000000000000000000000000000000");
 
-        csvData += results[1].map((row) => {
-          return `${row.codMercPedido};${negociacao};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
-        }).join('\n');
+        // csvData += results[1].map((row) => {
+        //   return `${row.codMercPedido};${negociacao};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+        // }).join('\n');
 
         const dateNow = Date.now();
 
@@ -160,7 +160,8 @@ const Negotiation = {
   },
 
   async getRelacionaNegociacaoMercadoria(codMercPedido) {
-    const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${codMercPedido}`;
+    // const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${codMercPedido}`;
+    const internQuery = `select codNegociacao from relacionaMercadoria`;
     let negociacao = row.codNegoPedido;
     let data = [];
 
@@ -169,7 +170,7 @@ const Negotiation = {
         console.log("Error Select Negotiation to Client: ", error);
       } else {
         for (i = 0; i < results.length; i++) {
-          data.push(results[i]["codNegociacao"]);
+          data.push({ mercadoria: results[i]["codMercadoria"], negociacao: results[i]["codNegociacao"] });
         }
 
         // console.log("-----------------------------------------");
