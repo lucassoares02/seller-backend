@@ -134,7 +134,18 @@ const Negotiation = {
         // results[1].map(async (row) => {
         //   dataRelaciona.push(await this.getRelacionaNegociacaoMercadoria(row.codMercPedido));
         // });
-        let dataNovo = await getRelacionaNegociacaoMercadoria("123");
+        const internQuery = `select codNegociacao from relacionaMercadoria`;
+        let dataNovo = [];
+
+        await connection.query(internQuery, (error, results, fields) => {
+          if (error) {
+            console.log("Error Select Negotiation to Client: ", error);
+          } else {
+            for (i = 0; i < results.length; i++) {
+              dataNovo.push({ mercadoria: results[i]["codMercadoria"], negociacao: results[i]["codNegociacao"] });
+            }
+          }
+        });
         console.log("000000000000000000000000000000000");
         console.log(dataNovo);
         console.log("000000000000000000000000000000000");
@@ -172,15 +183,6 @@ const Negotiation = {
         for (i = 0; i < results.length; i++) {
           data.push({ mercadoria: results[i]["codMercadoria"], negociacao: results[i]["codNegociacao"] });
         }
-
-        // console.log("-----------------------------------------");
-        // if (data.indexOf(row.codNegoPedido) == -1) {
-        //   console.log(row.codMercPedido);
-        //   console.log(data[0]);
-        //   negociacao = data[0];
-
-        // }
-        // console.log("-----------------------------------------");
       }
     });
     return data;
