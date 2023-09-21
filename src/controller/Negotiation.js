@@ -134,7 +134,7 @@ const Negotiation = {
         // results[1].map(async (row) => {
         //   dataRelaciona.push(await this.getRelacionaNegociacaoMercadoria(row.codMercPedido));
         // });
-        let dataNovo = await this.getRelacionaNegociacaoMercadoria("123");
+        let dataNovo = await getRelacionaNegociacaoMercadoria("123");
         console.log("000000000000000000000000000000000");
         console.log(dataNovo);
         console.log("000000000000000000000000000000000");
