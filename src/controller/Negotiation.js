@@ -139,17 +139,16 @@ const Negotiation = {
               console.log("Error Select Negotiation to Client: ", error);
             } else {
               let data = [];
+              let negociacao = row.codNegoPedido;
               for (i = 0; i < results.length; i++) {
                 data.push(results[i]["codNegociacao"]);
               }
               
               console.log("-----------------------------------------");
-              if (data.indexOf(row.codNegoPedido) != -1) {
-                
-              } else {
+              if (data.indexOf(row.codNegoPedido) == -1) {
                 console.log(row.codMercPedido);
                 console.log(data[0]);
-                row.codNegoPedido = data[0];
+                negociacao = data[0];
                 
               }
               console.log("-----------------------------------------");
@@ -159,7 +158,7 @@ const Negotiation = {
 
 
 
-          return `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+          return `${row.codMercPedido};${negociacao};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
 
 
         }).join('\n');
