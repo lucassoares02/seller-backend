@@ -145,13 +145,18 @@ const Negotiation = {
               console.log("-----------------------------------------");
               console.log("-----------------------------------------");
               console.log(data);
-              console.log(data.indexOf(row.codMercPedido));
+              console.log(data.indexOf(row.codNegoPedido));
               console.log("-----------------------------------------");
+
+              if (data.indexOf(row.codNegoPedido) != -1) {
+                console.log("Essa mercadoria vai pra negociação!");
+                console.log(row.codMercPedido);
+              }
             }
           });
-
-
+          
           return `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+
 
 
         }).join('\n');
