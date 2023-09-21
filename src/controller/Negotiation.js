@@ -130,26 +130,18 @@ const Negotiation = {
 
         let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
 
-        csvData += await Promise.all(results[1].map(async (row) => {
+        for (const row of results[1]) {
           try {
             const internQuery = `SELECT codNegociacao FROM relacionaMercadoria WHERE codMercadoria = ${row.codMercPedido}`;
-            const data = [];
+            const data = await query(internQuery);
 
-            const results = await query(internQuery);
+            let negociacao = data.length > 0 ? data[0].codNegociacao : row.codNegoPedido;
 
-            for (i = 0; i < results.length; i++) {
-              data.push(results[i]["codNegociacao"]);
-            }
-
-            let negociacao = data.indexOf(row.codNegoPedido) === -1 ? data[0] : row.codNegoPedido;
-
-            return `${row.codMercPedido};${negociacao};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`;
+            csvData += `${row.codMercPedido};${negociacao};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}\n`;
           } catch (error) {
             console.error("Erro ao realizar consulta ao banco de dados: ", error);
           }
-        }));
-
-        const csvString = csvData.join('\n');
+        }
 
         const dateNow = Date.now();
 
