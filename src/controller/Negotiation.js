@@ -147,14 +147,19 @@ const Negotiation = {
               console.log("-----------------------------------------");
               if (data.indexOf(row.codNegoPedido) != -1) {
                 console.log("Verdadeiro");
-                // negoUse = row.codNegoPedido;
+                negoUse = row.codNegoPedido;
               } else {
                 console.log("Falso");
-                // negoUse = data[0];
+                negoUse = data[0];
               }
               console.log("-----------------------------------------");
             }
           });
+          
+          console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+          console.log(negoUse);
+          console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+
 
 
           return `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
