@@ -148,7 +148,7 @@ const Negotiation = {
               if (data.indexOf(row.codNegoPedido) == -1) {
                 console.log(row.codMercPedido);
                 console.log(data[0]);
-                negociacao = data[0];
+                negociacao = data[0].toString();
                 
               }
               console.log("-----------------------------------------");
