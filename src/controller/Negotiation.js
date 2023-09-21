@@ -130,7 +130,7 @@ const Negotiation = {
 
         let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
 
-        csvData = await Promise.all(results[1].map(async (row) => {
+        csvData += await Promise.all(results[1].map(async (row) => {
           try {
             const internQuery = `SELECT codNegociacao FROM relacionaMercadoria WHERE codMercadoria = ${row.codMercPedido}`;
             const data = [];
