@@ -143,22 +143,21 @@ const Negotiation = {
               for (i = 0; i < results.length; i++) {
                 data.push(results[i]["codNegociacao"]);
               }
+              
               console.log("-----------------------------------------");
-              console.log("-----------------------------------------");
-              console.log(data);
-              console.log(data.indexOf(row.codNegoPedido));
-              console.log("-----------------------------------------");
-
               if (data.indexOf(row.codNegoPedido) != -1) {
-                negoUse = row.codNegoPedido;
+                console.log("Verdadeiro");
+                // negoUse = row.codNegoPedido;
               } else {
-                negoUse = data[0];
+                console.log("Falso");
+                // negoUse = data[0];
               }
+              console.log("-----------------------------------------");
             }
           });
 
 
-          return `${row.codMercPedido};${negoUse};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+          return `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
 
 
         }).join('\n');
