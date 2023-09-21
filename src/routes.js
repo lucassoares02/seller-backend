@@ -101,6 +101,8 @@ router.get("/negotiationclientwithprice/:codclient/:codforn", Negotiation.getNeg
 
 router.post("/insertnegotiation", Negotiation.PostInsertNegotiation);
 
+router.post("/insertnegotiationrelacionamercadoria", Negotiation.PostInsertNegotiationRelacionaMercadoria);
+
 router.get("/exportnegotiations", Negotiation.GetExportNegotiations);
 
 router.get("/exportnegotiationsclient/:codeclient", Negotiation.GetExportNegotiationsClient);
