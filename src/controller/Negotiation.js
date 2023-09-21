@@ -123,25 +123,44 @@ const Negotiation = {
       order by p.codNegoPedido`;
 
 
-    connection.query(queryConsult, async (error, results, fields) => {
+    connection.query(queryConsult, (error, results, fields) => {
       if (error) {
         console.log("Error Export Negotiation : ", error);
       } else {
 
         let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
 
-        for (const row of results[1]) {
-          try {
-            const internQuery = `SELECT codNegociacao FROM relacionaMercadoria WHERE codMercadoria = ${row.codMercPedido}`;
-            const data = await query(internQuery);
+        csvData += results[1].map((row) => {
 
-            let negociacao = data.length > 0 ? data[0].codNegociacao : row.codNegoPedido;
+          const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${row.codMercPedido}`;
+          let data = [];
+          let negociacao = "";
 
-            csvData += `${row.codMercPedido};${negociacao};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}\n`;
-          } catch (error) {
-            console.error("Erro ao realizar consulta ao banco de dados: ", error);
-          }
-        }
+          return connection.query(internQuery, (error, results, fields) => {
+            if (error) {
+              console.log("Error Select Negotiation to Client: ", error);
+            } else {
+              for (i = 0; i < results.length; i++) {
+                data.push(results[i]["codNegociacao"]);
+              }
+              console.log("-----------------------------------------");
+              if (data.indexOf(row.codNegoPedido) == -1) {
+                console.log(row.codMercPedido);
+                console.log(data[0]);
+                negociacao = data[0];
+                `${row.codMercPedido};${data[0]};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+
+              } else {
+                negociacao = row.codNegoPedido;
+                `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+              }
+              console.log("-----------------------------------------");
+            }
+          });
+
+
+
+        }).join('\n');
 
         const dateNow = Date.now();
 
