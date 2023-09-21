@@ -138,7 +138,7 @@ const Negotiation = {
             } else {
               let mercadoriaNego = [{ mercadoria: row.codMercPedido, negociacao: [] }];
               for (i = 0; i < results.length; i++) {
-                mercadoriaNego[0].negociacao.push(results[i].codNegociacao);
+                mercadoriaNego[0].negociacao.push(results[i]["codNegociacao"]);
               }
               data.push(mercadoriaNego);
               // if (data.indexOf(row.codNegoPedido) == -1) {
