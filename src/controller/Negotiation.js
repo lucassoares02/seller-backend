@@ -134,7 +134,7 @@ const Negotiation = {
         // results[1].map(async (row) => {
         //   dataRelaciona.push(await this.getRelacionaNegociacaoMercadoria(row.codMercPedido));
         // });
-        const internQuery = `select codNegociacao from relacionaMercadoria`;
+        const internQuery = `select * from relacionaMercadoria`;
         let dataNovo = [];
 
         await connection.query(internQuery, (error, results, fields) => {
