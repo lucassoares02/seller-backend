@@ -130,13 +130,13 @@ const Negotiation = {
 
         let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
 
-        csvData += results[1].map((row) => {
+        csvData += results[1].map(async (row) => {
 
           const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${row.codMercPedido}`;
           let data = [];
           let negociacao = "";
 
-          return connection.query(internQuery, (error, results, fields) => {
+          return await connection.query(internQuery, (error, results, fields) => {
             if (error) {
               console.log("Error Select Negotiation to Client: ", error);
             } else {
@@ -148,11 +148,11 @@ const Negotiation = {
                 console.log(row.codMercPedido);
                 console.log(data[0]);
                 negociacao = data[0];
-                `${row.codMercPedido};${data[0]};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+                return `${row.codMercPedido};${data[0]};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
 
               } else {
                 negociacao = row.codNegoPedido;
-                `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+                return `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
               }
               console.log("-----------------------------------------");
             }
