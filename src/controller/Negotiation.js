@@ -130,10 +130,10 @@ const Negotiation = {
 
         let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
 
-        csvData += results[1].map((row) => {
+        csvData += results[1].map(async (row) => {
 
 
-          let dataNovo = this.getRelacionaNegociacaoMercadoria(row.codMercPedido);
+          let dataNovo = await this.getRelacionaNegociacaoMercadoria(row.codMercPedido);
 
 
           console.log("000000000000000000000000000000000");
