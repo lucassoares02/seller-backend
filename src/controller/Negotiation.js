@@ -123,41 +123,32 @@ const Negotiation = {
       order by p.codNegoPedido`;
 
 
-    connection.query(queryConsult, async (error, results, fields) => {
+    connection.query(queryConsult, (error, results, fields) => {
       if (error) {
         console.log("Error Export Negotiation : ", error);
       } else {
 
         let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
-        // let dataRelaciona = [];
-
-        // results[1].map(async (row) => {
-        //   dataRelaciona.push(await this.getRelacionaNegociacaoMercadoria(row.codMercPedido));
-        // });
-        const internQuery = `select * from relacionaMercadoria`;
         let dataNovo = [];
+        
+        csvData += results[1].map((row) => {
+          new Promise((resolve, reject) => {
+            connection.query(internQuery, (error, results, fields) => {
+              if (error) {
+                console.log("Error Select Negotiation to Client: ", error);
+              } else {
+                for (i = 0; i < results.length; i++) {
+                  dataNovo.push(results[i]["codNegociacao"]);
+                }
+              }
+            });
+          });
 
-        await connection.query(internQuery, (error, results, fields) => {
-          if (error) {
-            console.log("Error Select Negotiation to Client: ", error);
-          } else {
-            for (i = 0; i < results.length; i++) {
-              console.log("222222222222222222222222222222222222222222222222");
-              console.log(results[i]);
-              console.log(results[i]["codMercadoria"]);
-              console.log(results[i]["codNegociacao"]);
-              console.log("222222222222222222222222222222222222222222222222");
-              dataNovo.push({ mercadoria: results[i]["codMercadoria"], negociacao: results[i]["codNegociacao"] });
-            }
-          }
-        });
-        console.log("000000000000000000000000000000000");
-        console.log(dataNovo);
-        console.log("000000000000000000000000000000000");
-
-        // csvData += results[1].map((row) => {
-        //   return `${row.codMercPedido};${negociacao};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
-        // }).join('\n');
+          console.log("000000000000000000000000000000000");
+          console.log(dataNovo);
+          console.log("000000000000000000000000000000000");
+          return `${row.codMercPedido};${negociacao};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+        }).join('\n');
 
         const dateNow = Date.now();
 
@@ -176,8 +167,7 @@ const Negotiation = {
   },
 
   async getRelacionaNegociacaoMercadoria(codMercPedido) {
-    // const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${codMercPedido}`;
-    const internQuery = `select codNegociacao from relacionaMercadoria`;
+    const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${codMercPedido}`;
     let negociacao = row.codNegoPedido;
     let data = [];
 
@@ -186,7 +176,7 @@ const Negotiation = {
         console.log("Error Select Negotiation to Client: ", error);
       } else {
         for (i = 0; i < results.length; i++) {
-          data.push({ mercadoria: results[i]["codMercadoria"], negociacao: results[i]["codNegociacao"] });
+          data.push(results[i]["codNegociacao"]);
         }
       }
     });
