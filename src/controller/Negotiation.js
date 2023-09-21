@@ -140,7 +140,7 @@ const Negotiation = {
             } else {
               let data = [];
               for (i = 0; i < results.length; i++) {
-                data.push(results[i]["codNegocicao"]);
+                data.push(results[i]["codNegociacao"]);
               }
               console.log("-----------------------------------------");
               console.log("-----------------------------------------");
