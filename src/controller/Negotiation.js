@@ -145,7 +145,6 @@ const Negotiation = {
               console.log("-----------------------------------------");
               console.log("-----------------------------------------");
               console.log(data);
-              console.log(`Valor Procurado: ${row.codMercPedido} - Correspondente: ${results[i]["codNegocicao"]}`);
               console.log(data.indexOf(row.codMercPedido));
               console.log("-----------------------------------------");
             }
