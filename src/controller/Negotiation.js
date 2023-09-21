@@ -133,30 +133,27 @@ const Negotiation = {
         csvData += results[1].map((row) => {
 
           const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${row.codMercPedido}`;
+          let data = [];
+          let negociacao = row.codNegoPedido;
 
           connection.query(internQuery, (error, results, fields) => {
             if (error) {
               console.log("Error Select Negotiation to Client: ", error);
             } else {
-              let data = [];
-              let negociacao = row.codNegoPedido;
               for (i = 0; i < results.length; i++) {
                 data.push(results[i]["codNegociacao"]);
               }
-              
               console.log("-----------------------------------------");
               if (data.indexOf(row.codNegoPedido) == -1) {
                 console.log(row.codMercPedido);
                 console.log(data[0]);
-                negociacao = data[0].toString();
+                negociacao = data[0];
                 
               }
               console.log("-----------------------------------------");
             }
           });
           
-
-
 
           return `${row.codMercPedido};${negociacao};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
 
