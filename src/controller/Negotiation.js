@@ -145,10 +145,10 @@ const Negotiation = {
               
               console.log("-----------------------------------------");
               if (data.indexOf(row.codNegoPedido) != -1) {
-                console.log(row.codNegoPedido);
+                
               } else {
-                console.log("Falso");
-                console.log(data[0]);
+                row.codNegoPedido = data[0];
+                
               }
               console.log("-----------------------------------------");
             }
