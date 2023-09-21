@@ -140,22 +140,22 @@ const Negotiation = {
 
         await results[1].map((row) => {
           const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${row.codMercPedido}`;
-          connection.query(internQuery, (error, results, fields) => {
+          connection.query(internQuery, (error, resultssss, fields) => {
             if (error) {
               console.log("Error Select Negotiation to Client: ", error);
             } else {
               let mercadoriaNego = [{ mercadoria: row.codMercPedido, negociacao: [] }];
-              for (i = 0; i < results.length; i++) {
-                mercadoriaNego[0].negociacao.push(results[i]["codNegociacao"]);
+              for (i = 0; i < resultssss.length; i++) {
+                mercadoriaNego[0].negociacao.push(resultssss[i]["codNegociacao"]);
               }
               if (data.indexOf(row.codNegoPedido) == -1) {
-                csvData += results[1].map((row) => {
-                  return `${row.codMercPedido};${data[0]};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados;
-                }).join('\n');
+                csvData +=
+                  `${row.codMercPedido};${data[0]};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados;
+
               } else {
-                csvData += results[1].map((row) => {
-                  return `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados;
-                }).join('\n');
+                csvData +=
+                  `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados;
+
               }
             }
           });
