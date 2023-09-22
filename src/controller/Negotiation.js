@@ -207,8 +207,8 @@ const Negotiation = {
                     //   }
                     // }
 
-                    csvData += `${row.codMercPedido};${novaNegociacao};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}\n`; // Substitua com os nomes das colunas do seu banco de dados;
-                    listMerc.push({ mercadoria: row.codMercPedido, negociacao: novaNegociacao });
+                    csvData += `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}\n`; // Substitua com os nomes das colunas do seu banco de dados;
+                    listMerc.push({ mercadoria: row.codMercPedido, negociacao: row.codNegoPedido });
 
                   }
                 }
