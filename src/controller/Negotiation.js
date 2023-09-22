@@ -164,11 +164,6 @@ const Negotiation = {
                     if (listMerc.length > 0) {
 
                       for (let i = 0; i < listMerc.length; i++) {
-                        console.log(`listMercMercadoria: ${listMerc[i].mercadoria}`);
-                        console.log(`rowMercadoria: ${row.codMercPedido}`);
-                        console.log(`=================================================`);
-                        console.log(listMerc[i].mercadoria == row.codMercPedido);
-                        console.log(`=================================================`);
 
                         if (listMerc[i].mercadoria == row.codMercPedido) {
                           let negociacao = listMerc[i].negociacao;
@@ -177,13 +172,11 @@ const Negotiation = {
                           console.log(`rowMercadoria: ${row.codMercPedido}`);
 
                           if (negociacao != data[0]) {
-                            novaNegociacao = negociacao;
+                            novaNegociacao = data[0];
                           } else if (negociacao != data[1]) {
                             novaNegociacao = data[1];
-                          } else {
-                            novaNegociacao = data[2];
-
                           }
+
                           console.log(`NovaNegociação: ${row.codMercPedido}`);
                         }
                       }
