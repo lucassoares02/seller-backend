@@ -138,7 +138,7 @@ const Negotiation = {
         //=============================================================
 
         count = 0;
-        let listMerc = [{ mercadoria: 254886, negociacao: 2001 }];
+        let listMerc = [];
         const queryReusult = await new Promise(async (resolve, reject) => {
           await results[1].map(async (row) => {
 
