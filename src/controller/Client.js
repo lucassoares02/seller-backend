@@ -189,21 +189,33 @@ const Client = {
   async getAllStores(req, res) {
     logger.info("Get All Stores");
 
+    // const queryConsult = `
+    // SET sql_mode = ''; select 
+    // relaciona.codAssocRelaciona,
+    // consultor.nomeConsult, 
+    // relaciona.codConsultRelaciona,
+    // associado.razaoAssociado as razao,
+    // associado.cnpjAssociado, 
+    // IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
+    // IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' 
+    // from associado 
+    // join relaciona on relaciona.codConsultRelaciona = associado.codAssociado
+    // join consultor on consultor.codConsult = relaciona.codAssocRelaciona 
+    // left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona
+    // left join mercadoria on codMercadoria = pedido.codMercPedido 
+    // group by relaciona.codConsultRelaciona 
+    // order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
+    // desc`;
     const queryConsult = `
     SET sql_mode = ''; select 
-    relaciona.codAssocRelaciona,
-    consultor.nomeConsult, 
-    relaciona.codConsultRelaciona,
     associado.razaoAssociado as razao,
     associado.cnpjAssociado, 
     IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
     IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' 
-    from associado 
-    join relaciona on relaciona.codConsultRelaciona = associado.codAssociado
-    join consultor on consultor.codConsult = relaciona.codAssocRelaciona 
-    left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona
-    left join mercadoria on codMercadoria = pedido.codMercPedido 
-    group by relaciona.codConsultRelaciona 
+    from associado  
+    left join pedido on pedido.codAssocPedido = associado.codAssociado
+    left join mercadoria on codMercadoria = pedido.codMercPedido   
+    group by associado.codAssociado
     order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
     desc`;
 
@@ -378,8 +390,8 @@ const Client = {
     order by valorTotal 
     desc limit 10
     `;
-    
-    
+
+
     // `SET sql_mode = ''; select 
     // relaciona.codAssocRelaciona,
     // consultor.nomeConsult, 
