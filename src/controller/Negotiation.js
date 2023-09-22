@@ -192,20 +192,20 @@ const Negotiation = {
 
 
 
-                    let novaNegociacao = row.codNegoPedido;
-                    if (listMerc.length > 0) {
+                    // let novaNegociacao = row.codNegoPedido;
+                    // if (listMerc.length > 0) {
 
-                      for (let i = 0; i < listMerc.length; i++) {
-                        if (listMerc[i].mercadoria == row.codMercPedido) {
-                          let negociacao = listMerc.negociacao;
-                          if (negociacao != row.codNegoPedido) {
-                            novaNegociacao = negociacao;
-                          } else {
-                            novaNegociacao = data[1];
-                          }
-                        }
-                      }
-                    }
+                    //   for (let i = 0; i < listMerc.length; i++) {
+                    //     if (listMerc[i].mercadoria == row.codMercPedido) {
+                    //       let negociacao = listMerc.negociacao;
+                    //       if (negociacao != row.codNegoPedido) {
+                    //         novaNegociacao = negociacao;
+                    //       } else {
+                    //         novaNegociacao = data[1];
+                    //       }
+                    //     }
+                    //   }
+                    // }
 
                     csvData += `${row.codMercPedido};${novaNegociacao};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}\n`; // Substitua com os nomes das colunas do seu banco de dados;
                     listMerc.push({ mercadoria: row.codMercPedido, negociacao: novaNegociacao });
