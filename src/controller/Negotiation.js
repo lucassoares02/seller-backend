@@ -114,16 +114,35 @@ const Negotiation = {
       m.barcode,
       m.erpcode,
       m.marca,
-      p.quantMercPedido as quantidade,
+      sum(p.quantMercPedido) as quantidade,
       p.codFornPedido,
       p.codAssocPedido,
-      p.codNegoPedido ,
-      p.codMercPedido
+      p.codNegoPedido
       from pedido p
-      join mercadoria m 
+      join mercadoria m on m.codMercadoria = p.codMercPedido
       where m.codMercadoria = p.codMercPedido 
       and p.codAssocPedido = ${codeclient}
+      group by p.codMercPedido
       order by p.codNegoPedido`;
+
+    //   const queryConsult = `
+    // SET sql_mode = ''; select
+    //   p.codMercPedido,
+    //   m.nomeMercadoria,
+    //   m.complemento,
+    //   m.barcode,
+    //   m.erpcode,
+    //   m.marca,
+    //   p.quantMercPedido as quantidade,
+    //   p.codFornPedido,
+    //   p.codAssocPedido,
+    //   p.codNegoPedido ,
+    //   p.codMercPedido
+    //   from pedido p
+    //   join mercadoria m 
+    //   where m.codMercadoria = p.codMercPedido 
+    //   and p.codAssocPedido = ${codeclient}
+    //   order by p.codNegoPedido`;
 
 
     connection.query(queryConsult, async (error, results, fields) => {
@@ -160,31 +179,32 @@ const Negotiation = {
 
                   if (data.indexOf(row.codNegoPedido) == -1) {
 
-                    let novaNegociacao = data[0];
-                    if (listMerc.length > 0) {
+                    // let novaNegociacao = data[0];
+                    // if (listMerc.length > 0) {
 
-                      for (let i = 0; i < listMerc.length; i++) {
+                    //   for (let i = 0; i < listMerc.length; i++) {
 
-                        if (listMerc[i].mercadoria == row.codMercPedido) {
-                          let negociacao = listMerc[i].negociacao;
+                    //     if (listMerc[i].mercadoria == row.codMercPedido) {
+                    //       let negociacao = listMerc[i].negociacao;
 
 
-                          if (negociacao != data[0]) {
-                            novaNegociacao = data[0];
-                          } else if (negociacao != data[1]) {
-                            novaNegociacao = data[1];
-                          }
-                          console.log(`---`);
-                          console.log(data);
-                          console.log(`Mercadoria: ${row.codMercPedido}`);
-                          console.log(`Negocicação: ${negociacao}`);
-                          console.log(`Nova Negocicação: ${novaNegociacao}`);
-                          console.log(`---`);
-                        }
-                      }
-                    }
-                    csvData += `${row.codMercPedido};${novaNegociacao};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}\n`; // Substitua com os nomes das colunas do seu banco de dados;
-                    listMerc.push({ mercadoria: row.codMercPedido, negociacao: novaNegociacao });
+                    //       if (negociacao != data[0]) {
+                    //         novaNegociacao = data[0];
+                    //       } else if (negociacao != data[1]) {
+                    //         novaNegociacao = data[1];
+                    //       }
+                    //       console.log(`---`);
+                    //       console.log(data);
+                    //       console.log(`Mercadoria: ${row.codMercPedido}`);
+                    //       console.log(`Negocicação: ${negociacao}`);
+                    //       console.log(`Nova Negocicação: ${novaNegociacao}`);
+                    //       console.log(`---`);
+                    //     }
+                    //   }
+                    // }
+
+                    csvData += `${row.codMercPedido};${data[0]};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}\n`; // Substitua com os nomes das colunas do seu banco de dados;
+                    // listMerc.push({ mercadoria: row.codMercPedido, negociacao: data[0] });
 
                   } else {
 
@@ -206,7 +226,7 @@ const Negotiation = {
                     // }
 
                     csvData += `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}\n`; // Substitua com os nomes das colunas do seu banco de dados;
-                    listMerc.push({ mercadoria: row.codMercPedido, negociacao: row.codNegoPedido });
+                    // listMerc.push({ mercadoria: row.codMercPedido, negociacao: row.codNegoPedido });
 
                   }
                 }
