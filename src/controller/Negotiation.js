@@ -175,6 +175,7 @@ const Negotiation = {
                             novaNegociacao = data[1];
                           }
                           console.log(`---`);
+                          console.log(data);
                           console.log(`Mercadoria: ${row.codMercPedido}`);
                           console.log(`Negocicação: ${negociacao}`);
                           console.log(`Nova Negocicação: ${novaNegociacao}`);
