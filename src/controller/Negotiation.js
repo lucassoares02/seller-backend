@@ -106,6 +106,25 @@ const Negotiation = {
 
 
 
+    // const queryConsult = `
+    // SET sql_mode = ''; select
+    //   p.codMercPedido,
+    //   m.nomeMercadoria,
+    //   m.complemento,
+    //   m.barcode,
+    //   m.erpcode,
+    //   m.marca,
+    //   sum(p.quantMercPedido) as quantidade,
+    //   p.codFornPedido,
+    //   p.codAssocPedido,
+    //   p.codNegoPedido
+    //   from pedido p
+    //   join mercadoria m on m.codMercadoria = p.codMercPedido
+    //   where m.codMercadoria = p.codMercPedido 
+    //   and p.codAssocPedido = ${codeclient}
+    //   group by p.codMercPedido
+    //   order by p.codNegoPedido`;
+
     const queryConsult = `
     SET sql_mode = ''; select
       p.codMercPedido,
@@ -114,35 +133,16 @@ const Negotiation = {
       m.barcode,
       m.erpcode,
       m.marca,
-      sum(p.quantMercPedido) as quantidade,
+      p.quantMercPedido as quantidade,
       p.codFornPedido,
       p.codAssocPedido,
-      p.codNegoPedido
+      p.codNegoPedido ,
+      p.codMercPedido
       from pedido p
-      join mercadoria m on m.codMercadoria = p.codMercPedido
+      join mercadoria m 
       where m.codMercadoria = p.codMercPedido 
       and p.codAssocPedido = ${codeclient}
-      group by p.codMercPedido
       order by p.codNegoPedido`;
-
-    //   const queryConsult = `
-    // SET sql_mode = ''; select
-    //   p.codMercPedido,
-    //   m.nomeMercadoria,
-    //   m.complemento,
-    //   m.barcode,
-    //   m.erpcode,
-    //   m.marca,
-    //   p.quantMercPedido as quantidade,
-    //   p.codFornPedido,
-    //   p.codAssocPedido,
-    //   p.codNegoPedido ,
-    //   p.codMercPedido
-    //   from pedido p
-    //   join mercadoria m 
-    //   where m.codMercadoria = p.codMercPedido 
-    //   and p.codAssocPedido = ${codeclient}
-    //   order by p.codNegoPedido`;
 
 
     connection.query(queryConsult, async (error, results, fields) => {
@@ -267,6 +267,315 @@ const Negotiation = {
     });
     // connection.end();
   },
+
+
+  async GetExportNegotiationsClientTeste(req, res) {
+    logger.info("Get Export Negotiation ");
+
+    const { codeclient } = req.params;
+
+
+    function verificarMercadoria(codigo, lista) {
+      for (i = 0; i < lista.length; i++) {
+        if (lista[i].mercadoria.codMercPedido == codigo) {
+          return i; // A mercadoria foi encontrada na lista.
+        }
+      }
+      return -1
+    }
+
+
+    const queryConsult = `
+    SET sql_mode = ''; select
+      p.codMercPedido,
+      m.nomeMercadoria,
+      m.complemento,
+      m.barcode,
+      m.erpcode,
+      m.marca,
+      p.quantMercPedido as quantidade,
+      p.codFornPedido,
+      p.codAssocPedido,
+      p.codNegoPedido ,
+      p.codMercPedido
+      from pedido p
+      join mercadoria m 
+      where m.codMercadoria = p.codMercPedido 
+      and p.codAssocPedido = ${codeclient}
+      order by p.codNegoPedido`;
+
+    let listItens = [];
+    let listNegociacoes = [];
+
+
+    connection.query(queryConsult, async (error, results, fields) => {
+      if (error) {
+        console.log("Error Export Negotiation : ", error);
+      } else {
+
+        //=============================================================
+        //=============================================================
+        //=============================================================
+
+        // Colocar no objeto:
+        // 1. Código da mercadoria
+        // 2. Lista de negociações
+        // 3. Lista de mercadorias com todas as informações
+        // Adicionar parâmetro para identificar se a negociação está correta
+        // Se estiver correta remover o item da negociação da lista de negociações
+        // E não verificar posteriormente.
+        // Se o tamanho do array de negociações for igual a 1, somar as quantidades
+
+        // 4. Verifica na lista de negociações possíveis qual negociação não está vinculada a nenhuma outra mercadoria
+        // 5. Vou inserir esse código na mercadoria atual e remover a negociação da lista de negociações
+        // 6. Verifica se a negociação daquela mercadoria está dentro das negociações possíveis
+        // 7. Se estiver vou remover ela da lista de negociações
+        // 8. Se para aquela mercadoria só tiver um negociação possível, vou somar as quantidades
+        // 9. 
+
+
+        // console.log("======================= Results =======================");
+        // console.log(results[1].length);
+        // console.log(results[1]);
+        // console.log("======================= Results =======================");
+        count = 0;
+
+        const queryReusult = await new Promise(async (resolve, reject) => {
+          await results[1].map(async (row) => {
+
+            const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${row.codMercPedido}`;
+
+            const asfdasf = await new Promise(async (resolve, reject) => {
+              connection.query(internQuery, (error, resultssss, fields) => {
+                if (error) {
+                  console.log("Error Select Negotiation to Client: ", error);
+                } else {
+                  let data = [];
+                  for (i = 0; i < resultssss.length; i++) {
+                    data.push(resultssss[i]["codNegociacao"]);
+                  }
+
+                  const mercadoria = listNegociacoes.find(item => item.mercadoria == row.codMercPedido);
+
+                  if (mercadoria == undefined || listNegociacoes.length == 0) {
+                    listNegociacoes.push({ mercadoria: row.codMercPedido, negociacao: data });
+                  }
+
+                  console.log("mercadoria");
+                  console.log(listNegociacoes);
+                  console.log("mercadoria");
+
+                  // Verifico se a mercadoria está na lista de mercadorias que será inserida
+                  // console.log("******************************");
+                  // console.log(row.codMercPedido);
+                  // console.log(row.quantidade);
+                  // console.log("******************************");
+
+                  let verifica = verificarMercadoria(row.codMercPedido, listItens);
+                  // Caso não esteja eu vou adicionar
+                  if (verifica != -1) {
+                    // console.log("====================================");
+                    // console.log(row.codMercPedido);
+                    // console.log(listItens[verifica].mercadoria.codNegoPedido);
+                    // console.log(row.codNegoPedido);
+                    // console.log(listItens[verifica].mercadoria.codNegoPedido == row.codNegoPedido);
+                    // console.log("====================================");
+                    if (listItens[verifica].mercadoria.codNegoPedido == row.codNegoPedido) {
+                      novaQuantidade = listItens[verifica].mercadoria.quantidade + row.quantidade;
+                      listItens[verifica].mercadoria.quantidade = novaQuantidade;
+                    } else {
+                      // Verifico se dentro das negociações possíveis eu tenho a que está naquela mercadoria
+                      if (data.indexOf(row.codNegoPedido) == -1) {
+                        // Nesse caso a código da negociação é diferente
+                        // const valoresDiferentes = data.filter((element) => element != listItens[verifica].codNegoPedido);
+                        // console.log("888888888888888888");
+                        // console.log(`${row.codNegoPedido} - ${data[0]}`);
+                        // console.log("888888888888888888");
+                        row.codNegoPedido = data[0];
+                        // data.splice(0, 1);
+                      } else {
+                        // data.splice(data.indexOf(row.codNegoPedido), 1);
+                      }
+                    }
+                  } else {
+                    let indexNego = data.indexOf(row.codNegoPedido);
+                    if (indexNego == -1) {
+                      row.codNegoPedido = data[0];
+                      // data.splice(0, 1);
+                    } else {
+                      // data.splice(indexNego, 1);
+                    }
+                    // console.log("====================================");
+                    // console.log(data);
+                    // console.log(row.codNegoPedido);
+                    // console.log("====================================");
+                    // console.log(`Index Negociação: ${indexNego}`);
+
+                    listItens.push({ mercadoria: row, negociacao: data });
+                  }
+                }
+                resolve();
+              });
+            })
+            count += 1;
+            if (count == results[1].length) {
+              resolve();
+            }
+          });
+        });
+
+        // console.log("=================================== List Itens =================================== ");
+        // console.log(listItens.length);
+        // console.log(listItens);
+        // console.log("=================================== List Itens =================================== ");
+
+        return res.send({ message: "Success" });
+
+      }
+    });
+    // connection.end();
+  },
+
+
+  async GetExportNegotiationsClientTesteNovo(req, res) {
+    logger.info("Get Export Negotiation ");
+
+    const { codeclient } = req.params;
+
+
+    function verificarMercadoria(codigo, lista) {
+      for (i = 0; i < lista.length; i++) {
+        if (lista[i].mercadoria.codMercPedido == codigo) {
+          return i; // A mercadoria foi encontrada na lista.
+        }
+      }
+      return -1
+    }
+
+
+    const queryConsult = `
+    SET sql_mode = ''; select
+      p.codMercPedido,
+      m.nomeMercadoria,
+      m.complemento,
+      m.barcode,
+      m.erpcode,
+      m.marca,
+      p.quantMercPedido as quantidade,
+      p.codFornPedido,
+      p.codAssocPedido,
+      p.codNegoPedido ,
+      p.codMercPedido
+      from pedido p
+      join mercadoria m 
+      where m.codMercadoria = p.codMercPedido 
+      and p.codAssocPedido = ${codeclient}
+      order by p.codNegoPedido`;
+
+    let listItens = [];
+    let listNegociacoes = [];
+
+
+    connection.query(queryConsult, async (error, results, fields) => {
+      if (error) {
+        console.log("Error Export Negotiation : ", error);
+      } else {
+
+        count = 0;
+
+        const queryReusult = await new Promise(async (resolve, reject) => {
+          await results[1].map(async (row) => {
+
+            const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${row.codMercPedido}`;
+
+            const asfdasf = await new Promise(async (resolve, reject) => {
+              connection.query(internQuery, (error, resultssss, fields) => {
+                if (error) {
+                  console.log("Error Select Negotiation to Client: ", error);
+                } else {
+                  let data = [];
+                  for (i = 0; i < resultssss.length; i++) {
+                    data.push(resultssss[i]["codNegociacao"]);
+                  }
+
+                  const mercadoria = listNegociacoes.findIndex(item => item.mercadoria == row.codMercPedido);
+
+
+
+                  if (listNegociacoes[mercadoria] == undefined || listNegociacoes.length == 0) {
+                    let indexNego = data.indexOf(row.codNegoPedido);
+                    if (indexNego != -1) {
+                      data.splice(indexNego, 1);
+                    } else {
+                      row.codNegoPedido = data[0];
+                      data.splice(0, 1);
+                    }
+
+                    listNegociacoes.push({ mercadoria: row.codMercPedido, negociacao: data });
+                  } else {
+                    let indexNego = listNegociacoes[mercadoria].negociacao.indexOf(row.codNegoPedido);
+                    if (indexNego != -1) {
+                      listNegociacoes[mercadoria].negociacao.splice(indexNego, 1);
+                    } else {
+                      row.codNegoPedido = listNegociacoes[mercadoria].negociacao[0];
+                      listNegociacoes[mercadoria].negociacao.splice(0, 1);
+                    }
+
+                  }
+
+
+
+                  // console.log("----------------------------");
+                  // console.log(listNegociacoes);
+                  // console.log("----------------------------");
+
+
+
+                  listItens.push(row);
+                }
+                resolve();
+              });
+            })
+            count += 1;
+            if (count == results[1].length) {
+              resolve();
+            }
+          });
+        });
+
+        // console.log("=================================== List Itens =================================== ");
+        // console.log(listItens.length);
+        // console.log(listItens);
+        // console.log("=================================== List Itens =================================== ");
+
+
+        let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
+
+        csvData += listItens.map((row) => {
+          return ` ${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+
+
+
+        }).join('\n');
+
+        const dateNow = Date.now();
+
+        // Configurar os cabeçalhos de resposta para fazer o download
+        res.setHeader('Content-Disposition', `attachment; filename=${dateNow}_negociacoes.csv`);
+        res.setHeader('Content-Type', 'text/csv');
+
+        // Transmitir o arquivo CSV como resposta
+        return res.send(csvData);
+
+
+        // return res.send({ message: "Success" });
+
+      }
+    });
+    // connection.end();
+  },
+
+
 
   async getRelacionaNegociacaoMercadoria(codMercPedido) {
     const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${codMercPedido}`;
