@@ -532,11 +532,14 @@ const Negotiation = {
 
                       // VERIFICAR ESSA CONDIÇÃO NOVAMENTE
                       if (listNegociacoes[mercadoria].negociacao.length > 0) {
+                        console.log(`Lista de negociações da Mercadoria ${row.codMercPedido}`);
+                        console.log(listNegociacoes[mercadoria].negociacao);
                         row.codNegoPedido = listNegociacoes[mercadoria].negociacao[0];
                         listNegociacoes[mercadoria].negociacao.splice(0, 1);
                       } else {
                         let novaQuantidade = listNegociacoes[mercadoria].mercadoria.quantidade + row.quantidade;
                         listNegociacoes[mercadoria].mercadoria.quantidade = novaQuantidade;
+                        resolve();
                       }
                     }
 
