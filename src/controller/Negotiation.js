@@ -445,6 +445,7 @@ const Negotiation = {
 
     function verificarMercadoria(codigo, lista) {
       for (i = 0; i < lista.length; i++) {
+        console.log(lista[i]);
         if (lista[i].codMercPedido == codigo) {
           return i; // A mercadoria foi encontrada na lista.
         }
