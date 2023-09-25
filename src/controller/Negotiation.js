@@ -517,19 +517,18 @@ const Negotiation = {
                     if (indexNego != -1) {
                       listNegociacoes[mercadoria].negociacao.splice(indexNego, 1);
                     } else {
-                      row.codNegoPedido = listNegociacoes[mercadoria].negociacao[0];
-                      listNegociacoes[mercadoria].negociacao.splice(0, 1);
+
+                      // VERIFICAR ESSA CONDIÇÃO NOVAMENTE
+                      if (listNegociacoes[mercadoria].negociacao.length > 0) {
+                        row.codNegoPedido = listNegociacoes[mercadoria].negociacao[0];
+                        listNegociacoes[mercadoria].negociacao.splice(0, 1);
+                      } else {
+                        let novaQuantidade = listNegociacoes[mercadoria].mercadoria.quantidade + row.quantidade;
+                        listNegociacoes[mercadoria].mercadoria.quantidade = novaQuantidade;
+                      }
                     }
 
                   }
-
-
-
-                  // console.log("----------------------------");
-                  // console.log(listNegociacoes);
-                  // console.log("----------------------------");
-
-
 
                   listItens.push(row);
                 }
