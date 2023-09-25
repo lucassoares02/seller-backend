@@ -540,11 +540,15 @@ const Negotiation = {
                         listNegociacoes[mercadoria].negociacao.splice(0, 1);
                         listItens.push(row);
                       } else {
-                        console.log(`Mercadoria: ${listNegociacoes[mercadoria]}`)
-                        console.log(`Mercadoria Detalhes: ${listNegociacoes[mercadoria].mercadoria}`)
-                        console.log(`Quantidade na negociação anterior : ${listNegociacoes[mercadoria].mercadoria.quantidade}`);
-                        let novaQuantidade = listNegociacoes[mercadoria].mercadoria.quantidade + row.quantidade;
-                        listNegociacoes[mercadoria].mercadoria.quantidade = novaQuantidade;
+
+                        let indexLista = verificarMercadoria(row.codMercPedido, listItens);
+
+                        console.log(`Mercadoria: ${listItens[indexLista]}`)
+                        console.log(`Mercadoria Detalhes: ${listItens[indexLista].codMercPedido}`)
+                        console.log(`Quantidade na negociação anterior : ${listItens[indexLista].quantidade}`);
+
+                        let novaQuantidade = listItens[indexLista].quantidade + row.quantidade;
+                        listItens[indexLista].quantidade = novaQuantidade;
                         console.log(`Nova Quantidade: ${novaQuantidade}`);
                       }
                     }
