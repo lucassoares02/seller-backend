@@ -495,7 +495,9 @@ const Negotiation = {
                 } else {
                   let data = [];
                   for (i = 0; i < resultssss.length; i++) {
-                    data.push(resultssss[i]["codNegociacao"]);
+                    if (data.indexOf(resultssss[i]["codNegociacao"]) == -1) {
+                      data.push(resultssss[i]["codNegociacao"]);
+                    }
                   }
 
                   const mercadoria = listNegociacoes.findIndex(item => item.mercadoria == row.codMercPedido);
@@ -513,6 +515,8 @@ const Negotiation = {
 
                     listNegociacoes.push({ mercadoria: row.codMercPedido, negociacao: data });
                   } else {
+
+
                     let indexNego = listNegociacoes[mercadoria].negociacao.indexOf(row.codNegoPedido);
                     if (indexNego != -1) {
                       listNegociacoes[mercadoria].negociacao.splice(indexNego, 1);
