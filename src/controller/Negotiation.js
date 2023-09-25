@@ -500,11 +500,17 @@ const Negotiation = {
                     }
                   }
 
+                  console.log("\n================================================");
+                  console.log(`Mercadoria: ${row.codMercPedido}`);
+
+
                   const mercadoria = listNegociacoes.findIndex(item => item.mercadoria == row.codMercPedido);
+                  console.log(`Index: ${mercadoria}`);
 
 
 
                   if (listNegociacoes[mercadoria] == undefined || listNegociacoes.length == 0) {
+                    console.log("Primeira inserção na lista de negociações");
                     let indexNego = data.indexOf(row.codNegoPedido);
                     if (indexNego != -1) {
                       data.splice(indexNego, 1);
@@ -515,12 +521,14 @@ const Negotiation = {
 
                     listNegociacoes.push({ mercadoria: row.codMercPedido, negociacao: data });
                   } else {
-
+                    console.log("Else, segunda opção caso lista de negociações não seja vazia");
 
                     let indexNego = listNegociacoes[mercadoria].negociacao.indexOf(row.codNegoPedido);
+                    console.log(`Index da negociação ${indexNego}`);
                     if (indexNego != -1) {
                       listNegociacoes[mercadoria].negociacao.splice(indexNego, 1);
                     } else {
+                      console.log(`Else para confirmar que lista de negociações está vazia`);
 
                       // VERIFICAR ESSA CONDIÇÃO NOVAMENTE
                       if (listNegociacoes[mercadoria].negociacao.length > 0) {
@@ -546,10 +554,7 @@ const Negotiation = {
           });
         });
 
-        // console.log("=================================== List Itens =================================== ");
-        // console.log(listItens.length);
-        // console.log(listItens);
-        // console.log("=================================== List Itens =================================== ");
+        console.log("\n================================================\n");
 
 
         let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
@@ -566,6 +571,12 @@ const Negotiation = {
         // Configurar os cabeçalhos de resposta para fazer o download
         res.setHeader('Content-Disposition', `attachment; filename=${dateNow}_negociacoes.csv`);
         res.setHeader('Content-Type', 'text/csv');
+
+
+        console.log("=================================== List Itens =================================== ");
+        console.log(listItens.length);
+        console.log(listItens);
+        console.log("=================================== List Itens =================================== ");
 
         // Transmitir o arquivo CSV como resposta
         return res.send(csvData);
