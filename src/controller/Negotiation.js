@@ -520,6 +520,7 @@ const Negotiation = {
                     }
 
                     listNegociacoes.push({ mercadoria: row.codMercPedido, negociacao: data });
+                    listItens.push(row);
                   } else {
                     console.log("Else, segunda opção caso lista de negociações não seja vazia");
 
@@ -527,6 +528,7 @@ const Negotiation = {
                     console.log(`Index da negociação ${indexNego}`);
                     if (indexNego != -1) {
                       listNegociacoes[mercadoria].negociacao.splice(indexNego, 1);
+                      listItens.push(row);
                     } else {
                       console.log(`Else para confirmar que lista de negociações está vazia`);
 
@@ -536,16 +538,16 @@ const Negotiation = {
                         console.log(listNegociacoes[mercadoria].negociacao);
                         row.codNegoPedido = listNegociacoes[mercadoria].negociacao[0];
                         listNegociacoes[mercadoria].negociacao.splice(0, 1);
+                        listItens.push(row);
                       } else {
+                        console.log(`Quantidade na negociação anterior${listNegociacoes[mercadoria].mercadoria.quantidade}`);
                         let novaQuantidade = listNegociacoes[mercadoria].mercadoria.quantidade + row.quantidade;
                         listNegociacoes[mercadoria].mercadoria.quantidade = novaQuantidade;
-                        resolve();
+                        console.log(`Nova Quantidade: ${novaQuantidade}`);
                       }
                     }
 
                   }
-
-                  listItens.push(row);
                 }
                 resolve();
               });
