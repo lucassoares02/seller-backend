@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:16-alpine
 
 # Uncomment if use of `process.dlopen` is necessary
 # apk add --no-cache libc6-compat
