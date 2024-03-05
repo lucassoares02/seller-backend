@@ -1,4 +1,3 @@
-
 const router = require("express").Router();
 
 const Merchandise = require("@controller/Merchandise");
@@ -12,17 +11,9 @@ const Buyer = require("@controller/Buyer");
 const Notice = require("@controller/Notice");
 const User = require("@controller/User");
 
-
-
-
-
-
-
-
 // Methods User
 // getUsuarios.php
 router.post("/getuser", User.getUser); // localhost:3001/getuser
-router.get("/migration/users", User.migrationUsers)
 
 router.post("/getusermore", User.getUserDoubleCompany); // localhost:3001/getuser
 
@@ -32,19 +23,15 @@ router.get("/getallusersorg", User.getAllUsersOrg); // localhost:3001/getuser
 router.get("/getallusersprovider", User.getAllUsersProvider); // localhost:3001/getuser
 router.get("/getallusersassociate", User.getAllUsersAssociate); // localhost:3001/getuser
 
-
 // Methods Clients
 router.get("/allclient", Client.getAllClient);
 //getAssociado.php
 router.get("/client/:codacesso", Client.getOneClient); // localhost:3001/client/1000000024212
 //getAssociadoPorConsutor.php  | getAssociadosPorConsultor.php
 router.get("/clientconsult/:codconsultor", Client.getClientConsult); // localhost:3001/clientconsult/1
-//getAssociadoPorMercadoria.php | getAssociadosPorMercadoria.php 
+//getAssociadoPorMercadoria.php | getAssociadosPorMercadoria.php
 
 router.post("/insertperson", Client.postInsertPerson);
-
-
-
 
 router.get("/clientmerchandise/:codmercadoria", Client.getClientMerchandise); // localhost:3001/clientmerchandise/19049
 router.get("/clientmerchandisetrading/:codmercadoria/:codnegotiation", Client.getClientMerchandiseTrading); // localhost:3001/clientmerchandise/19049
@@ -62,18 +49,14 @@ router.get("/valuefair", Client.getValueTotalFair); // localhost:3001/stores
 
 router.get("/storesbyprovider/:codprovider", Client.getStoresbyProvider); // localhost:3001/storesbyprovider/3333
 
-
-
 // Methods Categories
 //getCategorias.php
 router.get("/categoriesconsult/:codconsult", Category.getCategoryConsult); // localhost:3001/categoriesconsult/1
-
 
 // Methods Notices
 //getNotices.php
 router.get("/notices", Notice.getAllNotice); // localhost:3001/notices
 router.get("/schedule", Notice.getAllSchedule); // localhost:3001/notices
-
 
 // Methods Provider
 // getFornecedorPorAssociado.php
@@ -90,7 +73,6 @@ router.get("/providerconsult/:codconsult", Provider.getProviderConsult); // loca
 router.get("/providerdetails/:codforn", Provider.getProviderDetails); // localhost:3001/providerconsult/5
 
 router.post("/insertprovider", Provider.postInsertProvider);
-
 
 // Methods Negotiation
 // getNegociacaoPorFornecedor.php | getNegociacoes.php
@@ -109,15 +91,11 @@ router.get("/exportnegotiations", Negotiation.GetExportNegotiations);
 // router.get("/exportnegotiationsclient/:codeclient", Negotiation.GetExportNegotiationsClient);
 router.get("/exportnegotiationsclient/:codeclient", Negotiation.GetExportNegotiationsClientTesteNovo);
 
-
-
 // Methods Buyer
 // getCompradoresAssociados
 router.get("/buyersclient/:codconsultorclient", Buyer.getBuyersClient); // localhost:3001/buyersclient/1
 // getTodosCompradores.php
 router.get("/buyers", Buyer.getAllBuyers); // localhost:3001/buyers
-
-
 
 // Methods Merchandise
 // getMercadoriasPorNegociacaoPorFornecedorInfo.php
@@ -137,8 +115,6 @@ router.get("/merchandiseperclient/:codclient/:codeprovider", Merchandise.getMerc
 
 router.post("/insertmerchandise", Merchandise.postInsertMerchandise);
 
-
-
 // Methods Request
 // getPedidosFornecedoresAssociado.php
 router.get("/requestproviderclient/:codclient", Request.getRequestProviderClient); // localhost:3001/requestproviderclient/9
@@ -152,7 +128,6 @@ router.post("/insertrequest", Request.postInsertRequest); // localhost:3001/inse
 router.post("/insertrequestnew", Request.postInserRequestNew); // localhost:3001/insertrequest
 
 router.get("/allrequestclients", Request.getAllRequests); // localhost:3001/allrequestclients
-
 
 // getInserePedido.php
 router.get("/percentageclients/:codprovider", Graphs.getPercentageClients); // localhost:3001/percentageclients/333
