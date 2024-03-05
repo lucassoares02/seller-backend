@@ -22,6 +22,7 @@ const User = require("@controller/User");
 // Methods User
 // getUsuarios.php
 router.post("/getuser", User.getUser); // localhost:3001/getuser
+router.get("/migration/users", User.migrationUsers)
 
 router.post("/getusermore", User.getUserDoubleCompany); // localhost:3001/getuser
 
