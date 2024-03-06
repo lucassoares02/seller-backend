@@ -4,6 +4,9 @@ const Select = require("@select");
 const Insert = require("@insert");
 
 const Merchandise = {
+
+
+
   async getMerchandiseNegotiationProvider(req, res) {
     logger.info("Get Merchandise to Negotiation to Provider");
 
@@ -46,14 +49,7 @@ const Merchandise = {
 
     const { codclient, codprovider, codnegotiation } = req.params;
 
-    const queryConsult =
-      "SET sql_mode = ''; select mercadoria.codMercadoria, mercadoria.nomeMercadoria, mercadoria.embMercadoria, mercadoria.fatorMerc,mercadoria.complemento, mercadoria.marca, IFNULL(SUM(pedido.quantMercPedido), 0) as 'quantMercadoria', mercadoria.precoMercadoria as precoMercadoria, mercadoria.precoUnit, IFNULL(SUM(mercadoria.precoMercadoria * pedido.quantMercPedido), 0) as 'valorTotal' from mercadoria join pedido on pedido.codMercPedido = mercadoria.codMercadoria where pedido.codAssocPedido = " +
-      codclient +
-      " and pedido.codfornpedido = " +
-      codprovider +
-      " and pedido.codNegoPedido = " +
-      codnegotiation +
-      " group by mercadoria.nomeMercadoria order by quantMercPedido";
+    const queryConsult = "SET sql_mode = ''; select mercadoria.codMercadoria, mercadoria.nomeMercadoria, mercadoria.embMercadoria, mercadoria.fatorMerc,mercadoria.complemento, mercadoria.marca, IFNULL(SUM(pedido.quantMercPedido), 0) as 'quantMercadoria', mercadoria.precoMercadoria as precoMercadoria, mercadoria.precoUnit, IFNULL(SUM(mercadoria.precoMercadoria * pedido.quantMercPedido), 0) as 'valorTotal' from mercadoria join pedido on pedido.codMercPedido = mercadoria.codMercadoria where pedido.codAssocPedido = " + codclient + " and pedido.codfornpedido = " + codprovider + " and pedido.codNegoPedido = " + codnegotiation + " group by mercadoria.nomeMercadoria order by quantMercPedido";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -91,7 +87,7 @@ const Merchandise = {
     order by mercadoria.nomeMercadoria  
     asc
 `;
-    // order by valorTotal
+    // order by valorTotal 
     // desc
     // `;
 
@@ -110,6 +106,24 @@ const Merchandise = {
 
     const { codclient, codprovider, codnegotiation } = req.params;
 
+    const queryConsult = "SET sql_mode = ''; select mercadoria.codMercadoria, mercadoria.nomeMercadoria,mercadoria.complemento, mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido = " + codclient + " and pedido.codNegoPedido = " + codnegotiation + " where mercadoria.codFornMerc = " + codprovider + " GROUP BY mercadoria.codMercadoria ORDER BY quantMercadoria desc";
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select Merchandise Provider If Client: ", error);
+      } else {
+        return res.json(results[1]);
+      }
+    });
+    // connection.end();
+  },
+
+  
+  async getMerchandiseProviderIfClientLimitNegotiation(req, res) {
+    logger.info("Get Merchandise Provider If Client");
+
+    const { codclient, codprovider, codnegotiation } = req.params;
+
     const queryConsult = `SET sql_mode = ''; select mercadoria.codMercadoria, mercadoria.nomeMercadoria,mercadoria.complemento, mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido =  ${codclient}  and pedido.codNegoPedido = ${codnegotiation} where mercadoria.nego = ${codnegotiation} and mercadoria.codFornMerc = ${codprovider} GROUP BY mercadoria.codMercadoria ORDER BY quantMercadoria desc`;
 
     connection.query(queryConsult, (error, results, fields) => {
@@ -121,6 +135,7 @@ const Merchandise = {
     });
     // connection.end();
   },
+
 
   async getMerchandisePerCustomer(req, res) {
     logger.info("Get Merchandise Provider If Client");
@@ -142,7 +157,7 @@ const Merchandise = {
     GROUP BY mercadoria.codMercadoria
     order by mercadoria.nomeMercadoria  
     asc`;
-    // ORDER BY volumeTotal
+    // ORDER BY volumeTotal 
     // desc`;
 
     connection.query(queryConsult, (error, results, fields) => {
@@ -154,6 +169,8 @@ const Merchandise = {
     });
     // connection.end();
   },
+
+
 
   async getMerchandisePerClient(req, res) {
     logger.info("Get Merchandise Provider If Client");
@@ -177,7 +194,7 @@ const Merchandise = {
     GROUP BY mercadoria.codMercadoria
     order by mercadoria.nomeMercadoria  
     asc`;
-    // ORDER BY volumeTotal
+    // ORDER BY volumeTotal 
     // desc`;
 
     connection.query(queryConsult, (error, results, fields) => {
@@ -189,6 +206,8 @@ const Merchandise = {
     });
     // connection.end();
   },
+
+
 
   async getMerchandiseNegotiationProvider(req, res) {
     logger.info("Get Merchandise Provider If Client");
@@ -222,10 +241,12 @@ const Merchandise = {
     // connection.end();
   },
 
+
   async postInsertMerchandise(req, res) {
     logger.info("Post Save Merchandise");
 
     const { codMercadoria, nomeMercadoria, codFornMerc, embMercadoria, fatorMerc, precoMercadoria, precoUnit, barcode, marca, complemento, erpcode } = req.body;
+
 
     let data = {
       codMercadoria: codMercadoria,
@@ -239,7 +260,7 @@ const Merchandise = {
       marca: marca,
       complemento: complemento,
       erpcode: erpcode,
-    };
+    }
 
     console.log("============= DATA =============");
     console.log(data);
@@ -247,8 +268,8 @@ const Merchandise = {
 
     let params = {
       table: "mercadoria",
-      data: data,
-    };
+      data: data
+    }
     return Insert(params)
       .then(async (resp) => {
         res.status(200).send(`message: Save Success!`);
@@ -257,8 +278,10 @@ const Merchandise = {
         res.status(400).send(error);
       });
 
+
     // connection.end();
   },
+
 };
 
 module.exports = Merchandise;

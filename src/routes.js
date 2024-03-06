@@ -106,6 +106,7 @@ router.get("/merchandiseclientprovidernegotiation/:codclient/:codprovider/:codne
 router.get("/merchandiseprovider/:codprovider", Merchandise.getMerchandiseProvider); // localhost:3001/merchandiseprovider/333
 // getMercadorias.php
 router.get("/merchandiseproviderifclient/:codclient/:codprovider/:codnegotiation", Merchandise.getMerchandiseProviderIfClient); // localhost:3001/merchandiseproviderifclient/7/333/1
+router.get("/merchandiseproviderifclientlimitnegotiation/:codclient/:codprovider/:codnegotiation", Merchandise.getMerchandiseProviderIfClientLimitNegotiation); // localhost:3001/merchandiseproviderifclient/7/333/1
 
 router.get("/merchandisenegotiationprovider/:codprovider/:codnegotiation", Merchandise.getMerchandiseNegotiationProvider); // localhost:3001/merchandiseproviderifclient/7/333/1
 
