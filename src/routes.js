@@ -62,7 +62,6 @@ router.get("/schedule", Notice.getAllSchedule); // localhost:3001/notices
 // getFornecedorPorAssociado.php
 router.get("/providerclient/:codconsultor", Provider.getProviderClient); // localhost:3001/providerclient/1
 
-router.get("/getproviderclienttop/:codconsultor", Provider.getProviderClientTopFour);
 // getFornecedoresFaturamento.php
 router.get("/suppliersinvoicing", Provider.getProviderSells); // localhost:3001/suppliersinvoicing
 // getFornecedoresCategorias.php
@@ -121,6 +120,8 @@ router.post("/insertmerchandise", Merchandise.postInsertMerchandise);
 // Methods Request
 // getPedidosFornecedoresAssociado.php
 router.get("/requestproviderclient/:codclient", Request.getRequestProviderClient); // localhost:3001/requestproviderclient/9
+router.get("/requesttopproviderclient/:codclient", Request.getRequestTopProviderClient); // localhost:3001/requestproviderclient/9
+
 // getPedidos.php
 router.get("/requestsprovider/:codprovider", Request.getRequestsProvider); // localhost:3001/requestsprovider/333
 

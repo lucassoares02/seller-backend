@@ -4,26 +4,6 @@ const Select = require("@select");
 const Insert = require("@insert");
 
 const Provider = {
-  async getProviderClientTopFour(req, res) {
-    logger.info("Get Provider Client");
-
-    const { codconsultor } = req.params;
-
-    const queryConsult =
-      "SET sql_mode = ''; select cnpjForn, nomeForn, razaoForn, codForn, image, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from relaciona join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona join fornecedor on fornecedor.codForn = pedido.codFornPedido left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relaciona.codAssocRelaciona =" +
-      codconsultor +
-      " group by fornecedor.codForn order by valorTotal desc limit 4";
-
-    connection.query(queryConsult, (error, results, fields) => {
-      if (error) {
-        console.log("Error Select Provider Client Top Four: ", error);
-      } else {
-        return res.json(results[1]);
-      }
-    });
-    // connection.end();
-  },
-
   async getProviderClient(req, res) {
     logger.info("Get Provider Client");
 
