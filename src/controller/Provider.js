@@ -4,13 +4,35 @@ const Select = require("@select");
 const Insert = require("@insert");
 
 const Provider = {
+  async getProviderClientTopFour(req, res) {
+    logger.info("Get Provider Client");
+
+    const { codconsultor } = req.params;
+
+    const queryConsult =
+      "SET sql_mode = ''; select cnpjForn, nomeForn, razaoForn, codForn, image, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from relaciona join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona join fornecedor on fornecedor.codForn = pedido.codFornPedido left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relaciona.codAssocRelaciona =" +
+      codconsultor +
+      " group by fornecedor.codForn order by valorTotal desc limit 4";
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select Provider Client Top Four: ", error);
+      } else {
+        return res.json(results[1]);
+      }
+    });
+    // connection.end();
+  },
 
   async getProviderClient(req, res) {
     logger.info("Get Provider Client");
 
     const { codconsultor } = req.params;
 
-    const queryConsult = "SET sql_mode = ''; select cnpjForn, nomeForn, razaoForn, codForn, image, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from relaciona join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona join fornecedor on fornecedor.codForn = pedido.codFornPedido left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relaciona.codAssocRelaciona =" + codconsultor + " group by fornecedor.codForn order by valorTotal desc";
+    const queryConsult =
+      "SET sql_mode = ''; select cnpjForn, nomeForn, razaoForn, codForn, image, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from relaciona join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona join fornecedor on fornecedor.codForn = pedido.codFornPedido left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relaciona.codAssocRelaciona =" +
+      codconsultor +
+      " group by fornecedor.codForn order by valorTotal desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -51,7 +73,6 @@ const Provider = {
     // connection.end();
   },
 
-
   async getProvidersCategories(req, res) {
     logger.info("Get Providers Categories");
 
@@ -85,7 +106,6 @@ const Provider = {
     // connection.end();
   },
 
-
   async getProvidersClient(req, res) {
     logger.info("Get Providers Client");
 
@@ -118,7 +138,6 @@ const Provider = {
     // connection.end();
   },
 
-
   async getAllProviders(req, res) {
     logger.info("Get All Providers");
 
@@ -134,13 +153,15 @@ const Provider = {
     // connection.end();
   },
 
-
   async getProviderConsult(req, res) {
     logger.info("Get Provider Consult");
 
     const { codconsult } = req.params;
 
-    const queryConsult = "SET sql_mode = ''; select cnpjForn, nomeForn, razaoForn, image, codForn, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from fornecedor join relacionafornecedor on relacionafornecedor.codFornecedor = fornecedor.codForn left join pedido on pedido.codFornPedido = relacionafornecedor.codFornecedor left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relacionafornecedor.codConsultor = " + codconsult + " group by fornecedor.codForn order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
+    const queryConsult =
+      "SET sql_mode = ''; select cnpjForn, nomeForn, razaoForn, image, codForn, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from fornecedor join relacionafornecedor on relacionafornecedor.codFornecedor = fornecedor.codForn left join pedido on pedido.codFornPedido = relacionafornecedor.codFornecedor left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relacionafornecedor.codConsultor = " +
+      codconsult +
+      " group by fornecedor.codForn order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -171,12 +192,10 @@ const Provider = {
     // connection.end();
   },
 
-
   async postInsertProvider(req, res) {
     logger.info("Post Insert Provider");
 
     const { codForn, nomeForn, razaoForn, cnpjForn, telForn, type, categoria, codComprFornecedor, image } = req.body;
-
 
     let queryInsert = "";
 
@@ -197,9 +216,6 @@ const Provider = {
       VALUES (${codForn}, '${nomeForn}', '${razaoForn}', '${cnpjForn}', '${telForn}', 'contato@profair')`;
     }
 
-
-
-
     connection.query(queryInsert, (error, results) => {
       if (error) {
         return res.status(400).send(error);
@@ -208,10 +224,8 @@ const Provider = {
       }
     });
 
-
     // connection.end();
   },
-
 };
 
 module.exports = Provider;

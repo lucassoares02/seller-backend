@@ -61,6 +61,8 @@ router.get("/schedule", Notice.getAllSchedule); // localhost:3001/notices
 // Methods Provider
 // getFornecedorPorAssociado.php
 router.get("/providerclient/:codconsultor", Provider.getProviderClient); // localhost:3001/providerclient/1
+
+router.post("/getproviderclienttop", Provider.getProviderClientTopFour);
 // getFornecedoresFaturamento.php
 router.get("/suppliersinvoicing", Provider.getProviderSells); // localhost:3001/suppliersinvoicing
 // getFornecedoresCategorias.php
