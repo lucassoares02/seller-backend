@@ -34,6 +34,7 @@ const Provider = {
     razaoForn as razao, 
     codForn, 
     image,
+    color,
     IFNULL(sum(mercadoria.precoMercadoria * pedido.quantMercPedido), 0) as 'valorTotal',
     IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal'
     from fornecedor 
@@ -64,6 +65,7 @@ const Provider = {
     nomeForn,
     razaoForn as razao, 
     image,
+    color,
     codForn, 
     IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
     IFNULL(sum(pedido.quantMercPedido),0) as 'volumeTotal'
@@ -97,6 +99,7 @@ const Provider = {
     razaoForn as razao, 
     codForn, 
     image,
+    color,
     IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal', 
     IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal'
     from fornecedor 

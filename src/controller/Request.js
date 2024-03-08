@@ -16,6 +16,7 @@ const Request = {
       razaoForn, 
       image,
       codForn, 
+      color,
       IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal', 
       IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal'
       from fornecedor 
