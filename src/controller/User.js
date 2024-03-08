@@ -195,23 +195,39 @@ const User = {
             });
             // connection.end();
           } else if (results[0].direcAcesso == 3) {
-            // const queryOrganization = "SET sql_mode = ''; SELECT acesso.codAcesso, acesso.direcAcesso, organizador.nomeOrg AS nomeForn, organizador.cnpjOrg AS cnpjForn, acesso.codUsuario,  organizador.codOrg AS codForn, consultor.nomeConsult,consultor.emailConsult, consultor.cpfConsult, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorPedido' FROM acesso join consultor on acesso.codUsuario = consultor.codConsult join organizador on organizador.codOrg = consultor.codFornConsult left join pedido on pedido.codOrganizador = organizador.codOrg left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where codOrganizador = " + results[0].codOrganization + " and acesso.codAcesso = " + codacesso;
-            console.log("#####################################################################");
-            console.log(codacesso);
-            console.log("#####################################################################");
-
-            const queryOrganization = `SET sql_mode = ''; SELECT acesso.codAcesso, acesso.direcAcesso, organizador.nomeOrg AS nomeForn, organizador.cnpjOrg AS cnpjForn, acesso.codUsuario,  organizador.codOrg AS codForn, consultor.nomeConsult, consultor.cpfConsult, consultor.emailConsult, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorPedido' FROM acesso join consultor on acesso.codUsuario = consultor.codConsult join organizador on organizador.codOrg = consultor.codFornConsult left join pedido on pedido.codOrganizador = organizador.codOrg left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido and acesso.codAcesso = ${codacesso}`;
+            const queryOrganization = `SET sql_mode = '';
+            SELECT
+                acesso.codAcesso,
+                acesso.direcAcesso,
+                organizador.nomeOrg AS nomeForn,
+                organizador.cnpjOrg AS cnpjForn,
+                acesso.codUsuario,
+                organizador.codOrg AS codForn,
+                consultor.nomeConsult,
+                consultor.cpfConsult,
+                consultor.emailConsult,
+                -- Soma o valor total dos pedidos
+                FORMAT(
+                    IFNULL(
+                        SUM(mercadoria.precoMercadoria * pedido.quantMercPedido),
+                        0
+                    ),
+                    2,
+                    'de_DE'
+                ) AS valorPedido
+            FROM acesso
+            -- Junta as tabelas
+            JOIN consultor ON acesso.codUsuario = consultor.codConsult
+            JOIN organizador ON organizador.codOrg = consultor.codFornConsult
+            LEFT JOIN pedido ON pedido.codOrganizador = organizador.codOrg
+            LEFT JOIN mercadoria ON mercadoria.codMercadoria = pedido.codMercPedido
+            WHERE acesso.codAcesso = ${codacesso};
+            `;
 
             connection.query(queryOrganization, (error, results) => {
               if (error) {
                 return res.status(400).send(error);
               } else {
-                console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-                console.log(results);
-                console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-                console.log(results[1]);
-                console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-                logger.info(results[1]);
                 return res.json(results[1]);
               }
             });
