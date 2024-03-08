@@ -11,12 +11,12 @@ const User = {
 
     const queryConsult = "select codAcesso, codOrganization, direcAcesso from acesso where codAcesso = " + codacesso;
 
-    connection.query(queryConsult, async (error, results, fields) => {
+    connection.query(queryConsult, async (error, resultsTop, fields) => {
       if (error) {
         return res.status(400).send(error);
       } else {
-        if (results.length > 0) {
-          if (results[0].direcAcesso == 1) {
+        if (resultsTop.length > 0) {
+          if (resultsTop[0].direcAcesso == 1) {
             const queryProvider = `
             set sql_mode = '';
             select
@@ -48,7 +48,7 @@ const User = {
               }
             });
             // connection.end();
-          } else if (results[0].direcAcesso == 2) {
+          } else if (resultsTop[0].direcAcesso == 2) {
             const queryClient = `
               SET sql_mode = ''; 
               SELECT acesso.codAcesso,
@@ -80,7 +80,7 @@ const User = {
               }
             });
             // connection.end();
-          } else if (results[0].direcAcesso == 3) {
+          } else if (resultsTop[0].direcAcesso == 3) {
             // const queryOrganization = "SET sql_mode = ''; SELECT acesso.codAcesso, acesso.direcAcesso, organizador.nomeOrg AS nomeForn, organizador.cnpjOrg AS cnpjForn, acesso.codUsuario,  organizador.codOrg AS codForn, consultor.nomeConsult, consultor.cpfConsult, consultor.emailConsult, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorPedido' FROM acesso join consultor on acesso.codUsuario = consultor.codConsult join organizador on organizador.codOrg = consultor.codFornConsult left join pedido on pedido.codOrganizador = organizador.codOrg left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where codOrganizador = " + results[0].codOrganization + " and acesso.codAcesso = " + codacesso;
             // const queryOrganization = "SET sql_mode = ''; SELECT acesso.codAcesso, acesso.direcAcesso, organizador.nomeOrg AS nomeForn, organizador.cnpjOrg AS cnpjForn, acesso.codUsuario,  organizador.codOrg AS codForn, consultor.nomeConsult, consultor.cpfConsult, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorPedido' FROM acesso join consultor on acesso.codUsuario = consultor.codConsult join organizador on organizador.codOrg = consultor.codFornConsult left join pedido on pedido.codOrganizador = organizador.codOrg left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido and acesso.codAcesso = " + codacesso;
             const queryOrganization = `
@@ -99,7 +99,7 @@ const User = {
             join organizador on organizador.codOrg = consultor.codFornConsult 
             left join pedido on pedido.codOrganizador = organizador.codOrg 
             left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido
-            where organizador.codOrg = ${results[0].codOrganization} 
+            where organizador.codOrg = ${resultsTop[0].codOrganization} 
             and acesso.codAcesso = ${codacesso}`;
 
             connection.query(queryOrganization, (error, results) => {
@@ -196,14 +196,22 @@ const User = {
             // connection.end();
           } else if (results[0].direcAcesso == 3) {
             // const queryOrganization = "SET sql_mode = ''; SELECT acesso.codAcesso, acesso.direcAcesso, organizador.nomeOrg AS nomeForn, organizador.cnpjOrg AS cnpjForn, acesso.codUsuario,  organizador.codOrg AS codForn, consultor.nomeConsult,consultor.emailConsult, consultor.cpfConsult, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorPedido' FROM acesso join consultor on acesso.codUsuario = consultor.codConsult join organizador on organizador.codOrg = consultor.codFornConsult left join pedido on pedido.codOrganizador = organizador.codOrg left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where codOrganizador = " + results[0].codOrganization + " and acesso.codAcesso = " + codacesso;
-            const queryOrganization =
-              "SET sql_mode = ''; SELECT acesso.codAcesso, acesso.direcAcesso, organizador.nomeOrg AS nomeForn, organizador.cnpjOrg AS cnpjForn, acesso.codUsuario,  organizador.codOrg AS codForn, consultor.nomeConsult, consultor.cpfConsult, consultor.emailConsult, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorPedido' FROM acesso join consultor on acesso.codUsuario = consultor.codConsult join organizador on organizador.codOrg = consultor.codFornConsult left join pedido on pedido.codOrganizador = organizador.codOrg left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido and acesso.codAcesso = " +
-              codacesso;
+            console.log("#####################################################################");
+            console.log(codacesso);
+            console.log("#####################################################################");
+
+            const queryOrganization = `SET sql_mode = ''; SELECT acesso.codAcesso, acesso.direcAcesso, organizador.nomeOrg AS nomeForn, organizador.cnpjOrg AS cnpjForn, acesso.codUsuario,  organizador.codOrg AS codForn, consultor.nomeConsult, consultor.cpfConsult, consultor.emailConsult, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorPedido' FROM acesso join consultor on acesso.codUsuario = consultor.codConsult join organizador on organizador.codOrg = consultor.codFornConsult left join pedido on pedido.codOrganizador = organizador.codOrg left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido and acesso.codAcesso = ${codacesso}`;
 
             connection.query(queryOrganization, (error, results) => {
               if (error) {
                 return res.status(400).send(error);
               } else {
+                console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                console.log(results);
+                console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                console.log(results[1]);
+                console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                logger.info(results[1]);
                 return res.json(results[1]);
               }
             });
