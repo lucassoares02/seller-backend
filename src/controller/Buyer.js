@@ -29,6 +29,7 @@ const Buyer = {
     comprador.codCompr, 
     comprador.nomeCompr,
     comprador.descCatComprador,
+    comprador.color,
     IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido),0 ) as 'valorTotal', 
     IFNULL(sum(pedido.quantMercPedido),0 ) as 'volumeTotal'
     from comprador
