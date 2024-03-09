@@ -65,7 +65,7 @@ const Provider = {
     nomeForn,
     razaoForn as razao, 
     image,
-    color,
+    fornecedor.color,
     codForn, 
     IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
     IFNULL(sum(pedido.quantMercPedido),0) as 'volumeTotal'
