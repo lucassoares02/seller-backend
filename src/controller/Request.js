@@ -104,6 +104,43 @@ const Request = {
     // connection.end();
   },
 
+  async getRequestsClientsWithNegotiation(req, res) {
+    logger.info("Get Requests Provider");
+
+    const { codebranch } = req.params;
+
+    const queryConsult = `
+    SET sql_mode = ''; select pedido.codPedido , 
+    associado.cnpjAssociado , 
+    associado.codAssociado ,
+    consultor.nomeConsult, 
+    associado.razaoAssociado, 
+    fornecedor.nomeForn,
+    negociacao.descNegociacao,
+    sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'valor', 
+    TIME_FORMAT(SUBTIME(pedido.dataPedido, '03:00:00'),'%H:%i') as 'horas' 
+    from consultor 
+    join pedido on consultor.codConsult = pedido.codComprPedido 
+    join fornecedor on fornecedor.codForn = pedido.codFornPedido
+    join negociacao on negociacao.codNegociacao = pedido.codNegoPedido
+    join associado on pedido.codAssocPedido = associado.codAssociado 
+    join mercadoria on pedido.codMercPedido = mercadoria.codMercadoria 
+    where pedido.codAssocPedido = ${codebranch} 
+    group by pedido.codNegoPedido
+    order by valor 
+    desc
+    `;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select Requests Provider: ", error);
+      } else {
+        return res.json(results[1]);
+      }
+    });
+    // connection.end();
+  },
+
   async getRequestsClients(req, res) {
     logger.info("Get Requests Provider");
 
