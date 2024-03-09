@@ -112,7 +112,7 @@ const Request = {
     const queryConsult = `
     SET sql_mode = ''; select pedido.codPedido , 
     associado.cnpjAssociado , 
-    associado.codAssociado ,
+    associado.codAssociado  as codConsultRelaciona,
     consultor.nomeConsult, 
     associado.razaoAssociado, 
     fornecedor.nomeForn,
