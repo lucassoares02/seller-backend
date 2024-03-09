@@ -113,7 +113,7 @@ router.get("/merchandisenegotiationprovider/:codprovider/:codnegotiation", Merch
 
 router.get("/merchandisepercustomer/:codclient/:codeprovider", Merchandise.getMerchandisePerCustomer); // localhost:3001/merchandiseproviderifclient/7/333/1
 
-router.get("/merchandiseperclient/:codclient/:codeprovider", Merchandise.getMerchandisePerClient); // localhost:3001/merchandiseproviderifclient/7/333/1
+router.get("/merchandiseperclient/:codclient/:codeprovider/:codenegotiation", Merchandise.getMerchandisePerClient); // localhost:3001/merchandiseproviderifclient/7/333/1
 
 router.post("/insertmerchandise", Merchandise.postInsertMerchandise);
 
