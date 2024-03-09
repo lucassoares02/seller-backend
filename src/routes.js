@@ -125,7 +125,7 @@ router.get("/requesttopproviderclient/:codclient", Request.getRequestTopProvider
 // getPedidos.php
 router.get("/requestsprovider/:codprovider", Request.getRequestsProvider); // localhost:3001/requestsprovider/333
 
-router.get("/requestsprovider/:codebranch", Request.getRequestsClientsWithNegotiation); // localhost:3001/requestsprovider/333
+router.get("/requestsnegotiationbyclient/:codebranch", Request.getRequestsClientsWithNegotiation); // localhost:3001/requestsprovider/333
 
 router.get("/requestsclients/:codconsult", Request.getRequestsClients); // localhost:3001/requestsprovider/333
 // getInserePedido.php
