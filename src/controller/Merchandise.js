@@ -53,7 +53,7 @@ const Merchandise = {
       codprovider +
       " and pedido.codNegoPedido = " +
       codnegotiation +
-      " group by mercadoria.nomeMercadoria order by quantMercPedido";
+      " group by mercadoria.codMercadoria order by quantMercPedido";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
