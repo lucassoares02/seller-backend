@@ -90,7 +90,7 @@ const Request = {
     join mercadoria on pedido.codMercPedido = mercadoria.codMercadoria 
     where pedido.codFornPedido = ${codprovider} 
     group by associado.codAssociado 
-    order by valor 
+    order by horas 
     desc
     limit 4
     `;
@@ -130,7 +130,7 @@ const Request = {
     join mercadoria on pedido.codMercPedido = mercadoria.codMercadoria 
     where pedido.codAssocPedido = ${codebranch} 
     group by pedido.codNegoPedido
-    order by valor 
+    order by horas 
     desc
     limit 4
     `;
@@ -164,7 +164,7 @@ const Request = {
     join mercadoria on pedido.codMercPedido = mercadoria.codMercadoria 
     where consultor.codConsult  = ${codconsult} 
     group by associado.codAssociado 
-    order by valor 
+    order by horas
     desc
     limit 4
     `;
@@ -199,7 +199,7 @@ const Request = {
     join associado on pedido.codAssocPedido = associado.codAssociado 
     join mercadoria on pedido.codMercPedido = mercadoria.codMercadoria
     group by associado.codAssociado 
-    order by valor 
+    order by horas 
     desc`;
 
     connection.query(queryConsult, (error, results, fields) => {
