@@ -92,6 +92,7 @@ const Request = {
     group by associado.codAssociado 
     order by valor 
     desc
+    limit 4
     `;
 
     connection.query(queryConsult, (error, results, fields) => {
@@ -131,6 +132,7 @@ const Request = {
     group by pedido.codNegoPedido
     order by valor 
     desc
+    limit 4
     `;
 
     connection.query(queryConsult, (error, results, fields) => {
@@ -164,6 +166,7 @@ const Request = {
     group by associado.codAssociado 
     order by valor 
     desc
+    limit 4
     `;
 
     connection.query(queryConsult, (error, results, fields) => {
