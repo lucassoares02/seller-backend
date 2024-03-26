@@ -95,6 +95,9 @@ router.get("/exportnegotiationsclient/:codeclient", Negotiation.GetExportNegotia
 // Methods Buyer
 // getCompradoresAssociados
 router.get("/buyersclient/:codconsultorclient", Buyer.getBuyersClient); // localhost:3001/buyersclient/1
+
+router.get("/buyersprovider/:codprovider", Buyer.getBuyersProvider); // localhost:3001/buyersclient/1
+
 // getTodosCompradores.php
 router.get("/buyers", Buyer.getAllBuyers); // localhost:3001/buyers
 
