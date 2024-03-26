@@ -234,17 +234,16 @@ const Request = {
   async postInserRequestNew(req, res) {
     logger.info("Get All Requests");
 
-    const { codAssociado, codFornecedor, codComprador, codNegociacao, codOrganizacao, items } = req.body;
+    const { codAssociado, codFornecedor, codComprador, codNegociacao, codOrganizacao, items, codeConsult } = req.body;
 
     let values = "";
     for (let i = 0; i < items.length; i++) {
-      console.log(items[i]["codMercadoria"]);
-      values = values + `(${items[i]["codMercadoria"]}, ${codNegociacao}, ${codAssociado},  ${codFornecedor}, ${codComprador}, ${items[i]["quantMercadoria"]}, ${codOrganizacao})`;
+      values = values + `(${items[i]["codMercadoria"]}, ${codNegociacao}, ${codAssociado},  ${codFornecedor}, ${codeConsult}, ${codComprador}, ${items[i]["quantMercadoria"]}, ${codOrganizacao})`;
       values = values + (i == items.length - 1 ? " " : ",");
     }
 
     const queryConsult =
-      "INSERT INTO pedido (codMercPedido, codNegoPedido, codAssocPedido, codFornPedido, codComprPedido, quantMercPedido, codOrganizador) VALUES" +
+      "INSERT INTO pedido (codMercPedido, codNegoPedido, codAssocPedido, codFornPedido, codConsultPedido, codComprPedido, quantMercPedido, codOrganizador) VALUES" +
       values +
       "ON DUPLICATE KEY UPDATE quantMercPedido = VALUES(quantMercPedido);";
 

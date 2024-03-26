@@ -11,6 +11,8 @@ const User = {
 
     const queryConsult = "select codAcesso, codOrganization, direcAcesso from acesso where codAcesso = " + codacesso;
 
+    
+
     connection.query(queryConsult, async (error, resultsTop, fields) => {
       if (error) {
         return res.status(400).send(error);

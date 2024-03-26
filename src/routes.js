@@ -134,7 +134,7 @@ router.post("/insertrequest", Request.postInsertRequest); // localhost:3001/inse
 
 router.post("/insertrequestnew", Request.postInserRequestNew); // localhost:3001/insertrequest
 
-router.get("/allrequestclients", Request.getAllRequests); // localhost:3001/allrequestclients
+router.get("/allrequestclients", Request.getAllRequests); // localhost:3001/allrequestclientsi
 
 // getInserePedido.php
 router.get("/percentageclients/:codprovider", Graphs.getPercentageClients); // localhost:3001/percentageclients/333
