@@ -10,7 +10,7 @@ const Request = {
     const { codclient } = req.params;
 
     const queryConsult = `
-    SET sql_mode = ''; select 
+    -- SET sql_mode = ''; select 
       cnpjForn, 
       nomeForn,
       razaoForn, 
@@ -31,7 +31,7 @@ const Request = {
       if (error) {
         console.log("Error Select Associate Supliers Orders: ", error);
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
     // connection.end();
@@ -42,7 +42,7 @@ const Request = {
     const { codclient } = req.params;
 
     const queryConsult = `
-    SET sql_mode = ''; select 
+    -- SET sql_mode = ''; select 
       cnpjForn, 
       nomeForn,
       razaoForn, 
@@ -65,7 +65,7 @@ const Request = {
       if (error) {
         console.log("Error Select Top Providers per Client: ", error);
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
     // connection.end();
@@ -77,7 +77,7 @@ const Request = {
     const { codprovider } = req.params;
 
     const queryConsult = `
-    SET sql_mode = ''; select pedido.codPedido , 
+    -- SET sql_mode = ''; select pedido.codPedido , 
     associado.cnpjAssociado , 
     associado.codAssociado ,
     consultor.nomeConsult, 
@@ -100,7 +100,7 @@ const Request = {
       if (error) {
         console.log("Error Select Requests Provider: ", error);
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
     // connection.end();
@@ -112,7 +112,7 @@ const Request = {
     const { codebranch } = req.params;
 
     const queryConsult = `
-    SET sql_mode = ''; select pedido.codPedido , 
+    -- SET sql_mode = ''; select pedido.codPedido , 
     associado.cnpjAssociado , 
     associado.codAssociado  as codConsultRelaciona,
     consultor.nomeConsult, 
@@ -140,7 +140,7 @@ const Request = {
       if (error) {
         console.log("Error Select Requests Provider: ", error);
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
     // connection.end();
@@ -152,7 +152,7 @@ const Request = {
     const { codconsult } = req.params;
 
     const queryConsult = `
-    SET sql_mode = ''; select pedido.codPedido , 
+    -- SET sql_mode = ''; select pedido.codPedido , 
     associado.cnpjAssociado , 
     associado.codAssociado ,
     consultor.nomeConsult, 
@@ -174,7 +174,7 @@ const Request = {
       if (error) {
         console.log("Error Select Requests Provider: ", error);
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
     // connection.end();
@@ -186,7 +186,7 @@ const Request = {
     const { codprovider } = req.params;
 
     const queryConsult = `
-    SET sql_mode = ''; select 
+    -- SET sql_mode = ''; select 
     pedido.codPedido ,
     associado.cnpjAssociado ,
     associado.codAssociado ,
@@ -207,7 +207,7 @@ const Request = {
       if (error) {
         console.log("Error Select All Requests: ", error);
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
     // connection.end();
@@ -226,7 +226,7 @@ const Request = {
   //     if (error) {
   //       console.log("Error Select All Requests: ", error);
   //     } else {
-  //       return res.json(results[1]);
+  //       return res.json(results[0]);
   //     }
   //   });
   //   // connection.end();
@@ -257,7 +257,7 @@ const Request = {
         console.log(error);
         console.log("Error Select All Requests: ", error);
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
     return 0;
@@ -270,7 +270,7 @@ const Request = {
     const { codMercadoria, quantMercadoria, codFornecedor, codAssociado, codComprador, codNegociacao, codOrganizacao } = req.body;
 
     const queryConsult =
-      "SET sql_mode = ''; select quantMercPedido from pedido where codMercPedido = " +
+      "-- SET sql_mode = ''; select quantMercPedido from pedido where codMercPedido = " +
       codMercadoria +
       " and codAssocPedido = " +
       codAssociado +
@@ -305,7 +305,7 @@ const Request = {
             if (error) {
               return "Error Insert Request Client: ", error;
             } else {
-              return res.json(results[1]);
+              return res.json(results[0]);
             }
           });
         } else {
@@ -324,7 +324,7 @@ const Request = {
             if (error) {
               return "Error Update Request Client: ", error;
             } else {
-              return res.json(results[1]);
+              return res.json(results[0]);
             }
           });
         }

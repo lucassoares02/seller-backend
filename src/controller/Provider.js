@@ -10,7 +10,7 @@ const Provider = {
     const { codconsultor } = req.params;
 
     const queryConsult =
-      "SET sql_mode = ''; select cnpjForn, nomeForn, razaoForn, codForn, image, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from relaciona join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona join fornecedor on fornecedor.codForn = pedido.codFornPedido left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relaciona.codAssocRelaciona =" +
+      "-- SET sql_mode = ''; select cnpjForn, nomeForn, razaoForn, codForn, image, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from relaciona join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona join fornecedor on fornecedor.codForn = pedido.codFornPedido left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relaciona.codAssocRelaciona =" +
       codconsultor +
       " group by fornecedor.codForn order by valorTotal desc";
 
@@ -18,7 +18,7 @@ const Provider = {
       if (error) {
         console.log("Error Select Provider Client: ", error);
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
     // connection.end();
@@ -28,7 +28,7 @@ const Provider = {
     logger.info("Get Provider Sells");
 
     const queryConsult = `
-    SET sql_mode = ''; select 
+    -- SET sql_mode = ''; select 
     cnpjForn,
     nomeForn, 
     razaoForn as razao, 
@@ -48,7 +48,7 @@ const Provider = {
       if (error) {
         console.log("Error Select Provider Sells: ", error);
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
     // connection.end();
@@ -60,7 +60,7 @@ const Provider = {
     const { codbuyer } = req.params;
 
     const queryConsult = `
-    SET sql_mode = ''; select 
+    -- SET sql_mode = ''; select 
     cnpjForn, 
     nomeForn,
     razaoForn as razao, 
@@ -82,7 +82,7 @@ const Provider = {
       if (error) {
         console.log("Error Select Providers Categories: ", error);
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
     // connection.end();
@@ -94,7 +94,7 @@ const Provider = {
     const { codconsultclient } = req.params;
 
     const queryConsult = `
-    SET sql_mode = ''; select cnpjForn, 
+    -- SET sql_mode = ''; select cnpjForn, 
     nomeForn,
     razaoForn as razao, 
     codForn, 
@@ -115,7 +115,7 @@ const Provider = {
       if (error) {
         console.log("Error Select Providers Client: ", error);
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
     // connection.end();
@@ -130,7 +130,7 @@ const Provider = {
       if (error) {
         console.log("Error Select All Providers: ", error);
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
     // connection.end();
@@ -142,7 +142,7 @@ const Provider = {
     const { codconsult } = req.params;
 
     const queryConsult =
-      "SET sql_mode = ''; select cnpjForn, nomeForn, razaoForn, image, codForn, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from fornecedor join relacionafornecedor on relacionafornecedor.codFornecedor = fornecedor.codForn left join pedido on pedido.codFornPedido = relacionafornecedor.codFornecedor left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relacionafornecedor.codConsultor = " +
+      "-- SET sql_mode = ''; select cnpjForn, nomeForn, razaoForn, image, codForn, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from fornecedor join relacionafornecedor on relacionafornecedor.codFornecedor = fornecedor.codForn left join pedido on pedido.codFornPedido = relacionafornecedor.codFornecedor left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relacionafornecedor.codConsultor = " +
       codconsult +
       " group by fornecedor.codForn order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
 
@@ -150,7 +150,7 @@ const Provider = {
       if (error) {
         console.log("Error Select Provider Consult: ", error);
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
     // connection.end();
@@ -169,7 +169,7 @@ const Provider = {
       if (error) {
         return res.status(400).send(error);
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
     // connection.end();

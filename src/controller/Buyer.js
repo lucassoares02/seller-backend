@@ -8,7 +8,7 @@ const Buyer = {
     const { codconsultorclient } = req.params;
 
     const queryConsult =
-      "SET sql_mode = ''; select comprador.codCompr, comprador.nomeCompr, comprador.descCatComprador, ifnull(sum(pedido.quantMercPedido), 0) as volumeTotal,   FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido),0), 2, 'de_DE') as valorTotal from comprador left outer join fornecedor on fornecedor.codComprFornecedor = comprador.codCompr left join pedido on pedido.codFornPedido = fornecedor.codForn left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido left join relaciona on relaciona.codConsultRelaciona = pedido.codAssocPedido where relaciona.codAssocRelaciona = " +
+      "-- SET sql_mode = ''; select comprador.codCompr, comprador.nomeCompr, comprador.descCatComprador, ifnull(sum(pedido.quantMercPedido), 0) as volumeTotal,   FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido),0), 2, 'de_DE') as valorTotal from comprador left outer join fornecedor on fornecedor.codComprFornecedor = comprador.codCompr left join pedido on pedido.codFornPedido = fornecedor.codForn left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido left join relaciona on relaciona.codConsultRelaciona = pedido.codAssocPedido where relaciona.codAssocRelaciona = " +
       codconsultorclient +
       " group by comprador.codCompr";
 
@@ -16,7 +16,7 @@ const Buyer = {
       if (error) {
         console.log("Error Select Buyers to Client: ", error);
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
     // connection.end();
@@ -27,7 +27,7 @@ const Buyer = {
 
     const { codprovider } = req.params;
 
-    const queryConsult = `SET sql_mode = ''; 
+    const queryConsult = `-- SET sql_mode = ''; 
     select 
     c.codConsult as 'codCompr',
     c.nomeConsult as 'nomeCompr',
@@ -46,7 +46,7 @@ const Buyer = {
       if (error) {
         console.log("Error Select Buyers to Client: ", error);
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
     // connection.end();
@@ -56,7 +56,7 @@ const Buyer = {
     logger.info("Get All Buyers");
 
     const queryConsult = `
-    SET sql_mode = ''; select 
+    -- SET sql_mode = ''; select 
     comprador.codCompr, 
     comprador.nomeCompr,
     comprador.descCatComprador,
@@ -75,7 +75,7 @@ const Buyer = {
       if (error) {
         console.log("Error Select All Buyers: ", error);
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
     // connection.end();

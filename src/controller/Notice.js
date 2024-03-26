@@ -8,13 +8,13 @@ const Notice = {
   async getAllNotice(req, res) {
     logger.info("Get All Notices");
 
-    const queryConsult = "SET sql_mode = ''; select * from notices order by priority desc";
+    const queryConsult = "-- SET sql_mode = ''; select * from notices order by priority desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
         console.log("Error Select Notices: ", error);
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
     // connection.end();
@@ -24,13 +24,13 @@ const Notice = {
   async getAllSchedule(req, res) {
     logger.info("Get All Schedule");
 
-    const queryConsult = "SET sql_mode = ''; select * from schedule";
+    const queryConsult = "-- SET sql_mode = ''; select * from schedule";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
         console.log("Error Select Schedule: ", error);
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
     // connection.end();
