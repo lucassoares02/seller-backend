@@ -81,6 +81,7 @@ const Request = {
     associado.cnpjAssociado , 
     associado.codAssociado ,
     consultor.nomeConsult, 
+    pedido.codConsultPedido,
     associado.razaoAssociado, 
     sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'valor', 
     TIME_FORMAT(SUBTIME(pedido.dataPedido, '03:00:00'),'%H:%i') as 'horas' 
