@@ -4,11 +4,11 @@ const Select = require("@select");
 const Insert = require("@insert");
 
 const Negotiation = {
-
   async getAllNegotiation(req, res) {
     logger.info("Get All Negotiations");
 
-    const queryConsult = "SET sql_mode = ''; select relaciona.codAssocRelaciona, consultor.nomeConsult, relaciona.codConsultRelaciona, associado.razaoAssociado,  associado.cnpjAssociado, FORMAT(COALESCE(sum(mercadoria.precoMercadoria*pedido.quantMercPedido),'0'), 2, 'de_DE') as 'valorTotal', sum(pedido.quantMercPedido) as 'volumeTotal' from associado join relaciona on relaciona.codConsultRelaciona = associado.codAssociado join consultor on consultor.codConsult = relaciona.codAssocRelaciona left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona left join mercadoria on codMercadoria = pedido.codMercPedido group by relaciona.codConsultRelaciona order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
+    const queryConsult =
+      "SET sql_mode = ''; select relaciona.codAssocRelaciona, consultor.nomeConsult, relaciona.codConsultRelaciona, associado.razaoAssociado,  associado.cnpjAssociado, FORMAT(COALESCE(sum(mercadoria.precoMercadoria*pedido.quantMercPedido),'0'), 2, 'de_DE') as 'valorTotal', sum(pedido.quantMercPedido) as 'volumeTotal' from associado join relaciona on relaciona.codConsultRelaciona = associado.codAssociado join consultor on consultor.codConsult = relaciona.codAssocRelaciona left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona left join mercadoria on codMercadoria = pedido.codMercPedido group by relaciona.codConsultRelaciona order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -20,16 +20,23 @@ const Negotiation = {
     // connection.end();
   },
 
-
-
   async getNegotiationProvider(req, res) {
     logger.info("Get Negotiation Provider");
 
     const { codforn } = req.params;
 
-
-    const queryConsult = "SET sql_mode = ''; select negociacao.codNegociacao, negociacao.descNegociacao, negociacao.codFornNegociacao, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido. quantMercPedido),0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido),0) as 'volumeTotal' from negociacao left join pedido on pedido.codNegoPedido = negociacao.codNegociacao left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where negociacao.codFornNegociacao = " + codforn + " group by negociacao.codNegociacao order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
-
+    const queryConsult = `
+    SET sql_mode = ''; 
+    select negociacao.*, 
+    FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido. quantMercPedido),0), 2, 'de_DE') as 'valorTotal', 
+    IFNULL(sum(pedido.quantMercPedido),0) as 'volumeTotal' 
+    from negociacao 
+    left join pedido on pedido.codNegoPedido = negociacao.codNegociacao 
+    left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido 
+    where negociacao.codFornNegociacao = ${codforn} 
+    group by negociacao.codNegociacao 
+    order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
+    desc`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -45,7 +52,6 @@ const Negotiation = {
     logger.info("Get Export Negotiation ");
 
     const { codforn } = req.params;
-
 
     const queryConsult = `
     SET sql_mode = ''; select
@@ -65,30 +71,26 @@ const Negotiation = {
       where m.codMercadoria = p.codMercPedido 
       order by p.codNegoPedido;`;
 
-
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
         console.log("Error Export Negotiation : ", error);
       } else {
-
         let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
 
-        csvData += results[1].map((row) => {
-          return ` ${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
-
-
-
-        }).join('\n');
+        csvData += results[1]
+          .map((row) => {
+            return ` ${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+          })
+          .join("\n");
 
         const dateNow = Date.now();
 
         // Configurar os cabeçalhos de resposta para fazer o download
-        res.setHeader('Content-Disposition', `attachment; filename=${dateNow}_negociacoes.csv`);
-        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader("Content-Disposition", `attachment; filename=${dateNow}_negociacoes.csv`);
+        res.setHeader("Content-Type", "text/csv");
 
         // Transmitir o arquivo CSV como resposta
         return res.send(csvData);
-
 
         // return res.json(results[1]);
       }
@@ -96,15 +98,10 @@ const Negotiation = {
     // connection.end();
   },
 
-
   async GetExportNegotiationsClient(req, res) {
     logger.info("Get Export Negotiation ");
 
     const { codeclient } = req.params;
-
-
-
-
 
     // const queryConsult = `
     // SET sql_mode = ''; select
@@ -120,7 +117,7 @@ const Negotiation = {
     //   p.codNegoPedido
     //   from pedido p
     //   join mercadoria m on m.codMercadoria = p.codMercPedido
-    //   where m.codMercadoria = p.codMercPedido 
+    //   where m.codMercadoria = p.codMercPedido
     //   and p.codAssocPedido = ${codeclient}
     //   group by p.codMercPedido
     //   order by p.codNegoPedido`;
@@ -144,13 +141,11 @@ const Negotiation = {
       and p.codAssocPedido = ${codeclient}
       order by p.codNegoPedido`;
 
-
     connection.query(queryConsult, async (error, results, fields) => {
       if (error) {
         console.log("Error Export Negotiation : ", error);
       } else {
         let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
-
 
         //=============================================================
         //=============================================================
@@ -160,8 +155,6 @@ const Negotiation = {
         let listMerc = [];
         const queryReusult = await new Promise(async (resolve, reject) => {
           await results[1].map(async (row) => {
-
-
             const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${row.codMercPedido}`;
 
             const asfdasf = await new Promise(async (resolve, reject) => {
@@ -174,11 +167,7 @@ const Negotiation = {
                     data.push(resultssss[i]["codNegociacao"]);
                   }
 
-
-
-
                   if (data.indexOf(row.codNegoPedido) == -1) {
-
                     // let novaNegociacao = data[0];
                     // if (listMerc.length > 0) {
 
@@ -186,7 +175,6 @@ const Negotiation = {
 
                     //     if (listMerc[i].mercadoria == row.codMercPedido) {
                     //       let negociacao = listMerc[i].negociacao;
-
 
                     //       if (negociacao != data[0]) {
                     //         novaNegociacao = data[0];
@@ -205,11 +193,7 @@ const Negotiation = {
 
                     csvData += `${row.codMercPedido};${data[0]};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}\n`; // Substitua com os nomes das colunas do seu banco de dados;
                     // listMerc.push({ mercadoria: row.codMercPedido, negociacao: data[0] });
-
                   } else {
-
-
-
                     // let novaNegociacao = row.codNegoPedido;
                     // if (listMerc.length > 0) {
 
@@ -227,19 +211,17 @@ const Negotiation = {
 
                     csvData += `${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}\n`; // Substitua com os nomes das colunas do seu banco de dados;
                     // listMerc.push({ mercadoria: row.codMercPedido, negociacao: row.codNegoPedido });
-
                   }
                 }
                 resolve();
               });
-            })
+            });
             count += 1;
             if (count == results[1].length) {
               resolve();
             }
           });
         });
-
 
         console.log("=------------------------ listMerc ----------------------------");
         console.log(listMerc);
@@ -255,12 +237,11 @@ const Negotiation = {
         const dateNow = Date.now();
 
         // Configurar os cabeçalhos de resposta para fazer o download
-        res.setHeader('Content-Disposition', `attachment; filename = ${dateNow}negociacao.csv`);
-        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader("Content-Disposition", `attachment; filename = ${dateNow}negociacao.csv`);
+        res.setHeader("Content-Type", "text/csv");
 
         // Transmitir o arquivo CSV como resposta
         return res.send(csvData);
-
 
         // return res.json(results[1]);
       }
@@ -268,12 +249,10 @@ const Negotiation = {
     // connection.end();
   },
 
-
   async GetExportNegotiationsClientTeste(req, res) {
     logger.info("Get Export Negotiation ");
 
     const { codeclient } = req.params;
-
 
     function verificarMercadoria(codigo, lista) {
       for (i = 0; i < lista.length; i++) {
@@ -281,9 +260,8 @@ const Negotiation = {
           return i; // A mercadoria foi encontrada na lista.
         }
       }
-      return -1
+      return -1;
     }
-
 
     const queryConsult = `
     SET sql_mode = ''; select
@@ -307,12 +285,10 @@ const Negotiation = {
     let listItens = [];
     let listNegociacoes = [];
 
-
     connection.query(queryConsult, async (error, results, fields) => {
       if (error) {
         console.log("Error Export Negotiation : ", error);
       } else {
-
         //=============================================================
         //=============================================================
         //=============================================================
@@ -331,8 +307,7 @@ const Negotiation = {
         // 6. Verifica se a negociação daquela mercadoria está dentro das negociações possíveis
         // 7. Se estiver vou remover ela da lista de negociações
         // 8. Se para aquela mercadoria só tiver um negociação possível, vou somar as quantidades
-        // 9. 
-
+        // 9.
 
         // console.log("======================= Results =======================");
         // console.log(results[1].length);
@@ -342,7 +317,6 @@ const Negotiation = {
 
         const queryReusult = await new Promise(async (resolve, reject) => {
           await results[1].map(async (row) => {
-
             const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${row.codMercPedido}`;
 
             const asfdasf = await new Promise(async (resolve, reject) => {
@@ -355,7 +329,7 @@ const Negotiation = {
                     data.push(resultssss[i]["codNegociacao"]);
                   }
 
-                  const mercadoria = listNegociacoes.find(item => item.mercadoria == row.codMercPedido);
+                  const mercadoria = listNegociacoes.find((item) => item.mercadoria == row.codMercPedido);
 
                   if (mercadoria == undefined || listNegociacoes.length == 0) {
                     listNegociacoes.push({ mercadoria: row.codMercPedido, negociacao: data });
@@ -416,7 +390,7 @@ const Negotiation = {
                 }
                 resolve();
               });
-            })
+            });
             count += 1;
             if (count == results[1].length) {
               resolve();
@@ -430,18 +404,15 @@ const Negotiation = {
         // console.log("=================================== List Itens =================================== ");
 
         return res.send({ message: "Success" });
-
       }
     });
     // connection.end();
   },
 
-
   async GetExportNegotiationsClientTesteNovo(req, res) {
     logger.info("Get Export Negotiation ");
 
     const { codeclient } = req.params;
-
 
     function verificarMercadoria(codigo, lista) {
       for (i = 0; i < lista.length; i++) {
@@ -450,9 +421,8 @@ const Negotiation = {
           return i; // A mercadoria foi encontrada na lista.
         }
       }
-      return -1
+      return -1;
     }
-
 
     const queryConsult = `
     SET sql_mode = ''; select
@@ -476,17 +446,14 @@ const Negotiation = {
     let listItens = [];
     let listNegociacoes = [];
 
-
     connection.query(queryConsult, async (error, results, fields) => {
       if (error) {
         console.log("Error Export Negotiation : ", error);
       } else {
-
         count = 0;
 
         const queryReusult = await new Promise(async (resolve, reject) => {
           await results[1].map(async (row) => {
-
             const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${row.codMercPedido}`;
 
             const asfdasf = await new Promise(async (resolve, reject) => {
@@ -504,11 +471,8 @@ const Negotiation = {
                   console.log("\n================================================");
                   console.log(`Mercadoria: ${row.codMercPedido}`);
 
-
-                  const mercadoria = listNegociacoes.findIndex(item => item.mercadoria == row.codMercPedido);
+                  const mercadoria = listNegociacoes.findIndex((item) => item.mercadoria == row.codMercPedido);
                   console.log(`Index: ${mercadoria}`);
-
-
 
                   if (listNegociacoes[mercadoria] == undefined || listNegociacoes.length == 0) {
                     console.log("Primeira inserção na lista de negociações");
@@ -541,11 +505,10 @@ const Negotiation = {
                         listNegociacoes[mercadoria].negociacao.splice(0, 1);
                         listItens.push(row);
                       } else {
-
                         let indexLista = verificarMercadoria(row.codMercPedido, listItens);
 
-                        console.log(`Mercadoria: ${listItens[indexLista]}`)
-                        console.log(`Mercadoria Detalhes: ${listItens[indexLista].codMercPedido}`)
+                        console.log(`Mercadoria: ${listItens[indexLista]}`);
+                        console.log(`Mercadoria Detalhes: ${listItens[indexLista].codMercPedido}`);
                         console.log(`Quantidade na negociação anterior : ${listItens[indexLista].quantidade}`);
 
                         let novaQuantidade = listItens[indexLista].quantidade + row.quantidade;
@@ -553,12 +516,11 @@ const Negotiation = {
                         console.log(`Nova Quantidade: ${novaQuantidade}`);
                       }
                     }
-
                   }
                 }
                 resolve();
               });
-            })
+            });
             count += 1;
             if (count == results[1].length) {
               resolve();
@@ -568,22 +530,19 @@ const Negotiation = {
 
         console.log("\n================================================\n");
 
-
         let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
 
-        csvData += listItens.map((row) => {
-          return ` ${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
-
-
-
-        }).join('\n');
+        csvData += listItens
+          .map((row) => {
+            return ` ${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+          })
+          .join("\n");
 
         const dateNow = Date.now();
 
         // Configurar os cabeçalhos de resposta para fazer o download
-        res.setHeader('Content-Disposition', `attachment; filename=${dateNow}_negociacoes.csv`);
-        res.setHeader('Content-Type', 'text/csv');
-
+        res.setHeader("Content-Disposition", `attachment; filename=${dateNow}_negociacoes.csv`);
+        res.setHeader("Content-Type", "text/csv");
 
         console.log("=================================== List Itens =================================== ");
         console.log(listItens.length);
@@ -593,15 +552,11 @@ const Negotiation = {
         // Transmitir o arquivo CSV como resposta
         return res.send(csvData);
 
-
         // return res.send({ message: "Success" });
-
       }
     });
     // connection.end();
   },
-
-
 
   async getRelacionaNegociacaoMercadoria(codMercPedido) {
     const internQuery = `select codNegociacao from relacionaMercadoria where codMercadoria = ${codMercPedido}`;
@@ -629,15 +584,17 @@ const Negotiation = {
     return data;
   },
 
-
   async getNegotiationClient(req, res) {
     logger.info("Get Negotiation to Client");
 
     const { codclient, codforn } = req.params;
 
-
-    const queryConsult = "SET sql_mode = ''; select codNegociacao,prazo, observacao, descNegociacao, (pedido.codNegoPedido) as 'confirma' from negociacao left outer join pedido on (negociacao.codNegociacao = pedido.codNegoPedido) and pedido.codAssocPedido = " + codclient + "	where negociacao.codFornNegociacao  = " + codforn + " GROUP BY negociacao.codNegociacao ORDER BY confirma desc";
-
+    const queryConsult =
+      "SET sql_mode = ''; select codNegociacao,prazo, observacao, descNegociacao, (pedido.codNegoPedido) as 'confirma' from negociacao left outer join pedido on (negociacao.codNegociacao = pedido.codNegoPedido) and pedido.codAssocPedido = " +
+      codclient +
+      "	where negociacao.codFornNegociacao  = " +
+      codforn +
+      " GROUP BY negociacao.codNegociacao ORDER BY confirma desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -654,7 +611,6 @@ const Negotiation = {
 
     const { codclient, codforn } = req.params;
 
-
     const queryConsult = `SET sql_mode = ''; 
     select codNegociacao,
       sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'total',
@@ -666,7 +622,6 @@ const Negotiation = {
     where negociacao.codFornNegociacao = ${codforn}
     GROUP BY negociacao.codNegociacao 
     ORDER BY confirma desc`;
-
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -683,18 +638,16 @@ const Negotiation = {
 
     const { codNegociacao, descNegociacao, codFornNegociacao } = req.body;
 
-
     let data = {
       codNegociacao: codNegociacao,
       descNegociacao: descNegociacao,
       codFornNegociacao: codFornNegociacao,
-    }
-
+    };
 
     let params = {
       table: "negociacao",
-      data: data
-    }
+      data: data,
+    };
     return Insert(params)
       .then(async (resp) => {
         res.status(200).send(`message: Save Success!`);
@@ -711,17 +664,15 @@ const Negotiation = {
 
     const { codMercadoria, codNegociacao } = req.body;
 
-
     let data = {
       codMercadoria: codMercadoria,
       codNegociacao: codNegociacao,
-    }
-
+    };
 
     let params = {
       table: "relacionaMercadoria",
-      data: data
-    }
+      data: data,
+    };
     return Insert(params)
       .then(async (resp) => {
         res.status(200).send(`message: Save Success!`);
@@ -732,9 +683,6 @@ const Negotiation = {
 
     // connection.end();
   },
-
-
-
 };
 
 module.exports = Negotiation;
