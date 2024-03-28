@@ -58,7 +58,6 @@ const Request = {
       group by pedido.codFornPedido 
       order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido)
       desc
-      LIMIT 4
       `;
 
     connection.query(queryConsult, (error, results, fields) => {
@@ -93,7 +92,7 @@ const Request = {
     group by associado.codAssociado 
     order by horas 
     desc
-    limit 4
+    
     `;
 
     connection.query(queryConsult, (error, results, fields) => {
@@ -133,7 +132,6 @@ const Request = {
     group by pedido.codNegoPedido
     order by horas 
     desc
-    limit 4
     `;
 
     connection.query(queryConsult, (error, results, fields) => {
@@ -167,7 +165,6 @@ const Request = {
     group by associado.codAssociado 
     order by horas
     desc
-    limit 4
     `;
 
     connection.query(queryConsult, (error, results, fields) => {
@@ -239,7 +236,9 @@ const Request = {
 
     let values = "";
     for (let i = 0; i < items.length; i++) {
-      values = values + `(${items[i]["codMercadoria"]}, ${codNegociacao}, ${codAssociado},  ${codFornecedor}, ${codeConsult}, ${codComprador}, ${items[i]["quantMercadoria"]}, ${codOrganizacao})`;
+      values =
+        values +
+        `(${items[i]["codMercadoria"]}, ${codNegociacao}, ${codAssociado},  ${codFornecedor}, ${codeConsult}, ${codComprador}, ${items[i]["quantMercadoria"]}, ${codOrganizacao})`;
       values = values + (i == items.length - 1 ? " " : ",");
     }
 
