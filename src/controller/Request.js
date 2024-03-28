@@ -105,7 +105,7 @@ const Request = {
     // connection.end();
   },
   async getRequestsNegotiation(req, res) {
-    logger.info("Get Requests Provider");
+    logger.info("Get Requests Negotiation");
 
     const { codenegotiation } = req.params;
 
