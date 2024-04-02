@@ -45,6 +45,8 @@ router.get("/storesgraph", Client.getAllStoresGraph); // localhost:3001/stores
 
 router.get("/valueminutegraph", Client.getAllStoresGraphHour); // localhost:3001/stores
 
+router.get("/valueminutegraphprovider/:codeprovider", Client.getSellGraphHourProvider); // localhost:3001/stores
+
 router.get("/valuefair", Client.getValueTotalFair); // localhost:3001/stores
 
 router.get("/storesbyprovider/:codprovider", Client.getStoresbyProvider); // localhost:3001/storesbyprovider/3333
