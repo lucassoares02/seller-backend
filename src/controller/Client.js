@@ -455,7 +455,7 @@ const Client = {
   async getSellGraphHourProvider(req, res) {
     logger.info("Get Stores Graphs Provider");
 
-    const { codeprovider } = req.body;
+    const { codeprovider } = req.params;
 
     const queryConsult = `SET sql_mode = '';
     SELECT
