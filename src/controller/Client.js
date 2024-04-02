@@ -5,15 +5,14 @@ const Insert = require("@insert");
 const Execute = require("../libs/execute");
 
 const Client = {
-
   async getAllClient(req, res) {
     logger.info("Get All Clients");
 
     const params = req.body;
     console.log(params);
 
-    const queryConsult = "SET sql_mode = ''; select relaciona.codAssocRelaciona, consultor.nomeConsult, relaciona.codConsultRelaciona, associado.razaoAssociado,  associado.cnpjAssociado, FORMAT(ifnull(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0 ), 2, 'de_DE') as 'valorTotal', ifnull(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from associado join relaciona on relaciona.codConsultRelaciona = associado.codAssociado join consultor on consultor.codConsult = relaciona.codAssocRelaciona left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona left join mercadoria on codMercadoria = pedido.codMercPedido group by relaciona.codConsultRelaciona order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
-
+    const queryConsult =
+      "SET sql_mode = ''; select relaciona.codAssocRelaciona, consultor.nomeConsult, relaciona.codConsultRelaciona, associado.razaoAssociado,  associado.cnpjAssociado, FORMAT(ifnull(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0 ), 2, 'de_DE') as 'valorTotal', ifnull(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from associado join relaciona on relaciona.codConsultRelaciona = associado.codAssociado join consultor on consultor.codConsult = relaciona.codAssocRelaciona left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona left join mercadoria on codMercadoria = pedido.codMercPedido group by relaciona.codConsultRelaciona order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -25,13 +24,14 @@ const Client = {
     // connection.end();
   },
 
-
   async getOneClient(req, res) {
     logger.info("Get One Clients");
 
     const { codacesso } = req.params;
 
-    const queryConsult = "SET sql_mode = ''; select acesso.codAcesso, acesso.direcAcesso, associado.razaoAssociado AS nomeForn, associado.cnpjAssociado AS cnpjForn, acesso.codUsuario, associado.codAssociado AS codForn, consultor.nomeConsult, consultor.cpfConsult FROM acesso JOIN consultor ON acesso.codUsuario = consultor.codConsult JOIN associado ON consultor.codFornConsult = associado.codAssociado WHERE acesso.codAcesso =" + codacesso;
+    const queryConsult =
+      "SET sql_mode = ''; select acesso.codAcesso, acesso.direcAcesso, associado.razaoAssociado AS nomeForn, associado.cnpjAssociado AS cnpjForn, acesso.codUsuario, associado.codAssociado AS codForn, consultor.nomeConsult, consultor.cpfConsult FROM acesso JOIN consultor ON acesso.codUsuario = consultor.codConsult JOIN associado ON consultor.codFornConsult = associado.codAssociado WHERE acesso.codAcesso =" +
+      codacesso;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -43,13 +43,15 @@ const Client = {
     // connection.end();
   },
 
-
   async getClientConsult(req, res) {
     logger.info("Get Clients to Consult");
 
     const { codconsultor } = req.params;
 
-    const queryConsult = "SET sql_mode = ''; select codAssociado, cnpjAssociado, razaoAssociado, codAssociado, FORMAT(ifnull(sum(mercadoria.precoMercadoria*pedido.quantMercPedido),0), 2, 'de_DE') as 'valorTotal', ifnull(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from associado left join pedido on pedido.codAssocPedido = associado.codAssociado left join relacionafornecedor on relacionafornecedor.codFornecedor = pedido.codFornPedido left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido and relacionafornecedor.codConsultor =" + codconsultor + " group by associado.codAssociado order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
+    const queryConsult =
+      "SET sql_mode = ''; select codAssociado, cnpjAssociado, razaoAssociado, codAssociado, FORMAT(ifnull(sum(mercadoria.precoMercadoria*pedido.quantMercPedido),0), 2, 'de_DE') as 'valorTotal', ifnull(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from associado left join pedido on pedido.codAssocPedido = associado.codAssociado left join relacionafornecedor on relacionafornecedor.codFornecedor = pedido.codFornPedido left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido and relacionafornecedor.codConsultor =" +
+      codconsultor +
+      " group by associado.codAssociado order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -60,7 +62,6 @@ const Client = {
     });
     // connection.end();
   },
-
 
   async getStoreConsultant(req, res) {
     logger.info("Get Store to Consult");
@@ -97,8 +98,6 @@ const Client = {
     // connection.end();
   },
 
-
-
   async getClientMerchandise(req, res) {
     logger.info("Get Clients to Merchandise");
 
@@ -132,7 +131,6 @@ const Client = {
     });
     // connection.end();
   },
-
 
   async getClientMerchandiseTrading(req, res) {
     logger.info("Get Clients to Merchandise");
@@ -174,7 +172,10 @@ const Client = {
 
     const { codprovider } = req.params;
 
-    const queryConsult = "SET sql_mode = ''; select relaciona.codAssocRelaciona, consultor.nomeConsult, relaciona.codConsultRelaciona, associado.razaoAssociado, associado.cnpjAssociado, FORMAT( IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal',  IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from associado join relaciona on relaciona.codConsultRelaciona = associado.codAssociado join consultor on consultor.codConsult = relaciona.codAssocRelaciona left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona join fornecedor on fornecedor.codForn = pedido.codFornPedido left join mercadoria on codMercadoria = pedido.codMercPedido where fornecedor.codForn = " + codprovider + " group by relaciona.codConsultRelaciona order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
+    const queryConsult =
+      "SET sql_mode = ''; select relaciona.codAssocRelaciona, consultor.nomeConsult, relaciona.codConsultRelaciona, associado.razaoAssociado, associado.cnpjAssociado, FORMAT( IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal',  IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from associado join relaciona on relaciona.codConsultRelaciona = associado.codAssociado join consultor on consultor.codConsult = relaciona.codAssocRelaciona left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona join fornecedor on fornecedor.codForn = pedido.codFornPedido left join mercadoria on codMercadoria = pedido.codMercPedido where fornecedor.codForn = " +
+      codprovider +
+      " group by relaciona.codConsultRelaciona order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -190,21 +191,21 @@ const Client = {
     logger.info("Get All Stores");
 
     // const queryConsult = `
-    // SET sql_mode = ''; select 
+    // SET sql_mode = ''; select
     // relaciona.codAssocRelaciona,
-    // consultor.nomeConsult, 
+    // consultor.nomeConsult,
     // relaciona.codConsultRelaciona,
     // associado.razaoAssociado as razao,
-    // associado.cnpjAssociado, 
+    // associado.cnpjAssociado,
     // IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
-    // IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' 
-    // from associado 
+    // IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal'
+    // from associado
     // join relaciona on relaciona.codConsultRelaciona = associado.codAssociado
-    // join consultor on consultor.codConsult = relaciona.codAssocRelaciona 
+    // join consultor on consultor.codConsult = relaciona.codAssocRelaciona
     // left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona
-    // left join mercadoria on codMercadoria = pedido.codMercPedido 
-    // group by relaciona.codConsultRelaciona 
-    // order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
+    // left join mercadoria on codMercadoria = pedido.codMercPedido
+    // group by relaciona.codConsultRelaciona
+    // order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido)
     // desc`;
     const queryConsult = `
     SET sql_mode = ''; select 
@@ -229,10 +230,8 @@ const Client = {
     // connection.end();
   },
 
-
   async getStoresbyProvider(req, res) {
     logger.info("Get Stores by Provider");
-
 
     const { codprovider } = req.params;
 
@@ -261,7 +260,6 @@ const Client = {
     // connection.end();
   },
 
-
   async postUser(req, res) {
     logger.info("Insert User");
 
@@ -269,8 +267,7 @@ const Client = {
 
     Insert(params)
       .then(async (resp) => {
-
-        return await Select({ table: 'user', where: { id: resp.insertId } })
+        return await Select({ table: "user", where: { id: resp.insertId } })
           .then((resp) => {
             return res.json(resp[0]);
           })
@@ -302,17 +299,15 @@ const Client = {
     let result = true;
     let response = "";
 
-
     connection.query(queryInsert, (error, results) => {
       if (error) {
         result = false;
-        return res.json({ "message": error.sqlMessage });
+        return res.json({ message: error.sqlMessage });
       } else {
         response = results;
         return;
       }
     });
-
 
     //=============================================================
     //=============================================================
@@ -329,7 +324,6 @@ const Client = {
           return;
         }
       });
-
     }
 
     //=============================================================
@@ -339,18 +333,18 @@ const Client = {
     if (result) {
       let dataAssociado = {
         codAssocRelaciona: cod,
-        codConsultRelaciona: empresa
-      }
+        codConsultRelaciona: empresa,
+      };
 
       let dataConsultor = {
         codConsultor: cod,
         codFornecedor: empresa,
-      }
+      };
 
       let params = {
         table: type == 1 ? "relacionafornecedor" : "relaciona",
-        data: type == 1 ? dataConsultor : dataAssociado
-      }
+        data: type == 1 ? dataConsultor : dataAssociado,
+      };
 
       console.log(params);
 
@@ -363,11 +357,8 @@ const Client = {
           console.log(error);
           return res.status(400).send(error);
         });
-
-
     }
   },
-
 
   async getAllStoresGraph(req, res) {
     logger.info("Get All Stores Graphs");
@@ -391,22 +382,21 @@ const Client = {
     desc limit 10
     `;
 
-
-    // `SET sql_mode = ''; select 
+    // `SET sql_mode = ''; select
     // relaciona.codAssocRelaciona,
-    // consultor.nomeConsult, 
+    // consultor.nomeConsult,
     // relaciona.codConsultRelaciona,
     // associado.razaoAssociado as razao,
-    // associado.cnpjAssociado, 
+    // associado.cnpjAssociado,
     // IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
-    // IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' 
-    // from associado 
+    // IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal'
+    // from associado
     // join relaciona on relaciona.codConsultRelaciona = associado.codAssociado
-    // join consultor on consultor.codConsult = relaciona.codAssocRelaciona 
+    // join consultor on consultor.codConsult = relaciona.codAssocRelaciona
     // left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona
-    // left join mercadoria on codMercadoria = pedido.codMercPedido 
-    // group by relaciona.codConsultRelaciona 
-    // order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
+    // left join mercadoria on codMercadoria = pedido.codMercPedido
+    // group by relaciona.codConsultRelaciona
+    // order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido)
     // desc limit 10`;
 
     connection.query(queryConsult, (error, results, fields) => {
@@ -421,20 +411,19 @@ const Client = {
           total += results[1][j]["valorTotal"];
         }
 
-
         i = 0;
         for (i = 0; i < results[1].length; i++) {
           item.push({
             razao: results[1][i]["razao"],
             percentage: Math.floor((results[1][i]["valorTotal"] / total) * 100) + "%",
-            value: results[1][i]["valorTotal"]
+            value: results[1][i]["valorTotal"],
           });
         }
 
         response = {
           item: item,
-          total: total
-        }
+          total: total,
+        };
 
         return res.json(response);
       }
@@ -457,14 +446,40 @@ const Client = {
       if (error) {
         console.log("Error Select All Stores Graphs: ", error);
       } else {
-
         return res.json(results[1]);
       }
     });
     // connection.end();
   },
 
+  async getSellGraphHourProvider(req, res) {
+    logger.info("Get Stores Graphs Provider");
 
+    const { codeprovider } = req.body;
+
+    const queryConsult = `SET sql_mode = '';
+    SELECT
+        date_format(SUBTIME(dataPedido, '03:00:00'), '%Y-%m-%d %H:%i') AS hour,
+        SUM(p.quantMercPedido * m.precoMercadoria) AS value,
+        SUM(SUM(p.quantMercPedido * m.precoMercadoria)) OVER (
+            ORDER BY dataPedido
+            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+        ) AS total_value
+    FROM pedido p
+    JOIN mercadoria m ON m.codMercadoria = p.codMercPedido
+    WHERE codFornPedido = ${codeprovider}
+    GROUP BY hour
+    ORDER BY hour;`;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select All Stores Graphs: ", error);
+      } else {
+        return res.json(results[1]);
+      }
+    });
+    // connection.end();
+  },
 
   async getValueTotalFair(req, res) {
     logger.info("Get All Value Fair");
@@ -479,18 +494,11 @@ const Client = {
       if (error) {
         console.log("Error Select All Value Fair: ", error);
       } else {
-
         return res.json(results[1]);
       }
     });
     // connection.end();
   },
-
-
-
-
 };
 
 module.exports = Client;
-
-
