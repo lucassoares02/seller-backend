@@ -346,15 +346,12 @@ const Client = {
         data: type == 1 ? dataConsultor : dataAssociado,
       };
 
-      console.log(params);
-
-      Insert(params)
+      return Insert(params)
         .then(async (resp) => {
-          return res.json({ message: "Save Success", data: resp });
+          res.status(200).send(`message: Save Success!`);
         })
         .catch((error) => {
-          console.log(error);
-          return res.status(400).send(error);
+          res.status(400).send(error);
         });
     }
   },
