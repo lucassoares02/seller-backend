@@ -302,7 +302,7 @@ const Client = {
     connection.query(queryInsert, (error, results) => {
       if (error) {
         result = false;
-        return res.json({ message: error.sqlMessage });
+        return;
       } else {
         response = results;
         return;
@@ -345,6 +345,10 @@ const Client = {
         table: type == 1 ? "relacionafornecedor" : "relaciona",
         data: type == 1 ? dataConsultor : dataAssociado,
       };
+
+      console.log("__________________________________________");
+      console.log(params);
+      console.log("__________________________________________");
 
       return Insert(params)
         .then(async (resp) => {
