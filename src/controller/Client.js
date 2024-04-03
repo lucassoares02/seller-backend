@@ -353,6 +353,8 @@ const Client = {
         .catch((error) => {
           res.status(400).send(error);
         });
+    } else {
+      return res.status(400).send(`message: Nothing Result!`);
     }
   },
 
