@@ -15,9 +15,9 @@ async function Insert(params) {
     return new Promise(function (resolve, reject) {
       connection.query(query, function (error, results, fields) {
         if (error) {
-          return reject(error);
+          return error;
         }
-        return resolve(results);
+        return results;
       });
     });
   } else {

@@ -348,7 +348,14 @@ const Client = {
 
       console.log(params);
 
-      Insert(params);
+      Insert(params)
+        .then(async (resp) => {
+          return res.status(200).send({ message: "Save Success" });
+        })
+        .catch((error) => {
+          console.log(error);
+          return res.status(400).send(error);
+        });
     }
   },
 
