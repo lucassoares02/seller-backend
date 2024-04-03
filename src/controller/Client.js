@@ -350,8 +350,7 @@ const Client = {
 
       Insert(params)
         .then(async (resp) => {
-          console.log(resp);
-          res.status(200).send(`message: Save Success!`);
+          res.status(200).send({ message: "Save Success" });
         })
         .catch((error) => {
           console.log(error);

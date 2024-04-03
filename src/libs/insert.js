@@ -10,18 +10,14 @@ async function Insert(params) {
     const columnsData = Object.keys(data);
     const valuesData = Object.values(data);
 
-    const query =
-      "INSERT INTO " +
-      table +
-      " (" +
-      columnsData.join(",") +
-      ") VALUES ('" +
-      valuesData.join("','") +
-      "')";
+    const query = "INSERT INTO " + table + " (" + columnsData.join(",") + ") VALUES ('" + valuesData.join("','") + "')";
 
     return new Promise(function (resolve, reject) {
       connection.query(query, function (error, results, fields) {
-        if (error) return reject(error);
+        if (error) {
+          console.log(query);
+          return reject(error);
+        }
         return resolve(results);
       });
     });
