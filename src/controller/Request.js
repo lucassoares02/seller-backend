@@ -22,7 +22,7 @@ const Request = {
     left join pedido on pedido.codFornPedido = fornecedor.codForn
     left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido 
     and pedido.codAssocPedido = ${codclient}
-    group by fornecedor.codForn,
+    group by fornecedor.codForn
     order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
     desc`;
     // const queryConsult = `
