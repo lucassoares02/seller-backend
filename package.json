@@ -1,11 +1,11 @@
 {
-  "name": "gohome",
+  "name": "seller-backend",
   "version": "1.0.0",
   "private": true,
   "description": "backend node",
-  "repository": "git@gitlab.viprede.com:lucas.soares/apigohome.git",
+  "repository": "https://github.com/lucassoares02/seller-backend",
   "license": "No license",
-  "author": "Lucas <lucas.soares@viprede.com>",
+  "author": "Lucas <lucas.soares02@hotmail.com>",
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
