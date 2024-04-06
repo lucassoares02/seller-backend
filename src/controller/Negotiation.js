@@ -165,7 +165,7 @@ const Negotiation = {
       join negociacao n on n.codNegociacao = p.codNegoPedido
       where m.codMercadoria = p.codMercPedido 
       and p.codFornPedido = ${supplier}
-      and p.nego = ${negotiation}
+      and p.codNegoPedido = ${negotiation}
       order by p.codNegoPedido;`;
     }
 
