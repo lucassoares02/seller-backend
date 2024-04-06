@@ -103,6 +103,10 @@ const Negotiation = {
 
     const { supplier, buyer } = req.params;
 
+    console.log("BUYER");
+    console.log(buyer);
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
     let queryConsult = `
     SET sql_mode = ''; select
       p.codMercPedido as 'product',
@@ -123,7 +127,7 @@ const Negotiation = {
       and p.codFornPedido = ${supplier}
       order by p.codNegoPedido;`;
 
-    if (buyer != null) {
+    if (buyer != "null") {
       queryConsult = `
     SET sql_mode = ''; select
       p.codMercPedido as 'product',
