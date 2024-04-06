@@ -127,7 +127,7 @@ const Negotiation = {
       if (error) {
         console.log("Error Export Negotiation Provider : ", error);
       } else {
-        let csvData = `Código Produto,Código de barras,Descrição do Produto,Complemento,Marca,Quantidade,Negociação,Descrição da negociação,Cliente,Razão do Cliente\n`;
+        let csvData = `Codigo Produto,Codigo de barras,Descricao do Produto,Complemento,Marca,Quantidade,Negociacao,Descricao da negociacao,Cliente,Razao do Cliente\n`;
 
         csvData += results[1]
           .map((row) => {
