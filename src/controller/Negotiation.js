@@ -127,11 +127,11 @@ const Negotiation = {
       if (error) {
         console.log("Error Export Negotiation Provider : ", error);
       } else {
-        let csvData = `Código Produto;Título Produto;Complemento;Código de barras;Marca;Quantidade;Negociação;Descrição da negociação;Cliente;Razão do Cliente\n`;
+        let csvData = `Código Produto;Código de barras;Descrição do Produto;Complemento;Marca;Quantidade;Negociação;Descrição da negociação;Cliente;Razão do Cliente\n`;
 
         csvData += results[1]
           .map((row) => {
-            return ` ${row.product};${row.title};${row.complement};${row.barcode};${row.brand};${row.quantity};${row.negotiation};${row.negotiation_description};${row.client};${row.client_name}`; // Substitua com os nomes das colunas do seu banco de dados
+            return ` ${row.product};${row.barcode};${row.title};${row.complement};${row.brand};${row.quantity};${row.negotiation};${row.negotiation_description};${row.client};${row.client_name}`; // Substitua com os nomes das colunas do seu banco de dados
           })
           .join("\n");
 
