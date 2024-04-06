@@ -98,6 +98,53 @@ const Negotiation = {
     // connection.end();
   },
 
+  async GetExportNegotiationsProvider(req, res) {
+    logger.info("Get Export Negotiation Provider");
+
+    const { supplier } = req.params;
+
+    const queryConsult = `
+    SET sql_mode = ''; select
+      p.codMercPedido as 'product',
+      m.nomeMercadoria as 'title',
+      m.complemento as 'complement',
+      m.barcode ,
+      m.marca as 'brand',
+      p.quantMercPedido as 'quantity',
+      p.codNegoPedido as 'negotiation',
+      n.descNegociacao as 'negotiation_description',
+      p.codAssocPedido as 'client',
+      a.razaoAssociado as 'client_name'
+      from pedido p
+      join mercadoria m 
+      join associado a on a.codAssociado = p.codAssocPedido
+      join negociacao n on n.codNegociacao = p.codNegoPedido
+      where m.codMercadoria = p.codMercPedido 
+      and p.codFornPedido = ${supplier}
+      order by p.codNegoPedido;`;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Export Negotiation Provider : ", error);
+      } else {
+        let csvData = `Código Produto;Título Produto;Complemento;Código de barras;Marca;Quantidade;Negociação;Descrição da negociação;Cliente;Razão do Cliente\n`;
+
+        csvData += results[1]
+          .map((row) => {
+            return ` ${row.product};${row.title};${row.complement};${row.barcode};${row.brand};${row.quantity};${row.negotiation};${row.negotiation_description};${row.client};${row.client_name}`; // Substitua com os nomes das colunas do seu banco de dados
+          })
+          .join("\n");
+
+        const dateNow = Date.now();
+
+        res.setHeader("Content-Disposition", `attachment; filename=${dateNow}_negociacoes.csv`);
+        res.setHeader("Content-Type", "text/csv");
+
+        return res.send(csvData);
+      }
+    });
+  },
+
   async GetExportNegotiationsClient(req, res) {
     logger.info("Get Export Negotiation ");
 
