@@ -91,7 +91,7 @@ router.post("/insertnegotiationrelacionamercadoria", Negotiation.PostInsertNegot
 
 router.get("/exportnegotiations", Negotiation.GetExportNegotiations);
 
-router.get("/exportnegotiationsprovider/:supplier", Negotiation.GetExportNegotiationsProvider);
+router.get("/exportnegotiationsprovider/:supplier/:buyer", Negotiation.GetExportNegotiationsProvider);
 
 // router.get("/exportnegotiationsclient/:codeclient", Negotiation.GetExportNegotiationsClient);
 router.get("/exportnegotiationsclient/:codeclient", Negotiation.GetExportNegotiationsClientTesteNovo);

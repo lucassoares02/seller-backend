@@ -101,9 +101,9 @@ const Negotiation = {
   async GetExportNegotiationsProvider(req, res) {
     logger.info("Get Export Negotiation Provider");
 
-    const { supplier } = req.params;
+    const { supplier, buyer } = req.params;
 
-    const queryConsult = `
+    let queryConsult = `
     SET sql_mode = ''; select
       p.codMercPedido as 'product',
       m.nomeMercadoria as 'title',
@@ -122,6 +122,29 @@ const Negotiation = {
       where m.codMercadoria = p.codMercPedido 
       and p.codFornPedido = ${supplier}
       order by p.codNegoPedido;`;
+
+    if (buyer != null) {
+      queryConsult = `
+    SET sql_mode = ''; select
+      p.codMercPedido as 'product',
+      m.nomeMercadoria as 'title',
+      m.complemento as 'complement',
+      m.barcode ,
+      m.marca as 'brand',
+      p.quantMercPedido as 'quantity',
+      p.codNegoPedido as 'negotiation',
+      n.descNegociacao as 'negotiation_description',
+      p.codAssocPedido as 'client',
+      a.razaoAssociado as 'client_name'
+      from pedido p
+      join mercadoria m 
+      join associado a on a.codAssociado = p.codAssocPedido
+      join negociacao n on n.codNegociacao = p.codNegoPedido
+      where m.codMercadoria = p.codMercPedido 
+      and p.codFornPedido = ${supplier}
+      and p.codConsultPedido = ${buyer}
+      order by p.codNegoPedido;`;
+    }
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
