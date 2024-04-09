@@ -554,7 +554,7 @@ const Negotiation = {
   },
 
   async GetExportNegotiationsClientTesteNovo(req, res) {
-    logger.info("Get Export Negotiation ");
+    logger.info("GET EXPORT CLIENTS TESTE NOVO");
 
     const { codeclient } = req.params;
 
