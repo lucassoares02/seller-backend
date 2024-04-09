@@ -2,9 +2,11 @@ const connection = require("@server");
 const logger = require("@logger");
 const Select = require("@select");
 const Insert = require("@insert");
+// const PDFDocument = require("pdfkit");
+const fs = require("fs");
+const PDFDocument = require("pdfkit-table");
 
 const Graphs = {
-
   async getPercentageClients(req, res) {
     logger.info("Get Percentage Clients");
 
@@ -99,6 +101,86 @@ const Graphs = {
     // connection.end();
   },
 
+  async getExportPdf(req, res) {
+    logger.info("Get Exports Pdf");
+
+    const { codprovider } = req.params;
+
+    // Lista de mercadorias
+    const listaMercadorias = [
+      {
+        nome: "Arroz",
+        quantidade: 3,
+        unidade: "CX",
+        precoUnitario: 30.0,
+      },
+      {
+        nome: "Feijão",
+        quantidade: 2,
+        unidade: "KG",
+        precoUnitario: 12.5,
+      },
+      {
+        nome: "Leite",
+        quantidade: 1,
+        unidade: "L",
+        precoUnitario: 5.0,
+      },
+    ];
+
+    // Variáveis
+    const nome = "João da Silva";
+    const idade = 30;
+    const cidade = "São Paulo";
+
+    // Criar um novo documento PDF
+    const doc = new PDFDocument({ margin: 30, size: "A4" });
+
+    // Nome do arquivo de saída
+    const outputFilename = "documento.pdf";
+
+    // Definir o tipo de conteúdo da resposta como PDF
+    res.setHeader("Content-Type", "application/pdf");
+
+    // Definir o cabeçalho para fazer o download do arquivo
+    res.setHeader("Content-Disposition", `attachment; filename=${outputFilename}`);
+
+    // Pipe o PDF para a resposta HTTP
+    doc.pipe(res);
+
+    doc.image("./assets/images/icone.png", 15, 15, { width: 30 });
+
+    const table = {
+      title: "Pedido",
+      subtitle: "Mercantil BNH",
+      headers: [
+        { label: "Código", property: "name", width: 60, renderer: null },
+        { label: "Description", property: "description", width: 210, renderer: null },
+        { label: "Quantidade", property: "quantity", width: 70, renderer: null },
+        { label: "Fator", property: "factor", width: 70, renderer: null },
+        { label: "Preço", property: "price", width: 100, renderer: null },
+        { label: "Total", property: "total", width: 80, renderer: null },
+      ],
+      rows: [
+        ["1", "Mercadoria 1", "1", "CX", "R$105,99", "R$105,99"],
+        ["23534", "Mercadoria 2", "2", "CX", "R$45,00", "R$90,00"],
+        // [...],
+      ],
+    };
+    // the magic
+    doc.table(table, {
+      prepareHeader: () => doc.font("Helvetica-Bold").fontSize(8),
+      // prepareRow: (row, indexColumn, indexRow, rectRow, rectCell) => {
+      //   doc.font("Helvetica").fontSize(8);
+      //   indexColumn === 0 && doc.addBackground(rectRow, "blue", 0.15);
+      // },
+    });
+    // done!
+    doc.end();
+
+    console.log(`PDF gerado e entregue em: ${outputFilename}`);
+  },
+
   async getTotalInformations(req, res) {
     logger.info("Get Total Informations");
 
@@ -124,7 +206,6 @@ const Graphs = {
       if (error) {
         console.log("Error Select Total Informations: ", error);
       } else {
-
         let data = [];
         const titles = ["Total negociado", "Associados", "Fonecedores", "Mercadorias"];
 
@@ -143,7 +224,6 @@ const Graphs = {
     });
     // connection.end();
   },
-
 };
 
 module.exports = Graphs;
