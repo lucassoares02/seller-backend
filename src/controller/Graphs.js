@@ -5,6 +5,7 @@ const Insert = require("@insert");
 // const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const PDFDocument = require("pdfkit-table");
+const path = require("path");
 
 const Graphs = {
   async getPercentageClients(req, res) {
@@ -136,6 +137,13 @@ const Graphs = {
     // Criar um novo documento PDF
     const doc = new PDFDocument({ margin: 30, size: "A4" });
 
+    // Definir o caminho do arquivo temporário
+    const temporaryFilePath = path.join(__dirname, "./temp", "documento.pdf");
+
+    // Pipe o PDF para um arquivo temporário
+    const writeStream = fs.createWriteStream(temporaryFilePath);
+    doc.pipe(writeStream);
+
     // Nome do arquivo de saída
     const outputFilename = "documento.pdf";
 
@@ -143,8 +151,6 @@ const Graphs = {
 
     // Pipe o PDF para a resposta HTTP
     doc.pipe(res);
-
-    doc.image("./assets/images/icone.png", 15, 15, { width: 30 });
 
     const table = {
       title: "Pedido",
@@ -166,35 +172,26 @@ const Graphs = {
     // the magic
     doc.table(table, {
       prepareHeader: () => doc.font("Helvetica-Bold").fontSize(8),
-      // prepareRow: (row, indexColumn, indexRow, rectRow, rectCell) => {
-      //   doc.font("Helvetica").fontSize(8);
-      //   indexColumn === 0 && doc.addBackground(rectRow, "blue", 0.15);
-      // },
     });
 
-    
-        // Buffer para armazenar o PDF
-        let buffer = Buffer.from([]);
-    
-        // Pipe o PDF para o buffer
-        doc.on("data", (chunk) => {
-          buffer = Buffer.concat([buffer, chunk]);
-        });
-    
-        doc.on("end", () => {
-          // Configurar o cabeçalho para fazer o download do arquivo
-          res.attachment("documento.pdf");
-          // Enviar o buffer como resposta
-          res.send(buffer);
-        });
-    // done!
     doc.end();
 
-    res.setHeader("Content-Disposition", `attachment; filename=${outputFilename}`);
-    res.setHeader("Content-Type", "application/pdf");
+    // res.setHeader("Content-Disposition", `attachment; filename=${outputFilename}`);
+    // res.setHeader("Content-Type", "application/pdf");
+
+    try {
+      writeStream.on("finish", () => {
+        res.download(temporaryFilePath, "documento.pdf", () => {
+          // Após o envio, exclua o arquivo temporário
+          fs.unlinkSync(temporaryFilePath);
+        });
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    // Quando o PDF for gerado e gravado, enviar como resposta
 
     console.log(`PDF gerado e entregue em: ${outputFilename}`);
-
   },
 
   async getTotalInformations(req, res) {
