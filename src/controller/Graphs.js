@@ -139,11 +139,7 @@ const Graphs = {
     // Nome do arquivo de saída
     const outputFilename = "documento.pdf";
 
-    // Definir o tipo de conteúdo da resposta como PDF
-    res.setHeader("Content-Type", "application/pdf");
-
     // Definir o cabeçalho para fazer o download do arquivo
-    res.setHeader("Content-Disposition", `attachment; filename=${outputFilename}`);
 
     // Pipe o PDF para a resposta HTTP
     doc.pipe(res);
@@ -175,10 +171,30 @@ const Graphs = {
       //   indexColumn === 0 && doc.addBackground(rectRow, "blue", 0.15);
       // },
     });
+
+    
+        // Buffer para armazenar o PDF
+        let buffer = Buffer.from([]);
+    
+        // Pipe o PDF para o buffer
+        doc.on("data", (chunk) => {
+          buffer = Buffer.concat([buffer, chunk]);
+        });
+    
+        doc.on("end", () => {
+          // Configurar o cabeçalho para fazer o download do arquivo
+          res.attachment("documento.pdf");
+          // Enviar o buffer como resposta
+          res.send(buffer);
+        });
     // done!
     doc.end();
 
+    // res.setHeader("Content-Disposition", `attachment; filename=${outputFilename}`);
+    // res.setHeader("Content-Type", "application/pdf");
+
     console.log(`PDF gerado e entregue em: ${outputFilename}`);
+
   },
 
   async getTotalInformations(req, res) {
