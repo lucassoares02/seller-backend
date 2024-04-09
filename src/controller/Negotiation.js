@@ -98,7 +98,7 @@ const Negotiation = {
     // connection.end();
   },
 
-  async GetExportNegotiationsClientTeste(req, res) {
+  async GetExportNegotiationsClientTesteaaaaaaaaa(req, res) {
     logger.info("Get Export Negotiation ");
 
     const { codeclient } = req.params;
