@@ -190,8 +190,8 @@ const Graphs = {
     // done!
     doc.end();
 
-    // res.setHeader("Content-Disposition", `attachment; filename=${outputFilename}`);
-    // res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `attachment; filename=${outputFilename}`);
+    res.setHeader("Content-Type", "application/pdf");
 
     console.log(`PDF gerado e entregue em: ${outputFilename}`);
 
