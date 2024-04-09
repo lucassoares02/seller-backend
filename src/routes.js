@@ -94,7 +94,8 @@ router.get("/exportnegotiations", Negotiation.GetExportNegotiations);
 router.get("/exportnegotiationsprovider/:supplier/:buyer/:negotiation", Negotiation.GetExportNegotiationsProvider);
 
 // router.get("/exportnegotiationsclient/:codeclient", Negotiation.GetExportNegotiationsClient);
-router.get("/exportnegotiationsclient/:codeclient", Negotiation.GetExportNegotiationsClientTesteNovo);
+// router.get("/exportnegotiationsclient/:codeclient", Negotiation.GetExportNegotiationsClientTesteNovo);
+router.get("/exportnegotiationsclient/:codeclient", Negotiation.GetExportNegotiationsClient);
 
 // Methods Buyer
 // getCompradoresAssociados
@@ -153,6 +154,6 @@ router.get("/percentageprovidersorganization", Graphs.getPercentageProvidersOrga
 router.get("/totalvalueclients/:codprovider", Graphs.getTotalValueClients); // localhost:3001/percentageclients/333
 router.get("/information", Graphs.getTotalInformations); // localhost:3001/percentageclients/333
 
-router.get("/exportpdf", Graphs.getExportPdf); // localhost:3001/percentageclients/333
+// router.get("/exportpdf", Graphs.getExportPdf); // localhost:3001/percentageclients/333
 
 module.exports = router;
