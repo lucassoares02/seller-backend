@@ -105,20 +105,21 @@ const Negotiation = {
 
     const queryConsult = `
     SET sql_mode = ''; select
-      p.codMercPedido,
-      m.nomeMercadoria,
-      m.complemento,
-      m.barcode,
-      m.erpcode,
-      m.marca,
-      p.quantMercPedido as quantidade,
-      p.codFornPedido,
-      p.codAssocPedido,
-      p.codNegoPedido ,
-      p.codMercPedido
-      from pedido p
-      join mercadoria m 
-      where m.codMercadoria = p.codMercPedido 
+    p.codMercPedido,
+    m.nomeMercadoria,
+    m.complemento,
+    m.barcode,
+    m.erpcode,
+    m.marca,
+    p.quantMercPedido as quantidade,
+    p.codFornPedido,
+    p.codAssocPedido,
+    n.codNegoErp as codNegoPedido,
+    p.codMercPedido
+    from pedido p
+    join mercadoria m 
+    join negociacao n on n.codNegociacao = p.codNegoPedido 
+    where m.codMercadoria = p.codMercPedido 
       and p.codAssocPedido = ${codeclient}
       order by p.codNegoPedido;`;
 
