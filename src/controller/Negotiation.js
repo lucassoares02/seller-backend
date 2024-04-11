@@ -1,6 +1,6 @@
 const connection = require("@server");
 const logger = require("@logger");
-const Select = require("@select");
+const select = require("@select");
 const Insert = require("@insert");
 
 const Negotiation = {
@@ -8,13 +8,13 @@ const Negotiation = {
   async getAllNegotiation(req, res) {
     logger.info("Get All Negotiations");
 
-    const queryConsult = "-- SET sql_mode = ''; select relaciona.codAssocRelaciona, consultor.nomeConsult, relaciona.codConsultRelaciona, associado.razaoAssociado,  associado.cnpjAssociado, FORMAT(COALESCE(sum(mercadoria.precoMercadoria*pedido.quantMercPedido),'0'), 2, 'de_DE') as 'valorTotal', sum(pedido.quantMercPedido) as 'volumeTotal' from associado join relaciona on relaciona.codConsultRelaciona = associado.codAssociado join consultor on consultor.codConsult = relaciona.codAssocRelaciona left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona left join mercadoria on codMercadoria = pedido.codMercPedido group by relaciona.codConsultRelaciona order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
+    const queryConsult = " select relaciona.codAssocRelaciona, consultor.nomeConsult, relaciona.codConsultRelaciona, associado.razaoAssociado,  associado.cnpjAssociado, FORMAT(COALESCE(sum(mercadoria.precoMercadoria*pedido.quantMercPedido),'0'), 2, 'de_DE') as 'valorTotal', sum(pedido.quantMercPedido) as 'volumeTotal' from associado join relaciona on relaciona.codConsultRelaciona = associado.codAssociado join consultor on consultor.codConsult = relaciona.codAssocRelaciona left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona left join mercadoria on codMercadoria = pedido.codMercPedido group by relaciona.codConsultRelaciona order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Users: ", error);
+        console.log("Error select Users: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -28,14 +28,14 @@ const Negotiation = {
     const { codforn } = req.params;
 
 
-    const queryConsult = "-- SET sql_mode = ''; select negociacao.codNegociacao, negociacao.descNegociacao, negociacao.codFornNegociacao, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido. quantMercPedido),0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido),0) as 'volumeTotal' from negociacao left join pedido on pedido.codNegoPedido = negociacao.codNegociacao left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where negociacao.codFornNegociacao = " + codforn + " group by negociacao.codNegociacao order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
+    const queryConsult = " select negociacao.codNegociacao, negociacao.descNegociacao, negociacao.codFornNegociacao, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido. quantMercPedido),0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido),0) as 'volumeTotal' from negociacao left join pedido on pedido.codNegoPedido = negociacao.codNegociacao left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where negociacao.codFornNegociacao = " + codforn + " group by negociacao.codNegociacao order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
 
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Negotiation Provider: ", error);
+        console.log("Error select Negotiation Provider: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -48,7 +48,7 @@ const Negotiation = {
 
 
     const queryConsult = `
-    -- SET sql_mode = ''; select
+     select
       p.codMercPedido,
       m.nomeMercadoria,
       m.complemento,
@@ -90,7 +90,7 @@ const Negotiation = {
         return res.send(csvData);
 
 
-        // return res.json(results[0]);
+        // return res.json(results);
       }
     });
     // connection.end();
@@ -107,7 +107,7 @@ const Negotiation = {
 
 
     // const queryConsult = `
-    // -- SET sql_mode = ''; select
+    //  select
     //   p.codMercPedido,
     //   m.nomeMercadoria,
     //   m.complemento,
@@ -126,7 +126,7 @@ const Negotiation = {
     //   order by p.codNegoPedido`;
 
     const queryConsult = `
-    -- SET sql_mode = ''; select
+     select
       p.codMercPedido,
       m.nomeMercadoria,
       m.complemento,
@@ -167,7 +167,7 @@ const Negotiation = {
             const asfdasf = await new Promise(async (resolve, reject) => {
               connection.query(internQuery, (error, resultssss, fields) => {
                 if (error) {
-                  console.log("Error Select Negotiation to Client: ", error);
+                  console.log("Error select Negotiation to Client: ", error);
                 } else {
                   let data = [];
                   for (i = 0; i < resultssss.length; i++) {
@@ -262,7 +262,7 @@ const Negotiation = {
         return res.send(csvData);
 
 
-        // return res.json(results[0]);
+        // return res.json(results);
       }
     });
     // connection.end();
@@ -286,7 +286,7 @@ const Negotiation = {
 
 
     const queryConsult = `
-    -- SET sql_mode = ''; select
+     select
       p.codMercPedido,
       m.nomeMercadoria,
       m.complemento,
@@ -348,7 +348,7 @@ const Negotiation = {
             const asfdasf = await new Promise(async (resolve, reject) => {
               connection.query(internQuery, (error, resultssss, fields) => {
                 if (error) {
-                  console.log("Error Select Negotiation to Client: ", error);
+                  console.log("Error select Negotiation to Client: ", error);
                 } else {
                   let data = [];
                   for (i = 0; i < resultssss.length; i++) {
@@ -455,7 +455,7 @@ const Negotiation = {
 
 
     const queryConsult = `
-    -- SET sql_mode = ''; select
+     select
       p.codMercPedido,
       m.nomeMercadoria,
       m.complemento,
@@ -492,7 +492,7 @@ const Negotiation = {
             const asfdasf = await new Promise(async (resolve, reject) => {
               connection.query(internQuery, (error, resultssss, fields) => {
                 if (error) {
-                  console.log("Error Select Negotiation to Client: ", error);
+                  console.log("Error select Negotiation to Client: ", error);
                 } else {
                   let data = [];
                   for (i = 0; i < resultssss.length; i++) {
@@ -610,7 +610,7 @@ const Negotiation = {
 
     connection.query(internQuery, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Negotiation to Client: ", error);
+        console.log("Error select Negotiation to Client: ", error);
       } else {
         for (i = 0; i < results.length; i++) {
           data.push(results[i]["codNegociacao"]);
@@ -636,14 +636,14 @@ const Negotiation = {
     const { codclient, codforn } = req.params;
 
 
-    const queryConsult = "-- SET sql_mode = ''; select codNegociacao,prazo, observacao, descNegociacao, (pedido.codNegoPedido) as 'confirma' from negociacao left outer join pedido on (negociacao.codNegociacao = pedido.codNegoPedido) and pedido.codAssocPedido = " + codclient + "	where negociacao.codFornNegociacao  = " + codforn + " GROUP BY negociacao.codNegociacao ORDER BY confirma desc";
+    const queryConsult = " select codNegociacao,prazo, observacao, descNegociacao, (pedido.codNegoPedido) as 'confirma' from negociacao left outer join pedido on (negociacao.codNegociacao = pedido.codNegoPedido) and pedido.codAssocPedido = " + codclient + "	where negociacao.codFornNegociacao  = " + codforn + " GROUP BY negociacao.codNegociacao ORDER BY confirma desc";
 
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Negotiation to Client: ", error);
+        console.log("Error select Negotiation to Client: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -655,7 +655,7 @@ const Negotiation = {
     const { codclient, codforn } = req.params;
 
 
-    const queryConsult = `-- SET sql_mode = ''; 
+    const queryConsult = `
     select codNegociacao,
       sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'total',
       descNegociacao, (pedido.codNegoPedido) as 'confirma'
@@ -670,9 +670,9 @@ const Negotiation = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Negotiation to Client: ", error);
+        console.log("Error select Negotiation to Client: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();

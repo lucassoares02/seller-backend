@@ -1,66 +1,67 @@
 const connection = require("@server");
 const logger = require("@logger");
-const Select = require("@select");
+const select = require("@select");
 const Insert = require("@insert");
 const Execute = require("../libs/execute");
 
 const Client = {
-
   async getAllClient(req, res) {
     logger.info("Get All Clients");
 
     const params = req.body;
     console.log(params);
 
-    const queryConsult = "-- SET sql_mode = ''; select relaciona.codAssocRelaciona, consultor.nomeConsult, relaciona.codConsultRelaciona, associado.razaoAssociado,  associado.cnpjAssociado, FORMAT(ifnull(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0 ), 2, 'de_DE') as 'valorTotal', ifnull(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from associado join relaciona on relaciona.codConsultRelaciona = associado.codAssociado join consultor on consultor.codConsult = relaciona.codAssocRelaciona left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona left join mercadoria on codMercadoria = pedido.codMercPedido group by relaciona.codConsultRelaciona order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
-
+    const queryConsult =
+      " select relaciona.codAssocRelaciona, consultor.nomeConsult, relaciona.codConsultRelaciona, associado.razaoAssociado,  associado.cnpjAssociado, FORMAT(ifnull(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0 ), 2, 'de_DE') as 'valorTotal', ifnull(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from associado join relaciona on relaciona.codConsultRelaciona = associado.codAssociado join consultor on consultor.codConsult = relaciona.codAssocRelaciona left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona left join mercadoria on codMercadoria = pedido.codMercPedido group by relaciona.codConsultRelaciona order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Users: ", error);
+        console.log("Error select Users: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
   },
-
 
   async getOneClient(req, res) {
     logger.info("Get One Clients");
 
     const { codacesso } = req.params;
 
-    const queryConsult = "-- SET sql_mode = ''; select acesso.codAcesso, acesso.direcAcesso, associado.razaoAssociado AS nomeForn, associado.cnpjAssociado AS cnpjForn, acesso.codUsuario, associado.codAssociado AS codForn, consultor.nomeConsult, consultor.cpfConsult FROM acesso JOIN consultor ON acesso.codUsuario = consultor.codConsult JOIN associado ON consultor.codFornConsult = associado.codAssociado WHERE acesso.codAcesso =" + codacesso;
+    const queryConsult =
+      " select acesso.codAcesso, acesso.direcAcesso, associado.razaoAssociado AS nomeForn, associado.cnpjAssociado AS cnpjForn, acesso.codUsuario, associado.codAssociado AS codForn, consultor.nomeConsult, consultor.cpfConsult FROM acesso JOIN consultor ON acesso.codUsuario = consultor.codConsult JOIN associado ON consultor.codFornConsult = associado.codAssociado WHERE acesso.codAcesso =" +
+      codacesso;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Client: ", error);
+        console.log("Error select Client: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
   },
-
 
   async getClientConsult(req, res) {
     logger.info("Get Clients to Consult");
 
     const { codconsultor } = req.params;
 
-    const queryConsult = "-- SET sql_mode = ''; select codAssociado, cnpjAssociado, razaoAssociado, codAssociado, FORMAT(ifnull(sum(mercadoria.precoMercadoria*pedido.quantMercPedido),0), 2, 'de_DE') as 'valorTotal', ifnull(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from associado left join pedido on pedido.codAssocPedido = associado.codAssociado left join relacionafornecedor on relacionafornecedor.codFornecedor = pedido.codFornPedido left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido and relacionafornecedor.codConsultor =" + codconsultor + " group by associado.codAssociado order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
+    const queryConsult =
+      " select codAssociado, cnpjAssociado, razaoAssociado, codAssociado, FORMAT(ifnull(sum(mercadoria.precoMercadoria*pedido.quantMercPedido),0), 2, 'de_DE') as 'valorTotal', ifnull(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from associado left join pedido on pedido.codAssocPedido = associado.codAssociado left join relacionafornecedor on relacionafornecedor.codFornecedor = pedido.codFornPedido left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido and relacionafornecedor.codConsultor =" +
+      codconsultor +
+      " group by associado.codAssociado order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Clients to Consult: ", error);
+        console.log("Error select Clients to Consult: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
   },
-
 
   async getStoreConsultant(req, res) {
     logger.info("Get Store to Consult");
@@ -68,7 +69,7 @@ const Client = {
     const { codconsultor } = req.params;
 
     const queryConsult = `
-    -- SET sql_mode = ''; select
+     select
     relaciona.codAssocRelaciona as codAssociado,
     concat(relaciona.codConsultRelaciona, ' - ', associado.razaoAssociado) as cnpjAssociado,
     consultor.nomeConsult, 
@@ -89,15 +90,13 @@ const Client = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Store to Consult: ", error);
+        console.log("Error select Store to Consult: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
   },
-
-
 
   async getClientMerchandise(req, res) {
     logger.info("Get Clients to Merchandise");
@@ -105,7 +104,7 @@ const Client = {
     const { codmercadoria, codnegotiation } = req.params;
 
     const queryConsult = `
-    -- SET sql_mode = ''; select 
+     select 
     mercadoria.codMercadoria, 
     mercadoria.codFornMerc,
     mercadoria.nomeMercadoria,
@@ -125,14 +124,13 @@ const Client = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Clients to Merchandise: ", error);
+        console.log("Error select Clients to Merchandise: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
   },
-
 
   async getClientMerchandiseTrading(req, res) {
     logger.info("Get Clients to Merchandise");
@@ -140,7 +138,7 @@ const Client = {
     const { codmercadoria, codnegotiation } = req.params;
 
     const queryConsult = `
-    -- SET sql_mode = ''; select 
+     select 
     mercadoria.codMercadoria, 
     mercadoria.codFornMerc,
     mercadoria.nomeMercadoria,
@@ -161,9 +159,9 @@ const Client = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Clients to Merchandise: ", error);
+        console.log("Error select Clients to Merchandise: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -174,13 +172,16 @@ const Client = {
 
     const { codprovider } = req.params;
 
-    const queryConsult = "-- SET sql_mode = ''; select relaciona.codAssocRelaciona, consultor.nomeConsult, relaciona.codConsultRelaciona, associado.razaoAssociado, associado.cnpjAssociado, FORMAT( IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal',  IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from associado join relaciona on relaciona.codConsultRelaciona = associado.codAssociado join consultor on consultor.codConsult = relaciona.codAssocRelaciona left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona join fornecedor on fornecedor.codForn = pedido.codFornPedido left join mercadoria on codMercadoria = pedido.codMercPedido where fornecedor.codForn = " + codprovider + " group by relaciona.codConsultRelaciona order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
+    const queryConsult =
+      " select relaciona.codAssocRelaciona, consultor.nomeConsult, relaciona.codConsultRelaciona, associado.razaoAssociado, associado.cnpjAssociado, FORMAT( IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal',  IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from associado join relaciona on relaciona.codConsultRelaciona = associado.codAssociado join consultor on consultor.codConsult = relaciona.codAssocRelaciona left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona join fornecedor on fornecedor.codForn = pedido.codFornPedido left join mercadoria on codMercadoria = pedido.codMercPedido where fornecedor.codForn = " +
+      codprovider +
+      " group by relaciona.codConsultRelaciona order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Clients to Category: ", error);
+        console.log("Error select Clients to Category: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -190,24 +191,24 @@ const Client = {
     logger.info("Get All Stores");
 
     // const queryConsult = `
-    // -- SET sql_mode = ''; select 
+    //  select
     // relaciona.codAssocRelaciona,
-    // consultor.nomeConsult, 
+    // consultor.nomeConsult,
     // relaciona.codConsultRelaciona,
     // associado.razaoAssociado as razao,
-    // associado.cnpjAssociado, 
+    // associado.cnpjAssociado,
     // IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
-    // IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' 
-    // from associado 
+    // IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal'
+    // from associado
     // join relaciona on relaciona.codConsultRelaciona = associado.codAssociado
-    // join consultor on consultor.codConsult = relaciona.codAssocRelaciona 
+    // join consultor on consultor.codConsult = relaciona.codAssocRelaciona
     // left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona
-    // left join mercadoria on codMercadoria = pedido.codMercPedido 
-    // group by relaciona.codConsultRelaciona 
-    // order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
+    // left join mercadoria on codMercadoria = pedido.codMercPedido
+    // group by relaciona.codConsultRelaciona
+    // order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido)
     // desc`;
     const queryConsult = `
-    -- SET sql_mode = ''; select 
+     select 
     associado.razaoAssociado as razao,
     associado.cnpjAssociado, 
     IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
@@ -221,22 +222,22 @@ const Client = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select All Stores: ", error);
+        console.log("Error select All Stores: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
   },
 
-
   async getStoresbyProvider(req, res) {
     logger.info("Get Stores by Provider");
 
-
     const { codprovider } = req.params;
 
-    const queryConsult = `-- SET sql_mode = ''; select  
+    const queryConsult = ` 
+    SET sql_mode = "";
+    select  
     p.codPedido ,
     a.codAssociado ,
     a.razaoAssociado  as razao,
@@ -253,14 +254,13 @@ const Client = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Stores by Provider: ", error);
+        console.log("Error select Stores by Provider: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
   },
-
 
   async postUser(req, res) {
     logger.info("Insert User");
@@ -269,8 +269,7 @@ const Client = {
 
     Insert(params)
       .then(async (resp) => {
-
-        return await Select({ table: 'user', where: { id: resp.insertId } })
+        return await select({ table: "user", where: { id: resp.insertId } })
           .then((resp) => {
             return res.json(resp[0]);
           })
@@ -302,17 +301,16 @@ const Client = {
     let result = true;
     let response = "";
 
-
     connection.query(queryInsert, (error, results) => {
       if (error) {
         result = false;
-        return res.json({ "message": error.sqlMessage });
+        console.log(`Post Insert Person (Client) Error: ${error} | ${cod} - ${nome}`);
+        return;
       } else {
         response = results;
         return;
       }
     });
-
 
     //=============================================================
     //=============================================================
@@ -329,7 +327,6 @@ const Client = {
           return;
         }
       });
-
     }
 
     //=============================================================
@@ -339,18 +336,18 @@ const Client = {
     if (result) {
       let dataAssociado = {
         codAssocRelaciona: cod,
-        codConsultRelaciona: empresa
-      }
+        codConsultRelaciona: empresa,
+      };
 
       let dataConsultor = {
         codConsultor: cod,
         codFornecedor: empresa,
-      }
+      };
 
       let params = {
         table: type == 1 ? "relacionafornecedor" : "relaciona",
-        data: type == 1 ? dataConsultor : dataAssociado
-      }
+        data: type == 1 ? dataConsultor : dataAssociado,
+      };
 
       console.log(params);
 
@@ -363,17 +360,15 @@ const Client = {
           console.log(error);
           return res.status(400).send(error);
         });
-
-
     }
   },
-
 
   async getAllStoresGraph(req, res) {
     logger.info("Get All Stores Graphs");
 
     const queryConsult = `
-    -- SET sql_mode = ''; select 
+    SET sql_mode = "";
+     select 
     pedido.codPedido ,
     associado.cnpjAssociado ,
     associado.codAssociado ,
@@ -391,27 +386,26 @@ const Client = {
     desc limit 10
     `;
 
-
-    // `-- SET sql_mode = ''; select 
+    // ` select
     // relaciona.codAssocRelaciona,
-    // consultor.nomeConsult, 
+    // consultor.nomeConsult,
     // relaciona.codConsultRelaciona,
     // associado.razaoAssociado as razao,
-    // associado.cnpjAssociado, 
+    // associado.cnpjAssociado,
     // IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
-    // IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' 
-    // from associado 
+    // IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal'
+    // from associado
     // join relaciona on relaciona.codConsultRelaciona = associado.codAssociado
-    // join consultor on consultor.codConsult = relaciona.codAssocRelaciona 
+    // join consultor on consultor.codConsult = relaciona.codAssocRelaciona
     // left join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona
-    // left join mercadoria on codMercadoria = pedido.codMercPedido 
-    // group by relaciona.codConsultRelaciona 
-    // order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
+    // left join mercadoria on codMercadoria = pedido.codMercPedido
+    // group by relaciona.codConsultRelaciona
+    // order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido)
     // desc limit 10`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select All Stores Graphs: ", error);
+        console.log("Error select All Stores Graphs: ", error);
       } else {
         let item = [];
 
@@ -421,20 +415,19 @@ const Client = {
           total += results[1][j]["valorTotal"];
         }
 
-
         i = 0;
         for (i = 0; i < results[1].length; i++) {
           item.push({
             razao: results[1][i]["razao"],
             percentage: Math.floor((results[1][i]["valorTotal"] / total) * 100) + "%",
-            value: results[1][i]["valorTotal"]
+            value: results[1][i]["valorTotal"],
           });
         }
 
         response = {
           item: item,
-          total: total
-        }
+          total: total,
+        };
 
         return res.json(response);
       }
@@ -445,7 +438,7 @@ const Client = {
   async getAllStoresGraphHour(req, res) {
     logger.info("Get All Stores Graphs");
 
-    const queryConsult = `-- SET sql_mode = ''; select 
+    const queryConsult = ` select 
     date_format(SUBTIME(dataPedido, '03:00:00'), '%Y-%m-%d %H:%i')  as hour,
     SUM(p.quantMercPedido * m.precoMercadoria) as value
     from pedido p
@@ -455,21 +448,18 @@ const Client = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select All Stores Graphs: ", error);
+        console.log("Error select All Stores Graphs: ", error);
       } else {
-
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
   },
 
-
-
   async getValueTotalFair(req, res) {
     logger.info("Get All Value Fair");
 
-    const queryConsult = `-- SET sql_mode = ''; select 
+    const queryConsult = ` select 
     SUM(p.quantMercPedido * m.precoMercadoria) as value
     from pedido p
     join mercadoria m on m.codMercadoria = p.codMercPedido 
@@ -477,20 +467,13 @@ const Client = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select All Value Fair: ", error);
+        console.log("Error select All Value Fair: ", error);
       } else {
-
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
   },
-
-
-
-
 };
 
 module.exports = Client;
-
-

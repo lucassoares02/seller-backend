@@ -1,6 +1,6 @@
 const connection = require("@server");
 const logger = require("@logger");
-const Select = require("@select");
+const select = require("@select");
 const Insert = require("@insert");
 
 const Request = {
@@ -10,7 +10,7 @@ const Request = {
     const { codclient } = req.params;
 
     const queryConsult = `
-    -- SET sql_mode = ''; select 
+     select 
       cnpjForn, 
       nomeForn,
       razaoForn, 
@@ -29,9 +29,9 @@ const Request = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Associate Supliers Orders: ", error);
+        console.log("Error select Associate Supliers Orders: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -42,7 +42,7 @@ const Request = {
     const { codclient } = req.params;
 
     const queryConsult = `
-    -- SET sql_mode = ''; select 
+     select 
       cnpjForn, 
       nomeForn,
       razaoForn, 
@@ -63,9 +63,9 @@ const Request = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Top Providers per Client: ", error);
+        console.log("Error select Top Providers per Client: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -77,7 +77,7 @@ const Request = {
     const { codprovider } = req.params;
 
     const queryConsult = `
-    -- SET sql_mode = ''; select pedido.codPedido , 
+     select pedido.codPedido , 
     associado.cnpjAssociado , 
     associado.codAssociado ,
     consultor.nomeConsult, 
@@ -98,9 +98,9 @@ const Request = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Requests Provider: ", error);
+        console.log("Error select Requests Provider: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -112,7 +112,7 @@ const Request = {
     const { codebranch } = req.params;
 
     const queryConsult = `
-    -- SET sql_mode = ''; select pedido.codPedido , 
+     select pedido.codPedido , 
     associado.cnpjAssociado , 
     associado.codAssociado  as codConsultRelaciona,
     consultor.nomeConsult, 
@@ -138,9 +138,9 @@ const Request = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Requests Provider: ", error);
+        console.log("Error select Requests Provider: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -152,7 +152,7 @@ const Request = {
     const { codconsult } = req.params;
 
     const queryConsult = `
-    -- SET sql_mode = ''; select pedido.codPedido , 
+     select pedido.codPedido , 
     associado.cnpjAssociado , 
     associado.codAssociado ,
     consultor.nomeConsult, 
@@ -172,9 +172,9 @@ const Request = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Requests Provider: ", error);
+        console.log("Error select Requests Provider: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -186,7 +186,7 @@ const Request = {
     const { codprovider } = req.params;
 
     const queryConsult = `
-    -- SET sql_mode = ''; select 
+     select 
     pedido.codPedido ,
     associado.cnpjAssociado ,
     associado.codAssociado ,
@@ -205,9 +205,9 @@ const Request = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select All Requests: ", error);
+        console.log("Error select All Requests: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -224,9 +224,9 @@ const Request = {
 
   //   connection.query(queryConsult, (error, results, fields) => {
   //     if (error) {
-  //       console.log("Error Select All Requests: ", error);
+  //       console.log("Error select All Requests: ", error);
   //     } else {
-  //       return res.json(results[0]);
+  //       return res.json(results);
   //     }
   //   });
   //   // connection.end();
@@ -255,9 +255,9 @@ const Request = {
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
         console.log(error);
-        console.log("Error Select All Requests: ", error);
+        console.log("Error select All Requests: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     return 0;
@@ -270,7 +270,7 @@ const Request = {
     const { codMercadoria, quantMercadoria, codFornecedor, codAssociado, codComprador, codNegociacao, codOrganizacao } = req.body;
 
     const queryConsult =
-      "-- SET sql_mode = ''; select quantMercPedido from pedido where codMercPedido = " +
+      " select quantMercPedido from pedido where codMercPedido = " +
       codMercadoria +
       " and codAssocPedido = " +
       codAssociado +
@@ -305,7 +305,7 @@ const Request = {
             if (error) {
               return "Error Insert Request Client: ", error;
             } else {
-              return res.json(results[0]);
+              return res.json(results);
             }
           });
         } else {
@@ -324,7 +324,7 @@ const Request = {
             if (error) {
               return "Error Update Request Client: ", error;
             } else {
-              return res.json(results[0]);
+              return res.json(results);
             }
           });
         }

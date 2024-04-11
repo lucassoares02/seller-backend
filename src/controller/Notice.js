@@ -1,6 +1,6 @@
 const connection = require("@server");
 const logger = require("@logger");
-const Select = require("@select");
+const select = require("@select");
 const Insert = require("@insert");
 
 const Notice = {
@@ -8,13 +8,13 @@ const Notice = {
   async getAllNotice(req, res) {
     logger.info("Get All Notices");
 
-    const queryConsult = "-- SET sql_mode = ''; select * from notices order by priority desc";
+    const queryConsult = " select * from notices order by priority desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Notices: ", error);
+        console.log("Error select Notices: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -24,13 +24,13 @@ const Notice = {
   async getAllSchedule(req, res) {
     logger.info("Get All Schedule");
 
-    const queryConsult = "-- SET sql_mode = ''; select * from schedule";
+    const queryConsult = " select * from schedule";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Schedule: ", error);
+        console.log("Error select Schedule: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();

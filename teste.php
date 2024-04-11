@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	}
 	$codAcessoa = "" . $access->codAcesso . "";
 
-	$testeCodAcesso = "-- SET sql_mode = ''; select codAcesso, direcAcesso 
+	$testeCodAcesso = " select codAcesso, direcAcesso 
 from acesso where codAcesso = $codAcessoa";
 
 	$primerResult = $conn->query($testeCodAcesso);
@@ -50,7 +50,7 @@ limit 1";
 	if ($resultadoDirec['direcAcesso'] == 1) {
 
 
-		$sql = "-- SET sql_mode = ''; select acesso.codAcesso, acesso.direcAcesso,fornecedor.nomeForn,fornecedor.cnpjForn, acesso.codUsuario, fornecedor.codForn, consultor.nomeConsult,consultor.cpfConsult,
+		$sql = " select acesso.codAcesso, acesso.direcAcesso,fornecedor.nomeForn,fornecedor.cnpjForn, acesso.codUsuario, fornecedor.codForn, consultor.nomeConsult,consultor.cpfConsult,
 	sum(mercadoria.precoMercadoria*pedido.quantMercPedido) as 'valorPedido'
 	from acesso 
 	join consultor on acesso.codUsuario = consultor.codConsult 
@@ -79,7 +79,7 @@ limit 1";
 		} else {
 
 
-			$sql = "-- SET sql_mode = ''; select acesso.codAcesso, acesso.direcAcesso,fornecedor.nomeForn,fornecedor.cnpjForn, acesso.codUsuario, fornecedor.codForn, consultor.nomeConsult,consultor.cpfConsult
+			$sql = " select acesso.codAcesso, acesso.direcAcesso,fornecedor.nomeForn,fornecedor.cnpjForn, acesso.codUsuario, fornecedor.codForn, consultor.nomeConsult,consultor.cpfConsult
 		from acesso 
 		join consultor on acesso.codUsuario = consultor.codConsult 
 		join fornecedor on consultor.codFornConsult = fornecedor.codForn
@@ -110,7 +110,7 @@ limit 1";
 		}
 	} else if ($resultadoDirec['direcAcesso'] == 2) {
 
-		$sqlTeste = "-- SET sql_mode = ''; select codMercPedido
+		$sqlTeste = " select codMercPedido
 		from pedido join associado on pedido.codAssocPedido = associado.codAssociado
 		join relaciona on relaciona.codConsultRelaciona = associado.codAssociado
 		join consultor on consultor.codConsult = relaciona.codAssocRelaciona
@@ -124,7 +124,7 @@ limit 1";
 		if ($resultadoAssoc->num_rows > 0) {
 
 
-			$sql = "-- SET sql_mode = ''; select acesso.codAcesso, acesso.direcAcesso, associado.razaoAssociado AS nomeForn, associado.cnpjAssociado AS cnpjForn, acesso.codUsuario, associado.codAssociado AS codForn, consultor.nomeConsult, consultor.cpfConsult,
+			$sql = " select acesso.codAcesso, acesso.direcAcesso, associado.razaoAssociado AS nomeForn, associado.cnpjAssociado AS cnpjForn, acesso.codUsuario, associado.codAssociado AS codForn, consultor.nomeConsult, consultor.cpfConsult,
 			sum(mercadoria.precoMercadoria*pedido.quantMercPedido) as 'valorPedido'
 			FROM acesso
 			join consultor on acesso.codUsuario = consultor.codConsult
@@ -158,7 +158,7 @@ limit 1";
 
 
 
-			$sql = "-- SET sql_mode = ''; select acesso.codAcesso, acesso.direcAcesso, associado.razaoAssociado AS nomeForn, associado.cnpjAssociado AS cnpjForn, acesso.codUsuario, associado.codAssociado AS codForn, consultor.nomeConsult, consultor.cpfConsult			
+			$sql = " select acesso.codAcesso, acesso.direcAcesso, associado.razaoAssociado AS nomeForn, associado.cnpjAssociado AS cnpjForn, acesso.codUsuario, associado.codAssociado AS codForn, consultor.nomeConsult, consultor.cpfConsult			
 			FROM acesso
 			join consultor on acesso.codUsuario = consultor.codConsult
 			join relaciona on relaciona.codAssocRelaciona = consultor.codConsult
@@ -191,7 +191,7 @@ limit 1";
 
 
 
-		$sqlTeste = "-- SET sql_mode = ''; select codMercPedido
+		$sqlTeste = " select codMercPedido
 		from pedido join organizador on pedido.codOrganizador = organizador.codOrg
 		join consultor on consultor.codFornConsult = organizador.codOrg
 		join acesso on acesso.codUsuario = consultor.codConsult
@@ -246,7 +246,7 @@ limit 1";
 
 
 
-			$sql = "-- SET sql_mode = ''; select acesso.codAcesso, 
+			$sql = " select acesso.codAcesso, 
 			acesso.direcAcesso, 
 			organizador.nomeOrg AS nomeForn, 
 			organizador.cnpjOrg AS cnpjForn, 

@@ -1,8 +1,8 @@
 const connection = require("./../config/server");
 const logger = require("../utils/logger");
 
-async function Select(params) {
-  logger.info("Function Select");
+async function select(params) {
+  logger.info("Function select");
 
   const table = params.table != undefined ? params.table : "";
   const data = params.data != undefined ? params.data : "";
@@ -25,7 +25,7 @@ async function Select(params) {
     }
   }
 
-  const query = "-- SET sql_mode = ''; select * FROM " + table + concatWhere;
+  const query = " select * FROM " + table + concatWhere;
   
 
 
@@ -42,4 +42,4 @@ async function Select(params) {
   });
 }
 
-module.exports = Select;
+module.exports = select;

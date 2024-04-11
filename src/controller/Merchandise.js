@@ -1,6 +1,6 @@
 const connection = require("@server");
 const logger = require("@logger");
-const Select = require("@select");
+const select = require("@select");
 const Insert = require("@insert");
 
 const Merchandise = {
@@ -10,7 +10,7 @@ const Merchandise = {
     const { codprovider, codnegotiation } = req.params;
 
     const queryConsult = `
-    -- SET sql_mode = ''; select 
+     select 
     mercadoria.codMercadoria, 
     mercadoria.codFornMerc, 
     mercadoria.nomeMercadoria, 
@@ -33,9 +33,9 @@ const Merchandise = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Merchandise to Negotiation to Provider: ", error);
+        console.log("Error select Merchandise to Negotiation to Provider: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -47,8 +47,7 @@ const Merchandise = {
     const { codclient, codprovider, codnegotiation } = req.params;
 
     const queryConsult = `
-      -- SET sql_mode = ''; 
-SELECT 
+       select 
     mercadoria.codMercadoria,
     mercadoria.nomeMercadoria,
     mercadoria.embMercadoria,
@@ -77,9 +76,9 @@ ORDER BY
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Merchandise to Client Negotiation to Provider: ", error);
+        console.log("Error select Merchandise to Client Negotiation to Provider: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -91,7 +90,7 @@ ORDER BY
     const { codprovider } = req.params;
 
     const queryConsult = `
-    -- SET sql_mode = ''; select fornecedor.codForn, 
+     select fornecedor.codForn, 
     fornecedor.nomeForn, 
     mercadoria.codMercadoria, 
     mercadoria.nomeMercadoria,
@@ -117,9 +116,9 @@ ORDER BY
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Merchandise Provider: ", error);
+        console.log("Error select Merchandise Provider: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -131,7 +130,7 @@ ORDER BY
     const { codclient, codprovider, codnegotiation } = req.params;
 
     const queryConsult =
-      "-- SET sql_mode = ''; select mercadoria.codMercadoria, mercadoria.nomeMercadoria,mercadoria.complemento, mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido = " +
+      " select mercadoria.codMercadoria, mercadoria.nomeMercadoria,mercadoria.complemento, mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido = " +
       codclient +
       " and pedido.codNegoPedido = " +
       codnegotiation +
@@ -141,9 +140,9 @@ ORDER BY
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Merchandise Provider If Client: ", error);
+        console.log("Error select Merchandise Provider If Client: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -154,13 +153,13 @@ ORDER BY
 
     const { codclient, codprovider, codnegotiation } = req.params;
 
-    const queryConsult = `-- SET sql_mode = ''; select mercadoria.codMercadoria, mercadoria.nomeMercadoria,mercadoria.complemento, mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido =  ${codclient}  and pedido.codNegoPedido = ${codnegotiation} where mercadoria.nego = ${codnegotiation} and mercadoria.codFornMerc = ${codprovider} GROUP BY mercadoria.codMercadoria ORDER BY quantMercadoria desc`;
+    const queryConsult = ` select mercadoria.codMercadoria, mercadoria.nomeMercadoria,mercadoria.complemento, mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido =  ${codclient}  and pedido.codNegoPedido = ${codnegotiation} where mercadoria.nego = ${codnegotiation} and mercadoria.codFornMerc = ${codprovider} GROUP BY mercadoria.codMercadoria ORDER BY quantMercadoria desc`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Merchandise Provider If Client: ", error);
+        console.log("Error select Merchandise Provider If Client: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -171,7 +170,7 @@ ORDER BY
 
     const { codclient, codeprovider } = req.params;
 
-    const queryConsult = `-- SET sql_mode = ''; SELECT 
+    const queryConsult = ` select 
     mercadoria.codMercadoria,
     mercadoria.nomeMercadoria,
     mercadoria.embMercadoria, 
@@ -191,9 +190,9 @@ ORDER BY
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Merchandise Provider If Client: ", error);
+        console.log("Error select Merchandise Provider If Client: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -204,7 +203,7 @@ ORDER BY
 
     const { codclient, codeprovider, codenegotiation } = req.params;
 
-    const queryConsult = `-- SET sql_mode = ''; SELECT 
+    const queryConsult = ` select 
     mercadoria.codMercadoria,
     mercadoria.nomeMercadoria,
     mercadoria.embMercadoria, 
@@ -228,9 +227,9 @@ ORDER BY
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Merchandise Provider If Client: ", error);
+        console.log("Error select Merchandise Provider If Client: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -242,7 +241,7 @@ ORDER BY
     const { codprovider, codnegotiation } = req.params;
 
     const queryConsult = `
-    -- SET sql_mode = ''; SELECT mercadoria.codMercadoria, 
+     select mercadoria.codMercadoria, 
     mercadoria.nomeMercadoria, 
     mercadoria.embMercadoria, 
     mercadoria.precoUnit,
@@ -260,9 +259,9 @@ ORDER BY
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Merchandise Provider If Client: ", error);
+        console.log("Error select Merchandise Provider If Client: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();

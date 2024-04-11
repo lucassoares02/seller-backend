@@ -1,6 +1,6 @@
 const connection = require("@server");
 const logger = require("@logger");
-const Select = require("@select");
+const select = require("@select");
 const Insert = require("@insert");
 
 const Provider = {
@@ -10,15 +10,15 @@ const Provider = {
     const { codconsultor } = req.params;
 
     const queryConsult =
-      "-- SET sql_mode = ''; select cnpjForn, nomeForn, razaoForn, codForn, image, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from relaciona join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona join fornecedor on fornecedor.codForn = pedido.codFornPedido left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relaciona.codAssocRelaciona =" +
+      " select cnpjForn, nomeForn, razaoForn, codForn, image, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from relaciona join pedido on pedido.codAssocPedido = relaciona.codConsultRelaciona join fornecedor on fornecedor.codForn = pedido.codFornPedido left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relaciona.codAssocRelaciona =" +
       codconsultor +
       " group by fornecedor.codForn order by valorTotal desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Provider Client: ", error);
+        console.log("Error select Provider Client: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -28,7 +28,7 @@ const Provider = {
     logger.info("Get Provider Sells");
 
     const queryConsult = `
-    -- SET sql_mode = ''; select 
+     select 
     cnpjForn,
     nomeForn, 
     razaoForn as razao, 
@@ -46,9 +46,9 @@ const Provider = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Provider Sells: ", error);
+        console.log("Error select Provider Sells: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -60,7 +60,7 @@ const Provider = {
     const { codbuyer } = req.params;
 
     const queryConsult = `
-    -- SET sql_mode = ''; select 
+     select 
     cnpjForn, 
     nomeForn,
     razaoForn as razao, 
@@ -80,9 +80,9 @@ const Provider = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Providers Categories: ", error);
+        console.log("Error select Providers Categories: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -94,7 +94,7 @@ const Provider = {
     const { codconsultclient } = req.params;
 
     const queryConsult = `
-    -- SET sql_mode = ''; select cnpjForn, 
+     select cnpjForn, 
     nomeForn,
     razaoForn as razao, 
     codForn, 
@@ -113,9 +113,9 @@ const Provider = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Providers Client: ", error);
+        console.log("Error select Providers Client: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -128,9 +128,9 @@ const Provider = {
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select All Providers: ", error);
+        console.log("Error select All Providers: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -142,15 +142,15 @@ const Provider = {
     const { codconsult } = req.params;
 
     const queryConsult =
-      "-- SET sql_mode = ''; select cnpjForn, nomeForn, razaoForn, image, codForn, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from fornecedor join relacionafornecedor on relacionafornecedor.codFornecedor = fornecedor.codForn left join pedido on pedido.codFornPedido = relacionafornecedor.codFornecedor left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relacionafornecedor.codConsultor = " +
+      " select cnpjForn, nomeForn, razaoForn, image, codForn, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal' from fornecedor join relacionafornecedor on relacionafornecedor.codFornecedor = fornecedor.codForn left join pedido on pedido.codFornPedido = relacionafornecedor.codFornecedor left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where relacionafornecedor.codConsultor = " +
       codconsult +
       " group by fornecedor.codForn order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
-        console.log("Error Select Provider Consult: ", error);
+        console.log("Error select Provider Consult: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -169,7 +169,7 @@ const Provider = {
       if (error) {
         return res.status(400).send(error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
     // connection.end();
@@ -201,6 +201,7 @@ const Provider = {
 
     connection.query(queryInsert, (error, results) => {
       if (error) {
+        console.log(`Post Insert Provider (Provider) Error: ${error} | ${codForn} - ${nomeForn}`);
         return res.status(400).send(error);
       } else {
         return res.status(200).send(`message: Save Success!`);
