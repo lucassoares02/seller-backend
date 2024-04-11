@@ -334,7 +334,7 @@ const User = {
         return res.json(results[1]);
       }
     });
-    // connection.end();
+    connection.end();
   },
 
   async getAllUsersProvider(req, res) {
