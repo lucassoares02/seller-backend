@@ -5,18 +5,17 @@ const Insert = require("@insert");
 
 const User = {
   async getUserDoubleCompany(req, res) {
-    logger.info("Post Request User");
+    logger.info("GET USER DOUBLE COMPANY");
 
     const { codacesso } = req.body;
 
     const queryConsult = "select codAcesso, codOrganization, direcAcesso from acesso where codAcesso = " + codacesso;
 
-    
-
     connection.query(queryConsult, async (error, resultsTop, fields) => {
       if (error) {
         return res.status(400).send(error);
       } else {
+        console.log(resultsTop);
         if (resultsTop.length > 0) {
           if (resultsTop[0].direcAcesso == 1) {
             const queryProvider = `
@@ -253,8 +252,10 @@ const User = {
 
     connection.query(queryConsult, async (error, results, fields) => {
       if (error || results.length == 0) {
+        console.log(error);
         return res.status(400).send(error);
       } else {
+        console.log(results);
         if (results[0].direcAcesso == 1) {
           const queryProvider =
             "SET sql_mode = ''; select acesso.codAcesso, acesso.direcAcesso, fornecedor.nomeForn, fornecedor.cnpjForn, acesso.codUsuario, fornecedor.codForn, consultor.nomeConsult, consultor.cpfConsult, FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorPedido' from acesso join consultor on acesso.codUsuario = consultor.codConsult join relacionafornecedor on consultor.codConsult = relacionafornecedor.codConsultor	join fornecedor on relacionafornecedor.codFornecedor = fornecedor.codForn left join pedido on pedido.codFornPedido = fornecedor.codForn left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido where acesso.codAcesso = " +

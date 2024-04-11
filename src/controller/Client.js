@@ -208,7 +208,8 @@ const Client = {
     // order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido)
     // desc`;
     const queryConsult = `
-    SET sql_mode = ''; select 
+    SET sql_mode = ''; select
+    associado.codAssociado 
     associado.razaoAssociado as razao,
     associado.cnpjAssociado, 
     IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
