@@ -227,7 +227,7 @@ const Client = {
         return res.json(results[1]);
       }
     });
-    connection.end();
+    // connection.end();
   },
 
   async getStoresbyProvider(req, res) {
