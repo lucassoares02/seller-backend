@@ -209,7 +209,7 @@ const Client = {
     // desc`;
     const queryConsult = `
     SET sql_mode = ''; select
-    associado.codAssociado 
+    associado.codAssociado,
     associado.razaoAssociado as razao,
     associado.cnpjAssociado, 
     IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
