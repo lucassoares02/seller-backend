@@ -102,97 +102,97 @@ const Graphs = {
     // connection.end();
   },
 
-  // async getExportPdf(req, res) {
-  //   logger.info("Get Exports Pdf");
+  async getExportPdf(req, res) {
+    logger.info("Get Exports Pdf");
 
-  //   const { codprovider } = req.params;
+    const { codprovider } = req.params;
 
-  //   // Lista de mercadorias
-  //   const listaMercadorias = [
-  //     {
-  //       nome: "Arroz",
-  //       quantidade: 3,
-  //       unidade: "CX",
-  //       precoUnitario: 30.0,
-  //     },
-  //     {
-  //       nome: "Feijão",
-  //       quantidade: 2,
-  //       unidade: "KG",
-  //       precoUnitario: 12.5,
-  //     },
-  //     {
-  //       nome: "Leite",
-  //       quantidade: 1,
-  //       unidade: "L",
-  //       precoUnitario: 5.0,
-  //     },
-  //   ];
+    // Lista de mercadorias
+    const listaMercadorias = [
+      {
+        nome: "Arroz",
+        quantidade: 3,
+        unidade: "CX",
+        precoUnitario: 30.0,
+      },
+      {
+        nome: "Feijão",
+        quantidade: 2,
+        unidade: "KG",
+        precoUnitario: 12.5,
+      },
+      {
+        nome: "Leite",
+        quantidade: 1,
+        unidade: "L",
+        precoUnitario: 5.0,
+      },
+    ];
 
-  //   // Variáveis
-  //   const nome = "João da Silva";
-  //   const idade = 30;
-  //   const cidade = "São Paulo";
+    // Variáveis
+    const nome = "João da Silva";
+    const idade = 30;
+    const cidade = "São Paulo";
 
-  //   // Criar um novo documento PDF
-  //   const doc = new PDFDocument({ margin: 30, size: "A4" });
+    // Criar um novo documento PDF
+    const doc = new PDFDocument({ margin: 30, size: "A4" });
 
-  //   // Definir o caminho do arquivo temporário
-  //   const temporaryFilePath = path.join(__dirname, "./temp", "documento.pdf");
+    // Definir o caminho do arquivo temporário
+    const temporaryFilePath = path.join(__dirname, "./temp", "documento.pdf");
 
-  //   // Pipe o PDF para um arquivo temporário
-  //   const writeStream = fs.createWriteStream(temporaryFilePath);
-  //   doc.pipe(writeStream);
+    // Pipe o PDF para um arquivo temporário
+    const writeStream = fs.createWriteStream(temporaryFilePath);
+    doc.pipe(writeStream);
 
-  //   // Nome do arquivo de saída
-  //   const outputFilename = "documento.pdf";
+    // Nome do arquivo de saída
+    const outputFilename = "documento.pdf";
 
-  //   // Definir o cabeçalho para fazer o download do arquivo
+    // Definir o cabeçalho para fazer o download do arquivo
 
-  //   // Pipe o PDF para a resposta HTTP
-  //   doc.pipe(res);
+    // Pipe o PDF para a resposta HTTP
+    doc.pipe(res);
 
-  //   const table = {
-  //     title: "Pedido",
-  //     subtitle: "Mercantil BNH",
-  //     headers: [
-  //       { label: "Código", property: "name", width: 60, renderer: null },
-  //       { label: "Description", property: "description", width: 210, renderer: null },
-  //       { label: "Quantidade", property: "quantity", width: 70, renderer: null },
-  //       { label: "Fator", property: "factor", width: 70, renderer: null },
-  //       { label: "Preço", property: "price", width: 100, renderer: null },
-  //       { label: "Total", property: "total", width: 80, renderer: null },
-  //     ],
-  //     rows: [
-  //       ["1", "Mercadoria 1", "1", "CX", "R$105,99", "R$105,99"],
-  //       ["23534", "Mercadoria 2", "2", "CX", "R$45,00", "R$90,00"],
-  //       // [...],
-  //     ],
-  //   };
-  //   // the magic
-  //   doc.table(table, {
-  //     prepareHeader: () => doc.font("Helvetica-Bold").fontSize(8),
-  //   });
+    const table = {
+      title: "Pedido",
+      subtitle: "Mercantil BNH",
+      headers: [
+        { label: "Código", property: "name", width: 60, renderer: null },
+        { label: "Description", property: "description", width: 210, renderer: null },
+        { label: "Quantidade", property: "quantity", width: 70, renderer: null },
+        { label: "Fator", property: "factor", width: 70, renderer: null },
+        { label: "Preço", property: "price", width: 100, renderer: null },
+        { label: "Total", property: "total", width: 80, renderer: null },
+      ],
+      rows: [
+        ["1", "Mercadoria 1", "1", "CX", "R$105,99", "R$105,99"],
+        ["23534", "Mercadoria 2", "2", "CX", "R$45,00", "R$90,00"],
+        // [...],
+      ],
+    };
+    // the magic
+    doc.table(table, {
+      prepareHeader: () => doc.font("Helvetica-Bold").fontSize(8),
+    });
 
-  //   doc.end();
+    doc.end();
 
-  //   // res.setHeader("Content-Disposition", `attachment; filename=${outputFilename}`);
-  //   // res.setHeader("Content-Type", "application/pdf");
+    // res.setHeader("Content-Disposition", `attachment; filename=${outputFilename}`);
+    // res.setHeader("Content-Type", "application/pdf");
 
-  //   try {
-  //     writeStream.on("finish", () => {
-  //       res.download(temporaryFilePath, "documento.pdf", () => {
-  //         // Após o envio, exclua o arquivo temporário
-  //         fs.unlinkSync(temporaryFilePath);
-  //       });
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  //   // Quando o PDF for gerado e gravado, enviar como resposta
+    try {
+      writeStream.on("finish", () => {
+        res.download(temporaryFilePath, "documento.pdf", () => {
+          // Após o envio, exclua o arquivo temporário
+          fs.unlinkSync(temporaryFilePath);
+        });
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    // Quando o PDF for gerado e gravado, enviar como resposta
 
-  //   console.log(`PDF gerado e entregue em: ${outputFilename}`);
-  // },
+    console.log(`PDF gerado e entregue em: ${outputFilename}`);
+  },
 
   async getTotalInformations(req, res) {
     logger.info("Get Total Informations");
