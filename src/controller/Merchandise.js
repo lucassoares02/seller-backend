@@ -204,7 +204,7 @@ ORDER BY
 
     const { codclient, codeprovider, codenegotiation } = req.params;
 
-    const queryConsult = `SET sql_mode = ''; SELECT 
+    let queryConsult = `SET sql_mode = ''; SELECT 
     mercadoria.codMercadoria,
     mercadoria.nomeMercadoria,
     mercadoria.embMercadoria, 
@@ -223,9 +223,28 @@ ORDER BY
     GROUP BY mercadoria.codMercadoria
     order by mercadoria.nomeMercadoria  
     asc`;
-    // ORDER BY volumeTotal
-    // desc`;
-
+    if (codclient == 0) {
+      queryConsult = `
+SET sql_mode = ''; SELECT 
+    mercadoria.codMercadoria,
+    mercadoria.nomeMercadoria,
+    mercadoria.embMercadoria, 
+    mercadoria.fatorMerc, 
+    mercadoria.marca,
+    mercadoria.complemento,
+    mercadoria.precoUnit ,
+    mercadoria.nego,
+    mercadoria.precoMercadoria as precoMercadoria,
+    IFNULL(SUM(pedido.quantMercPedido), 0) as volumeTotal 
+    FROM mercadoria 
+    left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido)     
+    where mercadoria.codFornMerc = ${codeprovider}
+    and mercadoria.nego = ${codenegotiation}
+    GROUP BY mercadoria.codMercadoria
+    order by mercadoria.nomeMercadoria  
+    asc
+`;
+    }
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
         console.log("Error Select Merchandise Provider If Client: ", error);
