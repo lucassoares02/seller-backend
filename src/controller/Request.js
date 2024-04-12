@@ -233,21 +233,42 @@ const Request = {
 
     const { codprovider } = req.params;
 
+    // const queryConsult = `
+    // SET sql_mode = ''; select
+    // pedido.codPedido ,
+    // associado.cnpjAssociado ,
+    // associado.codAssociado ,
+    // consultor.nomeConsult,
+    // pedido.codFornPedido,
+    // associado.razaoAssociado,
+    // sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'valor',
+    // TIME_FORMAT(SUBTIME(pedido.dataPedido, '03:00:00'), '%H:%i') as 'horas'
+    // from consultor
+    // join pedido on consultor.codConsult = pedido.codComprPedido
+    // join associado on pedido.codAssocPedido = associado.codAssociado
+    // join mercadoria on pedido.codMercPedido = mercadoria.codMercadoria
+    // group by associado.codAssociado
+    // order by horas
+    // desc`;
     const queryConsult = `
-    SET sql_mode = ''; select 
-    pedido.codPedido ,
-    associado.cnpjAssociado ,
-    associado.codAssociado ,
-    consultor.nomeConsult,
-    pedido.codFornPedido,
-    associado.razaoAssociado,
-    sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'valor',
-    TIME_FORMAT(SUBTIME(pedido.dataPedido, '03:00:00'), '%H:%i') as 'horas' 
+    SET sql_mode = ''; select pedido.codPedido , 
+    associado.cnpjAssociado , 
+    associado.codAssociado  as codConsultRelaciona,
+    consultor.nomeConsult, 
+    associado.razaoAssociado, 
+    fornecedor.nomeForn,
+    fornecedor.codForn,
+    negociacao.codNegociacao,
+    negociacao.descNegociacao,
+    sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'valor', 
+    TIME_FORMAT(SUBTIME(pedido.dataPedido, '03:00:00'),'%H:%i') as 'horas' 
     from consultor 
     join pedido on consultor.codConsult = pedido.codComprPedido 
+    join fornecedor on fornecedor.codForn = pedido.codFornPedido
+    join negociacao on negociacao.codNegociacao = pedido.codNegoPedido
     join associado on pedido.codAssocPedido = associado.codAssociado 
-    join mercadoria on pedido.codMercPedido = mercadoria.codMercadoria
-    group by associado.codAssociado 
+    join mercadoria on pedido.codMercPedido = mercadoria.codMercadoria 
+    group by associado.codAssociado
     order by horas 
     desc`;
 
