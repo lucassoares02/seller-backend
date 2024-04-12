@@ -9,39 +9,39 @@ const Request = {
 
     const { codclient } = req.params;
 
-    const queryConsult = `
-    SET sql_mode = ''; select cnpjForn, 
-    nomeForn,
-    razaoForn as razao, 
-    codForn, 
-    image,
-    color,
-    IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal', 
-    IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal'
-    from fornecedor 
-    left join pedido on pedido.codFornPedido = fornecedor.codForn
-    left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido 
-    and pedido.codAssocPedido = ${codclient}
-    group by fornecedor.codForn
-    order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
-    desc`;
     // const queryConsult = `
-    // SET sql_mode = ''; select
-    //   cnpjForn,
-    //   nomeForn,
-    //   razaoForn,
-    //   image,
-    //   codForn,
-    //   color,
-    //   IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
-    //   IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal'
-    //   from fornecedor
-    //   left join pedido on pedido.codFornPedido = fornecedor.codForn
-    //   left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido
-    //   where pedido.codAssocPedido = ${codclient}
-    //   group by pedido.codFornPedido
-    //   order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido)
-    //   desc`;
+    // SET sql_mode = ''; select cnpjForn,
+    // nomeForn,
+    // razaoForn as razao,
+    // codForn,
+    // image,
+    // color,
+    // IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
+    // IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal'
+    // from fornecedor
+    // left join pedido on pedido.codFornPedido = fornecedor.codForn
+    // left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido
+    // and pedido.codAssocPedido = ${codclient}
+    // group by fornecedor.codForn
+    // order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido)
+    // desc`;
+    const queryConsult = `
+    SET sql_mode = ''; select
+      cnpjForn,
+      nomeForn,
+      razaoForn,
+      image,
+      codForn,
+      color,
+      IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal',
+      IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal'
+      from fornecedor
+      left join pedido on pedido.codFornPedido = fornecedor.codForn
+      left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido
+      where pedido.codAssocPedido = ${codclient}
+      group by pedido.codFornPedido
+      order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido)
+      desc`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
