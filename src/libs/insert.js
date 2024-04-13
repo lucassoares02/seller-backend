@@ -16,8 +16,7 @@ async function Insert(params) {
       connection.query(query, function (error, results, fields) {
         if (error) {
           console.log("=========================== ERROR ===========================");
-          console.log(error);
-          console.log("=========================== DATA ===========================");
+          console.log(`${error}`);
           console.log(params.data);
           console.log("=========================== ----- ===========================");
           return reject(error);
