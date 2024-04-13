@@ -18,7 +18,7 @@ const Merchandise = {
     mercadoria.complemento, 
     mercadoria.marca, 
     mercadoria.fatorMerc,
-    mercadoria.precoUnitario
+    mercadoria.precoUnit,
     mercadoria.precoMercadoria as precoMercadoria, 
     IFNULL(SUM(pedido.quantMercPedido),  0) as quantMercadoria, 
     IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal' 
@@ -26,7 +26,7 @@ const Merchandise = {
     join fornecedor on mercadoria.codFornMerc = fornecedor.codForn 
     left outer join pedido on mercadoria.codMercadoria = pedido.codMercPedido 
     where codFornMerc = ${codprovider} and pedido.codNegoPedido = ${codnegotiation}
-    group by mercadoria.codMercadoria 
+    group by mercadoria.codMercadoria, mercadoria.nego
     order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
     desc
 `;
@@ -68,7 +68,7 @@ WHERE
     AND pedido.codfornpedido =  ${codprovider} 
     AND pedido.codNegoPedido =  ${codnegotiation}  
 GROUP BY 
-    mercadoria.codMercadoria
+    mercadoria.codMercadoria, mercadoria.nego
 HAVING 
     valorTotal != 0
 ORDER BY 
@@ -107,7 +107,7 @@ ORDER BY
     join fornecedor on mercadoria.codFornMerc = fornecedor.codForn 
     left join pedido on pedido.codMercPedido = mercadoria.codMercadoria
     where fornecedor.codForn = ${codprovider}
-    group by mercadoria.codMercadoria 
+    group by mercadoria.codMercadoria, mercadoria.nego
     order by mercadoria.nomeMercadoria  
     asc
 `;
@@ -137,7 +137,7 @@ ORDER BY
       codnegotiation +
       " where mercadoria.codFornMerc = " +
       codprovider +
-      " GROUP BY mercadoria.codMercadoria ORDER BY quantMercadoria desc";
+      " GROUP BY mercadoria.codMercadoria, mercadoria.nego ORDER BY quantMercadoria desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -154,7 +154,7 @@ ORDER BY
 
     const { codclient, codprovider, codnegotiation } = req.params;
 
-    const queryConsult = `SET sql_mode = ''; select mercadoria.codMercadoria, mercadoria.nomeMercadoria,mercadoria.complemento, mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido =  ${codclient}  and pedido.codNegoPedido = ${codnegotiation} where mercadoria.nego = ${codnegotiation} and mercadoria.codFornMerc = ${codprovider} GROUP BY mercadoria.codMercadoria ORDER BY quantMercadoria desc`;
+    const queryConsult = `SET sql_mode = ''; select mercadoria.codMercadoria, mercadoria.nomeMercadoria,mercadoria.complemento, mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido =  ${codclient}  and pedido.codNegoPedido = ${codnegotiation} where mercadoria.nego = ${codnegotiation} and mercadoria.codFornMerc = ${codprovider} GROUP BY mercadoria.codMercadoria, mercadoria.nego ORDER BY quantMercadoria desc`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -183,7 +183,7 @@ ORDER BY
     left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) 
     and pedido.codComprPedido = ${codclient}
     where mercadoria.codFornMerc = ${codeprovider}
-    GROUP BY mercadoria.codMercadoria
+    GROUP BY mercadoria.codMercadoria, mercadoria.nego
     order by mercadoria.nomeMercadoria  
     asc`;
     // ORDER BY volumeTotal
@@ -220,7 +220,7 @@ ORDER BY
     and pedido.codAssocPedido = ${codclient}
     where mercadoria.codFornMerc = ${codeprovider}
     and mercadoria.nego = ${codenegotiation}
-    GROUP BY mercadoria.codMercadoria
+    GROUP BY mercadoria.codMercadoria, mercadoria.nego
     order by mercadoria.nomeMercadoria  
     asc`;
     if (codclient == 0) {
@@ -240,7 +240,7 @@ SET sql_mode = ''; SELECT
     left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido)     
     where mercadoria.codFornMerc = ${codeprovider}
     and mercadoria.nego = ${codenegotiation}
-    GROUP BY mercadoria.codMercadoria
+    GROUP BY mercadoria.codMercadoria, mercadoria.nego
     order by mercadoria.nomeMercadoria  
     asc
 `;
@@ -273,7 +273,7 @@ SET sql_mode = ''; SELECT
     JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) 
     and pedido.codNegoPedido = ${codnegotiation} 
     where mercadoria.codFornMerc = ${codprovider}
-    GROUP BY mercadoria.codMercadoria 
+    GROUP BY mercadoria.codMercadoria, mercadoria.nego
     ORDER BY quantMercadoria 
     desc`;
 
