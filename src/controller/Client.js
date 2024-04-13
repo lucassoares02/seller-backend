@@ -107,7 +107,7 @@ const Client = {
     SET sql_mode = ''; select 
     mercadoria.codMercadoria, 
     mercadoria.codFornMerc,
-    mercadoria.nomeMercadoria,
+    concat(mercadoria.codMercadoria_ext," - ", mercadoria.nomeMercadoria) as nomeMercadoria,
     mercadoria.embMercadoria,
     associado.razaoAssociado as razao,
     associado.codAssociado,
@@ -141,7 +141,7 @@ const Client = {
     SET sql_mode = ''; select 
     mercadoria.codMercadoria, 
     mercadoria.codFornMerc,
-    mercadoria.nomeMercadoria,
+    concat(mercadoria.codMercadoria_ext," - ", mercadoria.nomeMercadoria) as nomeMercadoria,
     mercadoria.embMercadoria,
     associado.razaoAssociado as razao,
     associado.codAssociado,

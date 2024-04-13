@@ -56,7 +56,7 @@ const Negotiation = {
     const queryConsult = `
     SET sql_mode = ''; select
       p.codMercPedido,
-      m.nomeMercadoria,
+      concat(m.codMercadoria_ext," - ", m.nomeMercadoria) as nomeMercadoria,
       m.complemento,
       m.barcode,
       m.erpcode,
@@ -106,7 +106,7 @@ const Negotiation = {
     const queryConsult = `
     SET sql_mode = ''; select
     p.codMercPedido,
-    m.nomeMercadoria,
+    concat(m.codMercadoria_ext," - ", m.nomeMercadoria) as nomeMercadoria,
     m.complemento,
     m.barcode,
     m.erpcode,
@@ -251,7 +251,7 @@ const Negotiation = {
     // const queryConsult = `
     // SET sql_mode = ''; select
     //   p.codMercPedido,
-    //   m.nomeMercadoria,
+    //   concat(m.codMercadoria_ext," - ", m.nomeMercadoria) as nomeMercadoria,
     //   m.complemento,
     //   m.barcode,
     //   m.erpcode,
@@ -270,7 +270,7 @@ const Negotiation = {
     const queryConsult = `
     SET sql_mode = ''; select
       p.codMercPedido,
-      m.nomeMercadoria,
+      concat(m.codMercadoria_ext," - ", m.nomeMercadoria) as nomeMercadoria,
       m.complemento,
       m.barcode,
       m.erpcode,
@@ -411,7 +411,7 @@ const Negotiation = {
     const queryConsult = `
     SET sql_mode = ''; select
       p.codMercPedido,
-      m.nomeMercadoria,
+      concat(m.codMercadoria_ext," - ", m.nomeMercadoria) as nomeMercadoria,
       m.complemento,
       m.barcode,
       m.erpcode,
@@ -572,7 +572,7 @@ const Negotiation = {
     const queryConsult = `
     SET sql_mode = ''; select
       p.codMercPedido,
-      m.nomeMercadoria,
+      concat(m.codMercadoria_ext," - ", m.nomeMercadoria) as nomeMercadoria,
       m.complemento,
       m.barcode,
       m.erpcode,

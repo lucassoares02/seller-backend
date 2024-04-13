@@ -13,7 +13,7 @@ const Merchandise = {
     SET sql_mode = ''; select 
     mercadoria.codMercadoria, 
     mercadoria.codFornMerc, 
-    mercadoria.nomeMercadoria, 
+    concat(mercadoria.codMercadoria_ext," - ", mercadoria.nomeMercadoria) as nomeMercadoria, 
     mercadoria.embMercadoria, 
     mercadoria.complemento, 
     mercadoria.marca, 
@@ -26,7 +26,7 @@ const Merchandise = {
     join fornecedor on mercadoria.codFornMerc = fornecedor.codForn 
     left outer join pedido on mercadoria.codMercadoria = pedido.codMercPedido 
     where codFornMerc = ${codprovider} and pedido.codNegoPedido = ${codnegotiation}
-    group by mercadoria.codMercadoria, mercadoria.nego
+    group by mercadoria.codMercadoria
     order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido) 
     desc
 `;
@@ -50,7 +50,7 @@ const Merchandise = {
       SET sql_mode = ''; 
 SELECT 
     mercadoria.codMercadoria,
-    mercadoria.nomeMercadoria,
+    concat(mercadoria.codMercadoria_ext," - ", mercadoria.nomeMercadoria) as nomeMercadoria,
     mercadoria.embMercadoria,
     mercadoria.fatorMerc,
     mercadoria.complemento,
@@ -68,7 +68,7 @@ WHERE
     AND pedido.codfornpedido =  ${codprovider} 
     AND pedido.codNegoPedido =  ${codnegotiation}  
 GROUP BY 
-    mercadoria.codMercadoria, mercadoria.nego
+    mercadoria.codMercadoria
 HAVING 
     valorTotal != 0
 ORDER BY 
@@ -94,7 +94,7 @@ ORDER BY
     SET sql_mode = ''; select fornecedor.codForn, 
     fornecedor.nomeForn, 
     mercadoria.codMercadoria, 
-    mercadoria.nomeMercadoria,
+    concat(mercadoria.codMercadoria_ext," - ", mercadoria.nomeMercadoria) as nomeMercadoria,
     mercadoria.embMercadoria, 
     mercadoria.marca, 
     mercadoria.complemento, 
@@ -107,7 +107,7 @@ ORDER BY
     join fornecedor on mercadoria.codFornMerc = fornecedor.codForn 
     left join pedido on pedido.codMercPedido = mercadoria.codMercadoria
     where fornecedor.codForn = ${codprovider}
-    group by mercadoria.codMercadoria, mercadoria.nego
+    group by mercadoria.codMercadoria
     order by mercadoria.nomeMercadoria  
     asc
 `;
@@ -131,13 +131,13 @@ ORDER BY
     const { codclient, codprovider, codnegotiation } = req.params;
 
     const queryConsult =
-      "SET sql_mode = ''; select mercadoria.codMercadoria, mercadoria.nomeMercadoria,mercadoria.complemento, mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido = " +
+      "SET sql_mode = ''; select mercadoria.codMercadoria, concat(mercadoria.codMercadoria_ext," - ", mercadoria.nomeMercadoria) as nomeMercadoria,mercadoria.complemento, mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido = " +
       codclient +
       " and pedido.codNegoPedido = " +
       codnegotiation +
       " where mercadoria.codFornMerc = " +
       codprovider +
-      " GROUP BY mercadoria.codMercadoria, mercadoria.nego ORDER BY quantMercadoria desc";
+      " GROUP BY mercadoria.codMercadoria ORDER BY quantMercadoria desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -154,7 +154,7 @@ ORDER BY
 
     const { codclient, codprovider, codnegotiation } = req.params;
 
-    const queryConsult = `SET sql_mode = ''; select mercadoria.codMercadoria, mercadoria.nomeMercadoria,mercadoria.complemento, mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido =  ${codclient}  and pedido.codNegoPedido = ${codnegotiation} where mercadoria.nego = ${codnegotiation} and mercadoria.codFornMerc = ${codprovider} GROUP BY mercadoria.codMercadoria, mercadoria.nego ORDER BY quantMercadoria desc`;
+    const queryConsult = `SET sql_mode = ''; select mercadoria.codMercadoria, concat(mercadoria.codMercadoria_ext," - ", mercadoria.nomeMercadoria) as nomeMercadoria,mercadoria.complemento, mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido =  ${codclient}  and pedido.codNegoPedido = ${codnegotiation} where mercadoria.nego = ${codnegotiation} and mercadoria.codFornMerc = ${codprovider} GROUP BY mercadoria.codMercadoria ORDER BY quantMercadoria desc`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -173,7 +173,7 @@ ORDER BY
 
     const queryConsult = `SET sql_mode = ''; SELECT 
     mercadoria.codMercadoria,
-    mercadoria.nomeMercadoria,
+    concat(mercadoria.codMercadoria_ext," - ", mercadoria.nomeMercadoria) as nomeMercadoria,
     mercadoria.embMercadoria, 
     mercadoria.fatorMerc, 
     mercadoria.precoUnit ,
@@ -183,7 +183,7 @@ ORDER BY
     left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) 
     and pedido.codComprPedido = ${codclient}
     where mercadoria.codFornMerc = ${codeprovider}
-    GROUP BY mercadoria.codMercadoria, mercadoria.nego
+    GROUP BY mercadoria.codMercadoria
     order by mercadoria.nomeMercadoria  
     asc`;
     // ORDER BY volumeTotal
@@ -206,7 +206,7 @@ ORDER BY
 
     let queryConsult = `SET sql_mode = ''; SELECT 
     mercadoria.codMercadoria,
-    mercadoria.nomeMercadoria,
+    concat(mercadoria.codMercadoria_ext," - ", mercadoria.nomeMercadoria) as nomeMercadoria,
     mercadoria.embMercadoria, 
     mercadoria.fatorMerc, 
     mercadoria.marca,
@@ -220,14 +220,14 @@ ORDER BY
     and pedido.codAssocPedido = ${codclient}
     where mercadoria.codFornMerc = ${codeprovider}
     and mercadoria.nego = ${codenegotiation}
-    GROUP BY mercadoria.codMercadoria, mercadoria.nego
+    GROUP BY mercadoria.codMercadoria
     order by mercadoria.nomeMercadoria  
     asc`;
     if (codclient == 0) {
       queryConsult = `
 SET sql_mode = ''; SELECT 
     mercadoria.codMercadoria,
-    mercadoria.nomeMercadoria,
+    concat(mercadoria.codMercadoria_ext," - ", mercadoria.nomeMercadoria) as nomeMercadoria,
     mercadoria.embMercadoria, 
     mercadoria.fatorMerc, 
     mercadoria.marca,
@@ -240,7 +240,7 @@ SET sql_mode = ''; SELECT
     left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido)     
     where mercadoria.codFornMerc = ${codeprovider}
     and mercadoria.nego = ${codenegotiation}
-    GROUP BY mercadoria.codMercadoria, mercadoria.nego
+    GROUP BY mercadoria.codMercadoria
     order by mercadoria.nomeMercadoria  
     asc
 `;
@@ -262,7 +262,7 @@ SET sql_mode = ''; SELECT
 
     const queryConsult = `
     SET sql_mode = ''; SELECT mercadoria.codMercadoria, 
-    mercadoria.nomeMercadoria, 
+    concat(mercadoria.codMercadoria_ext," - ", mercadoria.nomeMercadoria) as nomeMercadoria, 
     mercadoria.embMercadoria, 
     mercadoria.precoUnit,
     mercadoria.fatorMerc, 
@@ -273,7 +273,7 @@ SET sql_mode = ''; SELECT
     JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) 
     and pedido.codNegoPedido = ${codnegotiation} 
     where mercadoria.codFornMerc = ${codprovider}
-    GROUP BY mercadoria.codMercadoria, mercadoria.nego
+    GROUP BY mercadoria.codMercadoria
     ORDER BY quantMercadoria 
     desc`;
 
@@ -290,11 +290,11 @@ SET sql_mode = ''; SELECT
   async postInsertMerchandise(req, res) {
     logger.info("Post Save Merchandise");
 
-    const { codMercadoria, nomeMercadoria, codFornMerc, embMercadoria, fatorMerc, precoMercadoria, precoUnit, barcode, marca, complemento, erpcode, negociacao } = req.body;
+    const { codMercadoria, nomeMercadorias, codFornMerc, embMercadoria, fatorMerc, precoMercadoria, precoUnit, barcode, marca, complemento, erpcode, negociacao } = req.body;
 
     let data = {
       codMercadoria: codMercadoria,
-      nomeMercadoria: nomeMercadoria,
+      nomeMercadoria: nomeMercadorias,
       codFornMerc: codFornMerc,
       embMercadoria: embMercadoria,
       fatorMerc: fatorMerc,

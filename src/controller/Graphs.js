@@ -206,7 +206,7 @@ const Graphs = {
         AND pedido.codfornpedido =  ${supplier} 
         AND pedido.codNegoPedido =  ${negotiation}  
     GROUP BY 
-        mercadoria.codMercadoria, mercadoria.nego
+        mercadoria.codMercadoria
         
     HAVING 
     totalprice != 0
@@ -314,7 +314,7 @@ const Graphs = {
     const queryConsult = `
         SET sql_mode = ''; select
           p.codMercPedido,
-          m.nomeMercadoria,
+          concat(m.codMercadoria_ext," - ", m.nomeMercadoria) as nomeMercadoria,
           m.complemento,
           m.barcode,
           m.erpcode,
