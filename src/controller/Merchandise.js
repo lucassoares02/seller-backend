@@ -290,7 +290,7 @@ SET sql_mode = ''; SELECT
   async postInsertMerchandise(req, res) {
     logger.info("Post Save Merchandise");
 
-    const { codMercadoria, nomeMercadoria, codFornMerc, embMercadoria, fatorMerc, precoMercadoria, precoUnit, barcode, marca, complemento, erpcode } = req.body;
+    const { codMercadoria, nomeMercadoria, codFornMerc, embMercadoria, fatorMerc, precoMercadoria, precoUnit, barcode, marca, complemento, erpcode, negociacao } = req.body;
 
     let data = {
       codMercadoria: codMercadoria,
@@ -304,6 +304,7 @@ SET sql_mode = ''; SELECT
       marca: marca,
       complemento: complemento,
       erpcode: erpcode,
+      nego: negociacao,
     };
 
     console.log("============= DATA =============");
