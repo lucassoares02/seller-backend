@@ -206,7 +206,7 @@ const Graphs = {
         AND pedido.codfornpedido =  ${supplier} 
         AND pedido.codNegoPedido =  ${negotiation}  
     GROUP BY 
-        mercadoria.codMercadoria
+        mercadoria.codMercadoria, mercadoria.nego
     HAVING 
     totalprice != 0
     ORDER BY 
