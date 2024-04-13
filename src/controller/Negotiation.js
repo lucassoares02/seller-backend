@@ -781,12 +781,15 @@ const Negotiation = {
   async PostInsertNegotiation(req, res) {
     logger.info("Post Save Negotiation");
 
-    const { codNegociacao, descNegociacao, codFornNegociacao } = req.body;
+    const { codNegociacao, descNegociacao, codFornNegociacao, prazo, observacao, codNegoErp } = req.body;
 
     let data = {
       codNegociacao: codNegociacao,
       descNegociacao: descNegociacao,
       codFornNegociacao: codFornNegociacao,
+      prazo: prazo,
+      observacao: observacao,
+      codNegoErp: codNegoErp,
     };
 
     let params = {
