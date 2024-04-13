@@ -316,13 +316,6 @@ SET sql_mode = ''; SELECT
         res.status(200).send(`message: Save Success!`);
       })
       .catch((error) => {
-        console.log("\n\n");
-        console.log("==================================================");
-        console.log(`Error Mercadoria ${nomeMercadoria}`);
-        console.log("==================================================");
-        console.log(data);
-        console.log("==================================================");
-        console.log("\n\n");
         res.status(400).send(error);
       });
 
