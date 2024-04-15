@@ -139,7 +139,7 @@ join associado a on a.codAssociado = p.codAssocPedido
         const dateNow = Date.now();
 
         // Configurar os cabeçalhos de resposta para fazer o download
-        res.setHeader("Content-Disposition", `attachment; filename=${results[1][0].replaceAll(" ","_")}_exportacao.csv`);
+        res.setHeader("Content-Disposition", `attachment; filename=${results[1][0].cliente.replaceAll(" ","_")}_exportacao.csv`);
         res.setHeader("Content-Type", "text/csv");
 
         // Transmitir o arquivo CSV como resposta
