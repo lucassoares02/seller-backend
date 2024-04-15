@@ -113,11 +113,13 @@ const Negotiation = {
     m.marca,
     p.quantMercPedido as quantidade,
     p.codFornPedido,
+    concat(a.codAssociado, " - ", a.razaoAssociado) as cliente,
     p.codAssocPedido,
     n.codNegoErp as codNegoPedido
     from pedido p
     join mercadoria m 
     join negociacao n on n.codNegociacao = p.codNegoPedido 
+join associado a on a.codAssociado = p.codAssocPedido
     where m.codMercadoria = p.codMercPedido 
       and p.codAssocPedido = ${codeclient}
       order by p.codNegoPedido;`;
@@ -137,7 +139,7 @@ const Negotiation = {
         const dateNow = Date.now();
 
         // Configurar os cabeçalhos de resposta para fazer o download
-        res.setHeader("Content-Disposition", `attachment; filename=${dateNow}_negociacoes.csv`);
+        res.setHeader("Content-Disposition", `attachment; filename=${results[1][0]}.csv`);
         res.setHeader("Content-Type", "text/csv");
 
         // Transmitir o arquivo CSV como resposta
