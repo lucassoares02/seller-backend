@@ -47,32 +47,32 @@ const Merchandise = {
     const { codclient, codprovider, codnegotiation } = req.params;
 
     const queryConsult = `
-      SET sql_mode = ''; 
-SELECT 
-    mercadoria.codMercadoria,
-    concat(mercadoria.codMercadoria_ext," - ", mercadoria.nomeMercadoria) as nomeMercadoria,
-    mercadoria.embMercadoria,
-    mercadoria.fatorMerc,
-    mercadoria.complemento,
-    mercadoria.marca, 
-    IFNULL(SUM(pedido.quantMercPedido), 0) as 'quantMercadoria', 
-    mercadoria.precoMercadoria as precoMercadoria,
-    mercadoria.precoUnit,
-    IFNULL(SUM(mercadoria.precoMercadoria * pedido.quantMercPedido), 0) as 'valorTotal' 
-FROM 
-    mercadoria 
-JOIN 
-    pedido ON pedido.codMercPedido = mercadoria.codMercadoria 
-WHERE 
-    pedido.codAssocPedido = ${codclient}
-    AND pedido.codfornpedido =  ${codprovider} 
-    AND pedido.codNegoPedido =  ${codnegotiation}  
-GROUP BY 
-    mercadoria.codMercadoria
-HAVING 
-    valorTotal != 0
-ORDER BY 
-    quantMercPedido;
+        SET sql_mode = ''; 
+  SELECT 
+      mercadoria.codMercadoria,
+      concat(mercadoria.codMercadoria_ext," - ", mercadoria.nomeMercadoria) as nomeMercadoria,
+      mercadoria.embMercadoria,
+      mercadoria.fatorMerc,
+      mercadoria.complemento,
+      mercadoria.marca, 
+      IFNULL(SUM(pedido.quantMercPedido), 0) as 'quantMercadoria', 
+      mercadoria.precoMercadoria as precoMercadoria,
+      mercadoria.precoUnit,
+      IFNULL(SUM(mercadoria.precoMercadoria * pedido.quantMercPedido), 0) as 'valorTotal' 
+  FROM 
+      mercadoria 
+  JOIN 
+      pedido ON pedido.codMercPedido = mercadoria.codMercadoria 
+  WHERE 
+      pedido.codAssocPedido = ${codclient}
+      AND pedido.codfornpedido =  ${codprovider} 
+      -- AND pedido.codNegoPedido =  ${codnegotiation}  
+  GROUP BY 
+      mercadoria.codMercadoria
+  HAVING 
+      valorTotal != 0
+  ORDER BY 
+      quantMercPedido;
       `;
 
     connection.query(queryConsult, (error, results, fields) => {
