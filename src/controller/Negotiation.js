@@ -105,8 +105,8 @@ const Negotiation = {
 
     const queryConsult = `
     SET sql_mode = ''; select
-    p.codMercPedido,
-    concat(m.codMercadoria_ext," - ", m.nomeMercadoria) as nomeMercadoria,
+    m.codMercadoria_ext as codMercPedido,
+    m.nomeMercadoria,
     m.complemento,
     m.barcode,
     m.erpcode,
@@ -114,8 +114,7 @@ const Negotiation = {
     p.quantMercPedido as quantidade,
     p.codFornPedido,
     p.codAssocPedido,
-    n.codNegoErp as codNegoPedido,
-    p.codMercPedido
+    n.codNegoErp as codNegoPedido
     from pedido p
     join mercadoria m 
     join negociacao n on n.codNegociacao = p.codNegoPedido 
