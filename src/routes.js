@@ -97,6 +97,8 @@ router.get("/exportnegotiationsprovider/:supplier/:buyer/:negotiation", Negotiat
 // router.get("/exportnegotiationsclient/:codeclient", Negotiation.GetExportNegotiationsClientTesteNovo);
 router.get("/exportnegotiationsclient/:codeclient", Negotiation.GetExportNegotiationsClientTesteaaaaaaaaa);
 
+router.get("/exportnegotiationsclientprovider/:codeclient/:codeprovider", Negotiation.GetExportNegotiationsClientPerProvider);
+
 // Methods Buyer
 // getCompradoresAssociados
 router.get("/buyersclient/:codconsultorclient", Buyer.getBuyersClient); // localhost:3001/buyersclient/1
