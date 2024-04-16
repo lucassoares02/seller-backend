@@ -125,31 +125,35 @@ join associado a on a.codAssociado = p.codAssocPedido
       order by p.codNegoPedido;`;
 
     connection.query(queryConsult, (error, results, fields) => {
-      if (error) {
-        console.log("Error Export Negotiation : ", error);
-      } else {
-        if (results.length > 0) {
-          let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
+      try {
+        if (error) {
+          console.log("Error Export Negotiation : ", error);
+        } else {
+          if (results.length > 0) {
+            let csvData = `ID;Negociacao;Codigo ERP;Codigo de barras;Produto;Complemento;Valor;Valor (NF unitario);Valor (NF embalagem);Tipo Embalagem;Qtde. Embalagem;Qtde. Minima;Modalidade;Data inicio encarte;Data fim encarte;Termino negociacao;Marca;Estoque;Quantidade\n`;
 
-          csvData += results[1]
-            .map((row) => {
-              return ` ${row.codMercPedido};${row.codNegoPedido};"${row.erpcode}";"${row.barcode}";"${row.nomeMercadoria}";"${row.complemento}";;;;;;;;;;;"${row.marca}";;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
-            })
-            .join("\n");
+            csvData += results[1]
+              .map((row) => {
+                return ` ${row.codMercPedido};${row.codNegoPedido};"${row.erpcode}";"${row.barcode}";"${row.nomeMercadoria}";"${row.complemento}";;;;;;;;;;;"${row.marca}";;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+              })
+              .join("\n");
 
-          const dateNow = Date.now();
+            const dateNow = Date.now();
 
-          // Configurar os cabeçalhos de resposta para fazer o download
-          res.setHeader("Content-Disposition", `attachment; filename=${results[1][0].cliente.replaceAll(" ", "_").toLowerCase()}_exportacao.csv`);
-          res.setHeader("Content-Type", "text/csv");
+            // Configurar os cabeçalhos de resposta para fazer o download
+            res.setHeader("Content-Disposition", `attachment; filename=${results[1][0].cliente.replaceAll(" ", "_").toLowerCase()}_exportacao.csv`);
+            res.setHeader("Content-Type", "text/csv");
 
-          // Transmitir o arquivo CSV como resposta
-          return res.send(csvData);
+            // Transmitir o arquivo CSV como resposta
+            return res.send(csvData);
+          }
+
+          return res.send({ Message: "Sem pedidos" });
+
+          // return res.json(results[1]);
         }
-
-        return res.send({ Message: "Sem pedidos" });
-
-        // return res.json(results[1]);
+      } catch (error) {
+        return res.send({ Message: error });
       }
     });
     // connection.end();
