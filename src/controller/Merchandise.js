@@ -66,7 +66,7 @@ const Merchandise = {
   WHERE 
       pedido.codAssocPedido = ${codclient}
       AND pedido.codfornpedido =  ${codprovider} 
-      -- AND pedido.codNegoPedido =  ${codnegotiation}  
+      AND pedido.codNegoPedido =  ${codnegotiation}  
   GROUP BY 
       mercadoria.codMercadoria
   HAVING 
