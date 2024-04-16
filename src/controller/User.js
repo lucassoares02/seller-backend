@@ -54,7 +54,7 @@ const User = {
               SET sql_mode = ''; 
               SELECT acesso.codAcesso,
               acesso.direcAcesso,
-              concat(associado.razaoAssociado AS nomeForn, " - Valor do Pedido: R$", FORMAT(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE')) as razaoAssociado,
+              associado.razaoAssociado AS nomeForn,
               associado.cnpjAssociado AS cnpjForn,
               acesso.codUsuario, 
               associado.codAssociado AS codForn,
