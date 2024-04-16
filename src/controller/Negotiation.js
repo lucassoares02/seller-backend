@@ -153,7 +153,7 @@ join associado a on a.codAssociado = p.codAssocPedido
           // return res.json(results[1]);
         }
       } catch (error) {
-        return res.send({ Message: error });
+        return res.send({ Mensagem: "Essa loja não possuí pedidos para exportar!" });
       }
     });
     // connection.end();
