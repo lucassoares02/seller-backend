@@ -315,7 +315,7 @@ SET sql_mode = ''; SELECT
     // };
 
     let params = {
-      table: "mercadoria",
+      table: "mercadoriaNova",
       data: itens,
     };
     return Insert(params)
