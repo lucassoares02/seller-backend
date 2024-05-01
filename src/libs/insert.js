@@ -1,3 +1,4 @@
+const logger = require("@logger");
 const connection = require("./../config/server");
 
 async function Insert(params) {
@@ -7,18 +8,20 @@ async function Insert(params) {
   const data = params.data;
 
   if (table !== undefined && data !== undefined) {
-    const columnsData = Object.keys(data);
-    const valuesData = Object.values(data);
+    // const columnsData = Object.keys(data);
+    // const valuesData = Object.values(data);
+
+    const primeiraMercadoria = data[0];
+    const columnsData = Object.keys(primeiraMercadoria);
+
+    const valuesData = data.map((item) => columnsData.map((coluna) => `"${item[coluna]}"`).join(","));
 
     const query = "INSERT INTO " + table + " (" + columnsData.join(",") + ") VALUES ('" + valuesData.join("','") + "')";
 
     return new Promise(function (resolve, reject) {
       connection.query(query, function (error, results, fields) {
         if (error) {
-          console.log("=========================== ERROR ===========================");
-          console.log(`${error}`);
-          console.log(params.data);
-          console.log("=========================== ----- ===========================");
+          logger.error(error);
           return reject(error);
         }
         return resolve(results);

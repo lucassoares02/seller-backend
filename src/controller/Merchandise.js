@@ -131,7 +131,8 @@ const Merchandise = {
     const { codclient, codprovider, codnegotiation } = req.params;
 
     const queryConsult =
-      "SET sql_mode = ''; select mercadoria.codMercadoria, concat(mercadoria.codMercadoria_ext," - ", mercadoria.nomeMercadoria) as nomeMercadoria,mercadoria.complemento, mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido = " +
+      "SET sql_mode = ''; select mercadoria.codMercadoria, concat(mercadoria.codMercadoria_ext," -
+      ", mercadoria.nomeMercadoria) as nomeMercadoria,mercadoria.complemento, mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido = " +
       codclient +
       " and pedido.codNegoPedido = " +
       codnegotiation +
@@ -290,26 +291,32 @@ SET sql_mode = ''; SELECT
   async postInsertMerchandise(req, res) {
     logger.info("Post Save Merchandise");
 
-    const { codMercadoria, nomeMercadorias, codFornMerc, embMercadoria, fatorMerc, precoMercadoria, precoUnit, barcode, marca, complemento, erpcode, negociacao } = req.body;
+    // console.log(req.body);
 
-    let data = {
-      codMercadoria: codMercadoria,
-      nomeMercadoria: nomeMercadorias,
-      codFornMerc: codFornMerc,
-      embMercadoria: embMercadoria,
-      fatorMerc: fatorMerc,
-      precoMercadoria: precoMercadoria,
-      precoUnit: precoUnit,
-      barcode: barcode,
-      marca: marca,
-      complemento: complemento,
-      erpcode: erpcode,
-      nego: negociacao,
-    };
+    const itens = req.body;
+
+    // for (let index = 0; index < itens.length; index++) {
+    //   const element = itens[index];
+    // }
+
+    // let data = {
+    //   codMercadoria: codMercadoria,
+    //   nomeMercadoria: nomeMercadorias,
+    //   codFornMerc: codFornMerc,
+    //   embMercadoria: embMercadoria,
+    //   fatorMerc: fatorMerc,
+    //   precoMercadoria: precoMercadoria,
+    //   precoUnit: precoUnit,
+    //   barcode: barcode,
+    //   marca: marca,
+    //   complemento: complemento,
+    //   erpcode: erpcode,
+    //   nego: negociacao,
+    // };
 
     let params = {
       table: "mercadoria",
-      data: data,
+      data: itens,
     };
     return Insert(params)
       .then(async (resp) => {
@@ -318,7 +325,6 @@ SET sql_mode = ''; SELECT
       .catch((error) => {
         res.status(400).send(error);
       });
-
     // connection.end();
   },
 };
