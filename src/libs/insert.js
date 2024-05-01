@@ -24,6 +24,7 @@ async function Insert(params) {
           logger.error(error);
           return reject(error);
         }
+        logger.info(results);
         return resolve(results);
       });
     });

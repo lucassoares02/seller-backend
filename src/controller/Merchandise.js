@@ -295,6 +295,10 @@ SET sql_mode = ''; SELECT
 
     const itens = req.body;
 
+    console.log("----------------------------------------------");
+    console.log(itens);
+    console.log("----------------------------------------------");
+
     // for (let index = 0; index < itens.length; index++) {
     //   const element = itens[index];
     // }
