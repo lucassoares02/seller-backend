@@ -322,13 +322,14 @@ SET sql_mode = ''; SELECT
       table: "mercadoriaNova",
       data: itens,
     };
-    return Insert(params)
-      .then(async (resp) => {
-        res.status(200).send(`message: Save Success!`);
-      })
-      .catch((error) => {
-        res.status(400).send(error);
-      });
+    console.log(params);
+    // return Insert(params)
+    //   .then(async (resp) => {
+    //     res.status(200).send(`message: Save Success!`);
+    //   })
+    //   .catch((error) => {
+    //     res.status(400).send(error);
+    //   });
     // connection.end();
   },
 };
