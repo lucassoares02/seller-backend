@@ -18,6 +18,10 @@ async function Insert(params) {
 
     const query = "INSERT INTO " + table + " (" + columnsData.join(",") + ") VALUES ('" + valuesData.join("','") + "')";
 
+    console.log("========================== QUERY ================================");
+    console.log(query);
+    console.log("========================== QUERY ================================");
+
     return new Promise(function (resolve, reject) {
       connection.query(query, function (error, results, fields) {
         if (error) {

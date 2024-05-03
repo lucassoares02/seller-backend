@@ -291,46 +291,20 @@ SET sql_mode = ''; SELECT
   async postInsertMerchandise(req, res) {
     logger.info("Post Save Merchandise");
 
-    // console.log(req.body);
-
     const itens = req.body;
-
-    console.log("----------------------------------------------");
-    console.log(itens);
-    console.log("----------------------------------------------");
-
-    // for (let index = 0; index < itens.length; index++) {
-    //   const element = itens[index];
-    // }
-
-    // let data = {
-    //   codMercadoria: codMercadoria,
-    //   nomeMercadoria: nomeMercadorias,
-    //   codFornMerc: codFornMerc,
-    //   embMercadoria: embMercadoria,
-    //   fatorMerc: fatorMerc,
-    //   precoMercadoria: precoMercadoria,
-    //   precoUnit: precoUnit,
-    //   barcode: barcode,
-    //   marca: marca,
-    //   complemento: complemento,
-    //   erpcode: erpcode,
-    //   nego: negociacao,
-    // };
 
     let params = {
       table: "mercadoriaNova",
       data: itens,
     };
-    console.log(params);
-    // return Insert(params)
-    //   .then(async (resp) => {
-    //     res.status(200).send(`message: Save Success!`);
-    //   })
-    //   .catch((error) => {
-    //     res.status(400).send(error);
-    //   });
-    // connection.end();
+    return Insert(params)
+      .then(async (resp) => {
+        res.status(200).send(`message: Save Success!`);
+      })
+      .catch((error) => {
+        res.status(400).send(error);
+      });
+    connection.end();
   },
 };
 
