@@ -18,7 +18,7 @@ async function Insert(params) {
 
 
     // const query = "INSERT INTO " + table + " (" + columnsData.join(",") + ") VALUES (" + valuesData.join("','") + "')";
-    const query = "INSERT INTO " + table + " (" + columnsData.join(",") + ") VALUES (" + valuesData.join("'), ('") + ")";
+    const query = "INSERT INTO " + table + " (" + columnsData.join(",") + ") VALUES (" + valuesData.join("), (") + ")";
 
 
     console.log("========================== QUERY ================================");
