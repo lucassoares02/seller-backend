@@ -16,10 +16,8 @@ async function Insert(params) {
 
     const valuesData = data.map((item) => columnsData.map((coluna) => `"${item[coluna]}"`).join(","));
 
-
     // const query = "INSERT INTO " + table + " (" + columnsData.join(",") + ") VALUES (" + valuesData.join("','") + "')";
     const query = "INSERT INTO " + table + " (" + columnsData.join(",") + ") VALUES (" + valuesData.join("), (") + ")";
-
 
     console.log("========================== QUERY ================================");
     console.log(query);
@@ -30,6 +28,11 @@ async function Insert(params) {
         if (error) {
           logger.error(error);
           return reject(error);
+        }
+        console.log(fields);
+        // Se houver warnings, eles estarão em fields e podem ser acessados assim:
+        if (fields && fields.length > 0 && fields[0].warningCount > 0) {
+          logger.warn("Warnings retornados pela consulta:", fields);
         }
         logger.info(results);
         return resolve(results);
