@@ -16,7 +16,10 @@ async function Insert(params) {
 
     const valuesData = data.map((item) => columnsData.map((coluna) => `"${item[coluna]}"`).join(","));
 
-    const query = "INSERT INTO " + table + " (" + columnsData.join(",") + ") VALUES ('" + valuesData.join("','") + "')";
+
+    // const query = "INSERT INTO " + table + " (" + columnsData.join(",") + ") VALUES (" + valuesData.join("','") + "')";
+    const query = "INSERT INTO " + table + " (" + columnsData.join(",") + ") VALUES (" + valuesData.join("'), ('") + ")";
+
 
     console.log("========================== QUERY ================================");
     console.log(query);
