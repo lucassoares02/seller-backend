@@ -299,7 +299,7 @@ SET sql_mode = ''; SELECT
     };
     return Insert(params)
       .then(async (resp) => {
-        res.status(200).json(resp);
+        res.json(resp);
       })
       .catch((error) => {
         res.status(400).send(error);
