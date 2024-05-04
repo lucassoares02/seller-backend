@@ -29,10 +29,7 @@ async function Insert(params) {
           logger.error(error);
           return reject(error);
         }
-        // Se houver warnings, eles estarão em results e podem ser acessados assim:
-        if (results && results.warningCount > 0) {
-          logger.warn("Warnings retornados pela consulta:", results.message);
-        }
+        logger.warn(results[0]);
         logger.info(results);
         return resolve(results);
       });
