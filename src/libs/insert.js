@@ -29,10 +29,9 @@ async function Insert(params) {
           logger.error(error);
           return reject(error);
         }
-        console.log(fields);
-        // Se houver warnings, eles estarão em fields e podem ser acessados assim:
-        if (fields && fields.length > 0 && fields[0].warningCount > 0) {
-          logger.warn("Warnings retornados pela consulta:", fields);
+        // Se houver warnings, eles estarão em results e podem ser acessados assim:
+        if (results && results.warningCount > 0) {
+          logger.warn("Warnings retornados pela consulta:", results.message);
         }
         logger.info(results);
         return resolve(results);
