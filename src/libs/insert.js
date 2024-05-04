@@ -29,7 +29,7 @@ async function Insert(params) {
           logger.error(error);
           return reject(error);
         }
-        logger.info(results);
+        logger.info(results[0]);
         return resolve(results);
       });
     });
