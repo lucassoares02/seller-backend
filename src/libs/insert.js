@@ -29,7 +29,9 @@ async function Insert(params) {
           logger.error(error);
           return reject(error);
         }
-        logger.info(results[1]);
+        for (let index = 0; index < results.length; index++) {
+          console.log(results[index]);
+        }
         return resolve(results);
       });
     });
