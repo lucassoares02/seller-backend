@@ -299,7 +299,7 @@ SET sql_mode = ''; SELECT
     };
     return Insert(params)
       .then(async (resp) => {
-        res.status(200).send(`message: Save Success!`);
+        res.status(200).send(resp);
       })
       .catch((error) => {
         res.status(400).send(error);
