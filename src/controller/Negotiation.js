@@ -828,6 +828,50 @@ join associado a on a.codAssociado = p.codAssocPedido
     // connection.end();
   },
 
+
+
+  async getNegotiationsProviderWithMerchandisePerClient(req, res) {
+    logger.info("Get Negotiation to Client");
+
+    const { codclient, codforn } = req.params;
+
+    const queryConsult =
+      "SET sql_mode = ''; select codNegociacao,prazo, observacao, descNegociacao, (pedido.codNegoPedido) as 'confirma' from negociacao left outer join pedido on (negociacao.codNegociacao = pedido.codNegoPedido) and pedido.codAssocPedido = " +
+      codclient +
+      "	where negociacao.codFornNegociacao  = " +
+      codforn +
+      " GROUP BY negociacao.codNegociacao ORDER BY confirma desc";
+
+    connection.query(queryConsult, async (error, results, fields) => {
+      if (error) {
+        console.log("Error Select Negotiation to Client: ", error);
+      } else {
+        let allResult = [];
+        const queryReusult = await new Promise(async (resolve, reject) => {
+          await Promise.all(results[1].map(async (negotiation) => {
+            const queryConsult = `SET sql_mode = ''; select mercadoria.codMercadoria, concat(mercadoria.codMercadoria_ext,' - ', mercadoria.nomeMercadoria) as nomeMercadoria,mercadoria.complemento, mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido =  ${codclient}  and pedido.codNegoPedido = ${negotiation["codNegociacao"]} where mercadoria.nego = ${negotiation["codNegociacao"]} and mercadoria.codFornMerc = ${codforn} GROUP BY mercadoria.codMercadoria ORDER BY quantMercadoria desc`;
+
+            const queryMerhcandises = await new Promise(async (resolves, reject) => {
+              connection.query(queryConsult, (error, merchandises, fields) => {
+                if (error) {
+                  console.log("Error Select Merchandise Provider If Client: ", error);
+                } else {
+                  negotiation.merchandises = merchandises[1];
+                  allResult.push(negotiation);
+                }
+                resolves();
+              });
+            });
+          }));
+          console.log(allResult);
+          resolve()
+        });
+        return res.json(allResult);
+      }
+    });
+    // connection.end();
+  },
+
   async getNegotiationClientWithPrice(req, res) {
     logger.info("Get Negotiation to Client");
 
@@ -849,6 +893,7 @@ join associado a on a.codAssociado = p.codAssocPedido
       if (error) {
         console.log("Error Select Negotiation to Client: ", error);
       } else {
+
         return res.json(results[1]);
       }
     });

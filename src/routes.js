@@ -83,6 +83,8 @@ router.get("/negotiationprovider/:codforn", Negotiation.getNegotiationProvider);
 // getNegociacoesAssociados.php
 router.get("/negotiationclient/:codclient/:codforn", Negotiation.getNegotiationClient); // localhost:3001/negotiationclient/9/333
 
+router.get("/negotiationproviderclient/:codclient/:codforn", Negotiation.getNegotiationsProviderWithMerchandisePerClient); // localhost:3001/negotiationclient/9/333
+
 router.get("/negotiationclientwithprice/:codclient/:codforn", Negotiation.getNegotiationClientWithPrice); // localhost:3001/negotiationclient/9/333
 
 router.post("/insertnegotiation", Negotiation.PostInsertNegotiation);
