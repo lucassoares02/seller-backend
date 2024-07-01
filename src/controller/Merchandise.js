@@ -1,4 +1,4 @@
-const connection = require("@server");
+const { connection } = require("@server");
 const logger = require("@logger");
 const Select = require("@select");
 const Insert = require("@insert");
@@ -97,6 +97,9 @@ const Merchandise = {
     concat(mercadoria.codMercadoria_ext," - ", mercadoria.nomeMercadoria) as nomeMercadoria,
     mercadoria.embMercadoria, 
     mercadoria.marca, 
+    mercadoria.erpcode,
+    mercadoria.barcode,
+    mercadoria.nego,
     mercadoria.complemento, 
     mercadoria.fatorMerc, 
     mercadoria.precoMercadoria as precoMercadoria, 

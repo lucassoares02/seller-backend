@@ -19,8 +19,6 @@ if (process.env.DATABASE == "POSTGRESQL") {
     }
   });
 } else {
-  console.log("MYSQL");
-  // var connection = mysql.createPool({
   var connection = mysql.createConnection({
     port: process.env.MYSQL_PORT,
     host: process.env.MYSQL_HOSTNAME,
@@ -34,7 +32,24 @@ if (process.env.DATABASE == "POSTGRESQL") {
     // connectionLimit: 10,
     multipleStatements: true
   });
+
+  var connectionMultishow = mysql.createConnection({
+    port: process.env.MYSQL_PORT_MULTISHOW,
+    host: process.env.MYSQL_HOSTNAME_MULTISHOW,
+    user: process.env.MYSQL_USERNAME_MULTISHOW,
+    password: process.env.MYSQL_PASSWORD_MULTISHOW,
+    database: process.env.MYSQL_DATABASE_MULTISHOW,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+    // insecureAuth: true,
+    // connectionLimit: 10,
+    multipleStatements: true
+  });
 }
 
 
-module.exports = connection;
+module.exports = {
+  connection,
+  connectionMultishow
+};

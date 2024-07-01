@@ -1,4 +1,5 @@
-const connection = require("@server");
+const { connection } = require("@server");
+const connectionMultishow = require("@server");
 const logger = require("@logger");
 const Select = require("@select");
 const Insert = require("@insert");
@@ -828,8 +829,6 @@ join associado a on a.codAssociado = p.codAssocPedido
     // connection.end();
   },
 
-
-
   async getNegotiationsProviderWithMerchandisePerClient(req, res) {
     logger.info("Get Negotiation to Client");
 
@@ -953,6 +952,40 @@ join associado a on a.codAssociado = p.codAssocPedido
 
     // connection.end();
   },
+
+  async GetNegotiationsClients(req, res) {
+    logger.info("Get Negotiation to Client");
+
+    const { category } = req.params;
+
+    const queryConsult = `select * from negociacao`;
+
+    connectionMultishow.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select Negotiation to Client: ", error);
+      } else {
+        return res.json(results[1]);
+      }
+    });
+
+    // connection.end();
+  },
+
+  async defaultInsert(req, res) {
+    logger.info("Get Negotiations Clients");
+
+    return Insert(params)
+      .then(async (resp) => {
+        res.status(200).send(`message: Save Success!`);
+      })
+      .catch((error) => {
+        res.status(400).send(error);
+      });
+
+    // connection.end();
+  },
+
+
 };
 
 module.exports = Negotiation;

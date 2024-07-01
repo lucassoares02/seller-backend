@@ -1,8 +1,10 @@
 const logger = require("@logger");
-const connection = require("./../config/server");
+const { connection } = require("./../config/server");
+const fs = require('fs');
 
 async function Insert(params) {
-  console.log("Function Insert");
+  // console.log("Function Insert");
+  const logs = 'logs.txt';
 
   const table = params.table;
   const data = params.data;
@@ -14,7 +16,7 @@ async function Insert(params) {
     const primeiraMercadoria = data[0];
     const columnsData = Object.keys(primeiraMercadoria);
 
-    const valuesData = data.map((item) => columnsData.map((coluna) => `"${item[coluna]}"`).join(","));
+    const valuesData = data.map((item) => columnsData.map((coluna) => `'${item[coluna]}'`).join(","));
 
     // const query = "INSERT INTO " + table + " (" + columnsData.join(",") + ") VALUES (" + valuesData.join("','") + "')";
     const query = "INSERT INTO " + table + " (" + columnsData.join(",") + ") VALUES (" + valuesData.join("), (") + "); SHOW WARNINGS";
@@ -23,17 +25,24 @@ async function Insert(params) {
     console.log(query);
     console.log("========================== QUERY ================================");
 
+
     return new Promise(function (resolve, reject) {
-      connection.query(query, function (error, results, fields) {
-        if (error) {
-          logger.error(error);
-          return reject(error);
-        }
-        for (let index = 0; index < results.length; index++) {
-          console.log(results[index]);
-        }
-        return resolve(results);
-      });
+      try {
+        connection.query(query, (error, results, fields) => {
+          if (error) {
+            logger.error(error);
+            fs.writeFileSync(logs, `${new Date().toLocaleTimeString()} - ${error}\n`, { encoding: 'utf8', flag: 'a' });
+            return resolve();
+          }
+          // for (let index = 0; index < results.length; index++) {
+          //   console.log(results[index]);
+          // }
+          return resolve(results);
+        });
+
+      } catch (error) {
+        console.log(`Error Insert Promise: ${error}`)
+      }
     });
   } else {
     return "No Data Received!";

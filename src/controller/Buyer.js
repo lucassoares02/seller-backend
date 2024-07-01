@@ -1,4 +1,4 @@
-const connection = require("@server");
+const { connection } = require("@server");
 const logger = require("@logger");
 
 const Buyer = {
