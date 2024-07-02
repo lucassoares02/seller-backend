@@ -106,6 +106,7 @@ router.post("/insertmerchandise", Merchandise.postInsertMerchandise);
 
 router.get("/requestproviderclient/:codclient", Request.getRequestProviderClient);
 router.get("/requesttopproviderclient/:codclient", Request.getRequestTopProviderClient);
+router.get("/requesttonegotiationclient/:codclient/:codprovider", Request.getRequestNegotiationProviderClient);
 
 router.get("/requestsprovider/:codprovider", Request.getRequestsProvider);
 

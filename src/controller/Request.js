@@ -86,6 +86,37 @@ const Request = {
     // connection.end();
   },
 
+  async getRequestNegotiationProviderClient(req, res) {
+    logger.info("Get Top Providers per Client");
+
+    const { codclient, codprovider } = req.params;
+
+    const queryConsult = `SET sql_mode = ''; select 
+      n.codNegociacao,      
+      n.descNegociacao,
+      n.observacao,
+      n.prazo,
+      IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal', 
+      IFNULL(sum(pedido.quantMercPedido), 0) as 'volumeTotal'
+      from fornecedor 
+      left join pedido on pedido.codFornPedido = fornecedor.codForn
+      left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido
+      join negociacao n on n.codNegociacao = pedido.codNegoPedido
+      where pedido.codAssocPedido = ${codclient} and pedido.codFornPedido = ${codprovider}
+      group by pedido.codNegoPedido 
+      order by sum(mercadoria.precoMercadoria*pedido.quantMercPedido)
+      desc`;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select Top Providers per Client: ", error);
+      } else {
+        return res.json(results[1]);
+      }
+    });
+    // connection.end();
+  },
+
   async getRequestsProvider(req, res) {
     logger.info("Get Requests Provider");
 
