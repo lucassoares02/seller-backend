@@ -1010,7 +1010,7 @@ join associado a on a.codAssociado = p.codAssocPedido
         console.log("Error Get Organization Status: ", error);
         return res.status(500).json({ error: 'Erro ao pegar status' });
       } else {
-        return res.json(results[1]);
+        return res.json(results[0]);
       }
     });
   }
