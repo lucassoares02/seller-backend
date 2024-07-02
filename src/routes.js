@@ -12,11 +12,13 @@ const Notice = require("@controller/Notice");
 const User = require("@controller/User");
 const Multishow = require("@controller/Multishow");
 
+// Router with the headers
 router.post("/getuser", User.getUser);
-
 router.post("/getusermore", User.getUserDoubleCompany);
-
 router.post("/getuserweb", User.getUserWeb);
+
+
+
 
 router.get("/getallusersorg", User.getAllUsersOrg);
 router.get("/getallusersprovider", User.getAllUsersProvider);

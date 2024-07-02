@@ -41,6 +41,7 @@
     "@update": "src/libs/update",
     "@select": "src/libs/select",
     "@insert": "src/libs/insert",
+    "@logs": "src/libs/logs",
     "@logger": "src/utils/logger"
   }
 }
