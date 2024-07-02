@@ -4,6 +4,44 @@ const Select = require("@select");
 const Insert = require("@insert");
 
 const Merchandise = {
+
+  async patchMerchandise(req, res) {
+
+
+    const { codMercadoria } = req.params;
+    const {
+      nomeMercadoria,
+      embMercadoria,
+      fatorMerc,
+      complemento,
+      barcode,
+      marca,
+      nego,
+      precoUnit,
+      precoMercadoria } = req.body;
+
+
+    const queryUpdate = `
+      SET sql_mode = ''; 
+      UPDATE mercadoria 
+      SET nomeMercadoria = '${nomeMercadoria}', embMercadoria = '${embMercadoria}', fatorMerc = '${fatorMerc}', complemento = '${complemento}', barcode = '${barcode}', marca = '${marca}', nego = '${nego}', precoUnit = '${precoUnit}', precoMercadoria = '${precoMercadoria}'
+      WHERE codMercadoria = '${codMercadoria}';`;
+
+    console.log(queryUpdate);
+
+    connection.query(queryUpdate, (error, results, fields) => {
+      if (error) {
+        console.log("Error Updating Merchandise Negotiation to Provider: ", error);
+        return res.status(500).json({ error: 'Erro ao atualizar mercadoria' });
+      } else {
+        // O resultado da atualização será retornado como parte de results[1]
+        console.log(results[1]);
+        return res.json(results[1]);
+      }
+    });
+  },
+
+
   async getMerchandiseNegotiationProvider(req, res) {
     logger.info("Get Merchandise to Negotiation to Provider");
 
@@ -99,7 +137,7 @@ const Merchandise = {
     mercadoria.marca, 
     mercadoria.erpcode,
     mercadoria.barcode,
-    mercadoria.nego,
+    mercadoria.nego,                                      
     mercadoria.complemento, 
     mercadoria.fatorMerc, 
     mercadoria.precoMercadoria as precoMercadoria, 
