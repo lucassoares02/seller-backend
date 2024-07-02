@@ -7,15 +7,14 @@ const saveLogs = require('@logs');
 const User = {
   async getUserDoubleCompany(req, res) {
     logger.info("GET USER DOUBLE COMPANY");
+    const { codacesso, platform, action } = req.body;
+
     try {
-      console.log(req.headers.codacesso, req.headers.action, req.headers.platform)
-      console.log(req.headers["codacesso"])
-      saveLogs(req.headers.codacesso, req.headers.action, req.headers.platform);
+      saveLogs(codacesso, action, platform);
     } catch (error) {
       console.log(`Error Save Logs: ${error}`);
     }
 
-    const { codacesso } = req.body;
 
     const queryConsult = "select codAcesso, codOrganization, direcAcesso from acesso where codAcesso = " + codacesso;
 
@@ -257,12 +256,13 @@ const User = {
 
   async getUserWeb(req, res) {
     logger.info("Post Request User");
+    const { codacesso, action, platform } = req.body;
+
     try {
-      saveLogs(req.headers.codacesso, req.headers.action, req.headers.platform);
+      saveLogs(codacesso, action, platform);
     } catch (error) {
       console.log(`Error Save Logs: ${error}`);
     }
-    const { codacesso } = req.body;
 
     const queryConsult = "select codAcesso, codOrganization, direcAcesso from acesso where codAcesso = " + codacesso;
 
