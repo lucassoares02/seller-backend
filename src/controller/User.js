@@ -9,6 +9,7 @@ const User = {
     logger.info("GET USER DOUBLE COMPANY");
     try {
       console.log(req.headers.codacesso, req.headers.action, req.headers.platform)
+      console.log(req.headers["codacesso"])
       saveLogs(req.headers.codacesso, req.headers.action, req.headers.platform);
     } catch (error) {
       console.log(`Error Save Logs: ${error}`);
