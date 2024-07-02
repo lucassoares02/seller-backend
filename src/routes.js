@@ -84,6 +84,7 @@ router.get("/buyersprovider/:codprovider", Buyer.getBuyersProvider);
 
 router.get("/buyers", Buyer.getAllBuyers);
 
+router.get("/statusnegotiation", Negotiation.negotiationStatus);
 router.get("/statusnegotiation/:code", Negotiation.changeNegotiationStatus);
 
 

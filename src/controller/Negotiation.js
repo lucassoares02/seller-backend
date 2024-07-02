@@ -988,7 +988,6 @@ join associado a on a.codAssociado = p.codAssocPedido
   async changeNegotiationStatus(req, res) {
     const { code } = req.params;
 
-
     const queryUpdate = `UPDATE organizador SET ativo = ${code}`;
 
     connection.query(queryUpdate, (error, results, fields) => {
@@ -997,7 +996,21 @@ join associado a on a.codAssociado = p.codAssocPedido
         return res.status(500).json({ error: 'Erro ao atualizar status' });
       } else {
         return res.json(results[1]);
-        console.log(results[1]);
+      }
+    });
+  },
+
+  async negotiationStatus(req, res) {
+    const { code } = req.params;
+
+    const queryUpdate = `select ativo from organizador`;
+
+    connection.query(queryUpdate, (error, results, fields) => {
+      if (error) {
+        console.log("Error Get Organization Status: ", error);
+        return res.status(500).json({ error: 'Erro ao pegar status' });
+      } else {
+        return res.json(results[1]);
       }
     });
   }

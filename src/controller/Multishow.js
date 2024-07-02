@@ -25,8 +25,8 @@ const Notice = {
       console.log(`Error Intial Inserts: ${error}`)
     }
 
-    const queryConsult = "SELECT n.*, cn.categoria FROM multishow_b2b.negociacoes n JOIN multishow_b2b.categorias_negociacoes cn on cn.id_categoria_negociacao = n.id_categoria_negociacao where n.id_categoria_negociacao = 25 or n.id_categoria_negociacao = 26";
-    // const queryConsult = "select n.*, cn.categoria FROM multishow_b2b.negociacoes n JOIN multishow_b2b.categorias_negociacoes cn on cn.id_categoria_negociacao = n.id_categoria_negociacao where n.created_at > '2024-05-25 14:15:15'";
+    // const queryConsult = "SELECT n.*, cn.categoria FROM multishow_b2b.negociacoes n JOIN multishow_b2b.categorias_negociacoes cn on cn.id_categoria_negociacao = n.id_categoria_negociacao where n.id_categoria_negociacao = 25 or n.id_categoria_negociacao = 26";
+    const queryConsult = "select n.*, cn.categoria FROM multishow_b2b.negociacoes n JOIN multishow_b2b.categorias_negociacoes cn on cn.id_categoria_negociacao = n.id_categoria_negociacao where n.created_at > '2024-06-25 14:15:15'";
 
     try {
       connectionMultishow.query(queryConsult, async (error, results, fields) => {
