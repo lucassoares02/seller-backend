@@ -30,14 +30,31 @@ const Client = {
     const { codacesso } = req.params;
 
     const queryConsult =
-      "SET sql_mode = ''; select acesso.codAcesso, acesso.direcAcesso, associado.razaoAssociado AS nomeForn, associado.cnpjAssociado AS cnpjForn, acesso.codUsuario, associado.codAssociado AS codForn, consultor.nomeConsult, consultor.cpfConsult FROM acesso JOIN consultor ON acesso.codUsuario = consultor.codConsult JOIN associado ON consultor.codFornConsult = associado.codAssociado WHERE acesso.codAcesso =" +
-      codacesso;
+      `SET sql_mode = ''; select acesso.codAcesso,
+      acesso.direcAcesso, 
+     associado.razaoAssociado AS nomeForn,
+      associado.cnpjAssociado AS cnpjForn,
+      acesso.codUsuario, 
+     o.ativo,
+     associado.codAssociado AS codForn,
+      consultor.nomeConsult,
+      consultor.cpfConsult 
+     FROM acesso
+      JOIN consultor ON acesso.codUsuario = consultor.codConsult 
+     JOIN associado ON consultor.codFornConsult = associado.codAssociado 
+     join organizador o on o.codOrg = acesso.codOrganization
+     WHERE acesso.codAcesso = ${codacesso};`
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
         console.log("Error Select Client: ", error);
       } else {
-        return res.json(results[1]);
+        console.log(results[1])
+        if (results[1][0]["ativo"] == 0) {
+          return res.json({ "message": "Período de negociações ainda não está ativo" });
+        } else {
+          return res.json(results[1]);
+        }
       }
     });
     // connection.end();

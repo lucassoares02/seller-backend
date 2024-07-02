@@ -27,8 +27,6 @@ const Merchandise = {
       SET nomeMercadoria = '${nomeMercadoria}', embMercadoria = '${embMercadoria}', fatorMerc = '${fatorMerc}', complemento = '${complemento}', barcode = '${barcode}', marca = '${marca}', nego = '${nego}', precoUnit = '${precoUnit}', precoMercadoria = '${precoMercadoria}'
       WHERE codMercadoria = '${codMercadoria}';`;
 
-    console.log(queryUpdate);
-
     connection.query(queryUpdate, (error, results, fields) => {
       if (error) {
         console.log("Error Updating Merchandise Negotiation to Provider: ", error);
