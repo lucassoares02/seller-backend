@@ -8,7 +8,7 @@ const User = {
   async getUserDoubleCompany(req, res) {
     logger.info("GET USER DOUBLE COMPANY");
     try {
-      console.log(req.headers)
+      console.log(req.headers.codacesso, req.headers.action, req.headers.platform)
       saveLogs(req.headers.codacesso, req.headers.action, req.headers.platform);
     } catch (error) {
       console.log(`Error Save Logs: ${error}`);
