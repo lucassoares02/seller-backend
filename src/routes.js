@@ -79,6 +79,7 @@ router.get("/exportnegotiationsprovider/:supplier/:buyer/:negotiation", Negotiat
 router.get("/exportnegotiationsclient/:codeclient", Negotiation.GetExportNegotiationsClientTesteaaaaaaaaa);
 
 router.get("/exportnegotiationsclientprovider/:codeclient/:codeprovider", Negotiation.GetExportNegotiationsClientPerProvider);
+router.get("/exportnegotiationperprovider/:codeclient/:codenegotiation", Negotiation.GetExportNegotiationPerProvider);
 
 router.get("/buyersclient/:codconsultorclient", Buyer.getBuyersClient);
 
