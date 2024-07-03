@@ -216,7 +216,7 @@ const Negotiation = {
             // Configurar os cabeçalhos de resposta para fazer o download
             res.setHeader(
               "Content-Disposition",
-              `attachment; filename=${results[1][0].cliente.replaceAll(" ", "_").toLowerCase()}_${results[1][0].fornecedor.replaceAll(" ", "_").toLowerCase()}.csv`
+              `attachment; filename=negociacao${codenegotiation}_${results[1][0].cliente.replaceAll(" ", "_").toLowerCase()}_${results[1][0].fornecedor.replaceAll(" ", "_").toLowerCase()}.csv`
             );
             res.setHeader("Content-Type", "text/csv");
 
