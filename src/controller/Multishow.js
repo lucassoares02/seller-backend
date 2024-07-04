@@ -25,7 +25,7 @@ const Notice = {
       console.log(`Error Intial Inserts: ${error}`)
     }
 
-    const queryConsult = "SELECT n.*, cn.categoria FROM multishow_b2b.negociacoes n JOIN multishow_b2b.categorias_negociacoes cn on cn.id_categoria_negociacao = n.id_categoria_negociacao where n.id_categoria_negociacao = 25 or n.id_categoria_negociacao = 26";
+    const queryConsult = "SELECT n.*, cn.categoria, f.id_erp as id_erp_fornecedor FROM multishow_b2b.negociacoes n JOIN multishow_b2b.categorias_negociacoes cn on cn.id_categoria_negociacao = n.id_categoria_negociacao join multishow_b2b.fornecedores f on f.id_fornecedor = n.id_fornecedor where n.id_categoria_negociacao = 25 or n.id_categoria_negociacao = 26";
     // const queryConsult = "select n.*, cn.categoria FROM multishow_b2b.negociacoes n JOIN multishow_b2b.categorias_negociacoes cn on cn.id_categoria_negociacao = n.id_categoria_negociacao where n.created_at > '2024-06-25 14:15:15'";
 
     try {
@@ -43,7 +43,7 @@ const Notice = {
               await Notice.insertNegotiationClients(negotiations);
 
               const merchandises = await Notice.getMerchandises(results[index]["id_negociacao"]);
-              await Notice.insertMerchandises(merchandises, results[index]["id_erp"], results[index]["id_fornecedor"]);
+              await Notice.insertMerchandises(merchandises, results[index]["id_erp"], results[index]["id_erp_fornecedor"]);
 
               const provider = await Notice.getProvider(results[index]["id_negociacao"]);
               await Notice.insertProvider(provider, merchandises[0]["id_comprador"]);
@@ -84,46 +84,6 @@ const Notice = {
     });
   },
 
-  refreshMerchandise(req, res) {
-    logger.info("Refresh Merchandise Multishow")
-    const { product, negotiation } = req.params;
-
-
-    const queryMerchandises = `select p.*, m.marca, np.*
-    from multishow_b2b.produtos p
-    join multishow_b2b.negociacoes_produtos np on np.id_produto = p.id_produto
-    join multishow_b2b.marcas m on m.id_marca = p.id_marca
-    where np.id_negociacao = ${negotiation} and np.id_produto = ${product}`;
-
-    console.log(queryMerchandises);
-
-
-    connectionMultishow.query(queryMerchandises, (error, merchandises, fields) => {
-      if (error) {
-        logger.error(`Error Connection Multishow Merchandises: ${error}`);
-        return res.status;
-      } else {
-        console.log(merchandises);
-
-        return merchandises.length > 0 ? res.json(
-          {
-            nomeMercadoria: merchandises[0]["produto"].replaceAll("'", "`").replaceAll('"', '`'),
-            embMercadoria: merchandises[0]["embalagem"],
-            fatorMerc: merchandises[0]["embalagem_qtde"],
-            precoMercadoria: merchandises[0]["valor_nf_embalagem"],
-            precoUnit: merchandises[0]["valor_nf_unitario"],
-            barcode: merchandises[0]["codigo_barras"],
-            complemento: merchandises[0]["complemento"].replaceAll("'", "`").replaceAll('"', '`'),
-            marca: merchandises[0]["marca"],
-            erpcode: merchandises[0]["id_erp"],
-            nego: negotiation,
-            codMercadoria_ext: merchandises[0]["id_produto"],
-            novo_codMercadoria: merchandises[0]["id_produto"],
-          }
-        ) : res.json({});
-      }
-    });
-  },
 
   insertMerchandises(itens, negotiation, provider) {
 
@@ -303,22 +263,16 @@ const Notice = {
   },
 
   insertNegotiation(itens) {
-
-
-
     const data = [];
 
     for (let index = 0; index < itens.length; index++) {
       const element = itens[index];
-
-
-
       const date = new Date(element["prazo_entrega"]);
 
       data.push({
         codNegociacao: element["id_negociacao"],
         descNegociacao: element["categoria"],
-        codFornNegociacao: element["id_fornecedor"],
+        codFornNegociacao: element["id_erp_fornecedor"],
         prazo: format(date, 'yyyy-MM-dd HH:mm:ss.SSSSSS'),
         observacao: element["observacao"],
         codNegoErp: element["id_erp"],
@@ -503,6 +457,46 @@ const Notice = {
 
   },
 
+  refreshMerchandise(req, res) {
+    logger.info("Refresh Merchandise Multishow")
+    const { product, negotiation } = req.params;
+
+
+    const queryMerchandises = `select p.*, m.marca, np.*
+    from multishow_b2b.produtos p
+    join multishow_b2b.negociacoes_produtos np on np.id_produto = p.id_produto
+    join multishow_b2b.marcas m on m.id_marca = p.id_marca
+    where np.id_negociacao = ${negotiation} and np.id_produto = ${product}`;
+
+    console.log(queryMerchandises);
+
+
+    connectionMultishow.query(queryMerchandises, (error, merchandises, fields) => {
+      if (error) {
+        logger.error(`Error Connection Multishow Merchandises: ${error}`);
+        return res.status;
+      } else {
+        console.log(merchandises);
+
+        return merchandises.length > 0 ? res.json(
+          {
+            nomeMercadoria: merchandises[0]["produto"].replaceAll("'", "`").replaceAll('"', '`'),
+            embMercadoria: merchandises[0]["embalagem"],
+            fatorMerc: merchandises[0]["embalagem_qtde"],
+            precoMercadoria: merchandises[0]["valor_nf_embalagem"],
+            precoUnit: merchandises[0]["valor_nf_unitario"],
+            barcode: merchandises[0]["codigo_barras"],
+            complemento: merchandises[0]["complemento"].replaceAll("'", "`").replaceAll('"', '`'),
+            marca: merchandises[0]["marca"],
+            erpcode: merchandises[0]["id_erp"],
+            nego: negotiation,
+            codMercadoria_ext: merchandises[0]["id_produto"],
+            novo_codMercadoria: merchandises[0]["id_produto"],
+          }
+        ) : res.json({});
+      }
+    });
+  },
 
 
 
