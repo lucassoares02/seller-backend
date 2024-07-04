@@ -136,6 +136,7 @@ const Merchandise = {
     mercadoria.erpcode,
     mercadoria.barcode,
     mercadoria.nego,                                      
+    mercadoria.codMercadoria_ext,                                      
     mercadoria.complemento, 
     mercadoria.fatorMerc, 
     mercadoria.precoMercadoria as precoMercadoria, 

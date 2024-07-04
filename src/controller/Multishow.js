@@ -462,11 +462,12 @@ const Notice = {
     const { product, negotiation } = req.params;
 
 
-    const queryMerchandises = `select p.*, m.marca, np.*
+    const queryMerchandises = `select n.id_erp, p.*, m.marca, np.*
     from multishow_b2b.produtos p
     join multishow_b2b.negociacoes_produtos np on np.id_produto = p.id_produto
     join multishow_b2b.marcas m on m.id_marca = p.id_marca
-    where np.id_negociacao = ${negotiation} and np.id_produto = ${product}`;
+    join multishow_b2b.negociacoes n on n.id_negociacao  = np.id_negociacao
+    where n.id_erp = ${negotiation} and np.id_produto = ${product}`;
 
     console.log(queryMerchandises);
 
