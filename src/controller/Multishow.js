@@ -25,8 +25,8 @@ const Notice = {
       console.log(`Error Intial Inserts: ${error}`)
     }
 
-    // const queryConsult = "SELECT n.*, cn.categoria FROM multishow_b2b.negociacoes n JOIN multishow_b2b.categorias_negociacoes cn on cn.id_categoria_negociacao = n.id_categoria_negociacao where n.id_categoria_negociacao = 25 or n.id_categoria_negociacao = 26";
-    const queryConsult = "select n.*, cn.categoria FROM multishow_b2b.negociacoes n JOIN multishow_b2b.categorias_negociacoes cn on cn.id_categoria_negociacao = n.id_categoria_negociacao where n.created_at > '2024-06-25 14:15:15'";
+    const queryConsult = "SELECT n.*, cn.categoria FROM multishow_b2b.negociacoes n JOIN multishow_b2b.categorias_negociacoes cn on cn.id_categoria_negociacao = n.id_categoria_negociacao where n.id_categoria_negociacao = 25 or n.id_categoria_negociacao = 26";
+    // const queryConsult = "select n.*, cn.categoria FROM multishow_b2b.negociacoes n JOIN multishow_b2b.categorias_negociacoes cn on cn.id_categoria_negociacao = n.id_categoria_negociacao where n.created_at > '2024-06-25 14:15:15'";
 
     try {
       connectionMultishow.query(queryConsult, async (error, results, fields) => {
@@ -81,6 +81,47 @@ const Notice = {
           resolve(merchandises);
         }
       });
+    });
+  },
+
+  refreshMerchandise(req, res) {
+    logger.info("Refresh Merchandise Multishow")
+    const { product, negotiation } = req.params;
+
+
+    const queryMerchandises = `select p.*, m.marca, np.*
+    from multishow_b2b.produtos p
+    join multishow_b2b.negociacoes_produtos np on np.id_produto = p.id_produto
+    join multishow_b2b.marcas m on m.id_marca = p.id_marca
+    where np.id_negociacao = ${negotiation} and np.id_produto = ${product}`;
+
+    console.log(queryMerchandises);
+
+
+    connectionMultishow.query(queryMerchandises, (error, merchandises, fields) => {
+      if (error) {
+        logger.error(`Error Connection Multishow Merchandises: ${error}`);
+        return res.status;
+      } else {
+        console.log(merchandises);
+
+        return merchandises.length > 0 ? res.json(
+          {
+            nomeMercadoria: merchandises[0]["produto"].replaceAll("'", "`").replaceAll('"', '`'),
+            embMercadoria: merchandises[0]["embalagem"],
+            fatorMerc: merchandises[0]["embalagem_qtde"],
+            precoMercadoria: merchandises[0]["valor_nf_embalagem"],
+            precoUnit: merchandises[0]["valor_nf_unitario"],
+            barcode: merchandises[0]["codigo_barras"],
+            complemento: merchandises[0]["complemento"].replaceAll("'", "`").replaceAll('"', '`'),
+            marca: merchandises[0]["marca"],
+            erpcode: merchandises[0]["id_erp"],
+            nego: negotiation,
+            codMercadoria_ext: merchandises[0]["id_produto"],
+            novo_codMercadoria: merchandises[0]["id_produto"],
+          }
+        ) : res.json({});
+      }
     });
   },
 

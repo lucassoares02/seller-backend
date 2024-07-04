@@ -137,6 +137,8 @@ router.get("getnegotiationmultishow/:category", Graphs.getExportPdf);
 
 router.get("/multishow/negotiation", Multishow.getNegotiations);
 
+router.get("/multishow/merchandiserefresh/:product/:negotiation", Multishow.refreshMerchandise);
+
 
 
 
