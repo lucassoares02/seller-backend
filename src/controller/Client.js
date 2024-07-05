@@ -47,13 +47,17 @@ const Client = {
     try {
       connection.query(queryConsult, (error, results, fields) => {
         if (error) {
-          console.log("Error Select Client: ", error);
+          logger.error("Error Select Client: ", error);
         } else {
-          console.log(results[1])
-          if (results[1][0]["ativo"] == 0) {
-            return res.json({ "message": "Período de negociações ainda não está ativo" });
-          } else {
-            return res.json(results[1]);
+          try {
+            if (results[1][0]["ativo"] == 0) {
+              return res.json({ "message": "Período de negociações ainda não está ativo" });
+            } else {
+              return res.json(results[1]);
+            }
+          } catch (error) {
+            logger.error(`Error Ativo User: ${error}`)
+            return res.json({ "message": "Problemas ao selecionar o ativo" });
           }
         }
       });
