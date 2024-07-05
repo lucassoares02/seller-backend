@@ -2,7 +2,6 @@ const { connection } = require("@server");
 const logger = require("@logger");
 const Select = require("@select");
 const Insert = require("@insert");
-const Execute = require("../libs/execute");
 
 const Client = {
   async getAllClient(req, res) {
@@ -303,12 +302,13 @@ const Client = {
 
     const { cod, nome, email, empresa, tel, cpf, type, hash } = req.body;
 
-    console.log(cod);
-
     const queryInsert = `INSERT INTO 
     consultor 
         (codConsult, nomeConsult,	cpfConsult,	telConsult,	codFornConsult,	emailConsult) 
-    VALUES ("${cod}","${nome}", "${cpf}", "${tel}", "${empresa}", "${email}")`;
+    VALUES (${cod},'${nome}', '${cpf}', '${tel}', '${empresa}', '${email}')`;
+
+    console.log("queryInsert");
+    console.log(queryInsert);
 
     //=============================================================
     //=============================================================
@@ -320,8 +320,10 @@ const Client = {
     connection.query(queryInsert, (error, results) => {
       if (error) {
         result = false;
+        console.log("Error Insert Person: ", error);
         return;
       } else {
+        console.log("inserido consultor");
         response = results;
         return;
       }
@@ -332,13 +334,18 @@ const Client = {
     //=============================================================
 
     if (result) {
-      const queryAccess = `insert into acesso (codAcesso, direcAcesso, codUsuario, codOrganization) values("${hash}", "${type}", "${cod}", 158)`;
+      const queryAccess = `insert into acesso (codAcesso, direcAcesso, codUsuario, codOrganization) values(${hash}, ${type}, ${cod}, 158)`;
+
+      console.log("queryAccess");
+      console.log(queryAccess);
 
       connection.query(queryAccess, (error, results) => {
         if (error) {
+          console.log("Error Insert Acesso: ", error);
           result = false;
           return;
         } else {
+          console.log("inserido acesso");
           return;
         }
       });
@@ -349,35 +356,51 @@ const Client = {
     //=============================================================
 
     if (result) {
-      let dataAssociado = {
-        codAssocRelaciona: cod,
-        codConsultRelaciona: empresa,
-      };
-
-      let dataConsultor = {
-        codConsultor: cod,
-        codFornecedor: empresa,
-      };
-
-      let params = {
-        table: type == 1 ? "relacionafornecedor" : "relaciona",
-        data: type == 1 ? dataConsultor : dataAssociado,
-      };
-
-      console.log("__________________________________________");
-      console.log(params);
-      console.log("__________________________________________");
-
-      return Insert(params)
-        .then(async (resp) => {
-          res.status(200).send(`message: Save Success!`);
-        })
-        .catch((error) => {
-          res.status(400).send(error);
-        });
+      await Client.insertRelationProvider(cod, empresa, type);
+      return res.json({ "message": "saved" });
     } else {
       return res.status(400).send(`message: Nothing Result!`);
     }
+  },
+
+
+
+  insertRelationProvider(cod, empresa, type) {
+    console.log("Insert Relation Provider");
+
+    let dataAssociado = [{
+      codAssocRelaciona: cod,
+      codConsultRelaciona: empresa,
+    }];
+
+    let dataConsultor = [{
+      codConsultor: cod,
+      codFornecedor: empresa,
+    }];
+
+
+    let params = {
+      table: type == 1 ? "relacionafornecedor" : "relaciona",
+      data: type == 1 ? dataConsultor : dataAssociado,
+    };
+
+    console.log(params)
+
+
+    try {
+      return new Promise((resolve, reject) => {
+        return Insert(params)
+          .then(async (resp) => {
+            resolve(resp);
+          })
+          .catch((error) => {
+            res.status(400).send(error);
+          });
+      });
+    } catch (error) {
+      console.log(`Error Insert Negotiation: ${error}`)
+    }
+
   },
 
   async getAllStoresGraph(req, res) {

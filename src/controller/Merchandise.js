@@ -6,6 +6,7 @@ const Insert = require("@insert");
 const Merchandise = {
 
   async patchMerchandise(req, res) {
+    logger.info("Patch Merchandise");
 
 
     const { codMercadoria } = req.params;
@@ -26,6 +27,8 @@ const Merchandise = {
       UPDATE mercadoria 
       SET nomeMercadoria = '${nomeMercadoria}', embMercadoria = '${embMercadoria}', fatorMerc = '${fatorMerc}', complemento = '${complemento}', barcode = '${barcode}', marca = '${marca}', nego = '${nego}', precoUnit = '${precoUnit}', precoMercadoria = '${precoMercadoria}'
       WHERE codMercadoria = '${codMercadoria}';`;
+
+    console.log(queryUpdate);
 
     connection.query(queryUpdate, (error, results, fields) => {
       if (error) {

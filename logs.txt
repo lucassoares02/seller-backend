@@ -129,3 +129,36 @@
 21:36:57 - Error: ER_DUP_ENTRY: Duplicate entry '65474' for key 'negociacao.PRIMARY'
 21:36:59 - Error: ER_DUP_ENTRY: Duplicate entry '10324' for key 'fornecedor.PRIMARY'
 21:37:00 - Error: ER_DUP_ENTRY: Duplicate entry '21253' for key 'fornecedor.PRIMARY'
+20:57:17 - Error: ER_DUP_ENTRY: Duplicate entry '2' for key 'consultor.PRIMARY'
+21:12:37 - Error: ER_DUP_ENTRY: Duplicate entry '1' for key 'comprador.PRIMARY'
+21:12:38 - Error: ER_DUP_ENTRY: Duplicate entry '101' for key 'associado.PRIMARY'
+21:12:40 - Error: ER_DUP_ENTRY: Duplicate entry '65474' for key 'negociacao.PRIMARY'
+21:12:42 - Error: ER_DUP_ENTRY: Duplicate entry '10324' for key 'fornecedor.PRIMARY'
+21:12:47 - Error: ER_DUP_ENTRY: Duplicate entry '21253' for key 'fornecedor.PRIMARY'
+21:19:56 - Error: ER_DUP_ENTRY: Duplicate entry '1' for key 'consultor.PRIMARY'
+21:29:16 - Error: ER_NO_DEFAULT_FOR_FIELD: Field 'codRelaciona' doesn't have a default value
+11:10:12 - Error: ER_DATA_TOO_LONG: Data too long for column 'cpfConsult' at row 7
+11:13:06 - Error: ER_DATA_TOO_LONG: Data too long for column 'cpfConsult' at row 7
+11:18:25 - Error: ER_DATA_TOO_LONG: Data too long for column 'cpfConsult' at row 7
+11:18:26 - Error: ER_BAD_FIELD_ERROR: Unknown column 'email' in 'field list'
+11:19:55 - Error: ER_DUP_ENTRY: Duplicate entry '1' for key 'comprador.PRIMARY'
+11:19:56 - Error: ER_DUP_ENTRY: Duplicate entry '101' for key 'associado.PRIMARY'
+11:19:57 - Error: ER_DUP_ENTRY: Duplicate entry '1' for key 'consultor.PRIMARY'
+11:19:57 - Error: ER_DATA_TOO_LONG: Data too long for column 'cpfConsult' at row 7
+11:19:57 - Error: ER_BAD_FIELD_ERROR: Unknown column 'email' in 'field list'
+11:19:58 - Error: ER_DUP_ENTRY: Duplicate entry '65474' for key 'negociacao.PRIMARY'
+11:20:00 - Error: ER_DUP_ENTRY: Duplicate entry '10324' for key 'fornecedor.PRIMARY'
+11:20:01 - Error: ER_DUP_ENTRY: Duplicate entry '21253' for key 'fornecedor.PRIMARY'
+12:16:27 - Error: ER_TRUNCATED_WRONG_VALUE_FOR_FIELD: Incorrect integer value: 'undefined' for column 'codUsuario' at row 1
+12:18:18 - Error: ER_TRUNCATED_WRONG_VALUE_FOR_FIELD: Incorrect integer value: 'undefined' for column 'codUsuario' at row 1
+12:19:50 - Error: ER_TRUNCATED_WRONG_VALUE_FOR_FIELD: Incorrect integer value: 'undefined' for column 'codUsuario' at row 1
+12:21:42 - Error: ER_TRUNCATED_WRONG_VALUE_FOR_FIELD: Incorrect integer value: 'NaN' for column 'codUsuario' at row 1
+12:23:25 - Error: ER_TRUNCATED_WRONG_VALUE_FOR_FIELD: Incorrect integer value: 'NaN' for column 'codUsuario' at row 1
+12:24:19 - Error: ER_TRUNCATED_WRONG_VALUE_FOR_FIELD: Incorrect integer value: 'NaN' for column 'codUsuario' at row 1
+12:27:22 - Error: ER_TRUNCATED_WRONG_VALUE_FOR_FIELD: Incorrect integer value: 'NaN' for column 'codUsuario' at row 1
+14:23:56 - Error: ER_NO_DEFAULT_FOR_FIELD: Field 'codRelaciona' doesn't have a default value
+14:24:42 - Error: ER_NO_DEFAULT_FOR_FIELD: Field 'codRelaciona' doesn't have a default value
+14:34:39 - Error: ER_TRUNCATED_WRONG_VALUE_FOR_FIELD: Incorrect integer value: 'null' for column 'type' at row 1
+14:36:46 - Error: ER_TRUNCATED_WRONG_VALUE_FOR_FIELD: Incorrect integer value: 'null' for column 'type' at row 1
+14:41:51 - Error: ER_TRUNCATED_WRONG_VALUE_FOR_FIELD: Incorrect integer value: '' for column 'type' at row 1
+14:43:23 - Error: ER_TRUNCATED_WRONG_VALUE_FOR_FIELD: Incorrect integer value: 'null' for column 'type' at row 1

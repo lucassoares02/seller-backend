@@ -9,6 +9,7 @@ async function Insert(params) {
   const table = params.table;
   const data = params.data;
 
+
   if (table !== undefined && data !== undefined) {
     // const columnsData = Object.keys(data);
     // const valuesData = Object.values(data);
@@ -21,9 +22,9 @@ async function Insert(params) {
     // const query = "INSERT INTO " + table + " (" + columnsData.join(",") + ") VALUES (" + valuesData.join("','") + "')";
     const query = "INSERT INTO " + table + " (" + columnsData.join(",") + ") VALUES (" + valuesData.join("), (") + "); SHOW WARNINGS";
 
-    console.log("========================== QUERY ================================");
-    console.log(query);
-    console.log("========================== QUERY ================================");
+    // console.log("========================== QUERY ================================");
+    // console.log(query);
+    // console.log("========================== QUERY ================================");
 
 
     return new Promise(function (resolve, reject) {
@@ -31,6 +32,7 @@ async function Insert(params) {
         connection.query(query, (error, results, fields) => {
           if (error) {
             logger.error(error);
+            console.log(query);
             fs.writeFileSync(logs, `${new Date().toLocaleTimeString()} - ${error}\n`, { encoding: 'utf8', flag: 'a' });
             return resolve();
           }

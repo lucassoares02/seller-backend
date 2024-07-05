@@ -5,22 +5,40 @@ const Insert = require("@insert");
 const fs = require('fs');
 const { format } = require('date-fns');
 const querys = 'querys.txt';
+const crypto = require('crypto');
+const { v4: uuidv4 } = require('uuid');
 
 const Notice = {
 
   async getNegotiations(req, res) {
-    logger.info("Import Data Multishow");
 
 
     try {
       const buyers = await Notice.getBuyers();
       await Notice.insertBuyers(buyers);
+      await Notice.insertCategories(buyers);
 
       const stores = await Notice.getStores();
       await Notice.insertStores(stores);
+      await Notice.insertNotices();
 
       const clients = await Notice.getClients();
       await Notice.insertClients(clients);
+      await Notice.insertAccess(clients, 2);
+
+
+      const organizers = await Notice.getOrganizers();
+      await Notice.insertOrganizers(organizers);
+      await Notice.insertAccess(organizers, 3);
+
+
+      const organizer = await Notice.getOrganizer();
+      await Notice.insertOrganizer(organizer);
+
+      const relation = await Notice.getRelationClients();
+      await Notice.insertRelationClients(relation);
+
+
     } catch (error) {
       console.log(`Error Intial Inserts: ${error}`)
     }
@@ -43,7 +61,7 @@ const Notice = {
               await Notice.insertNegotiationClients(negotiations);
 
               const merchandises = await Notice.getMerchandises(results[index]["id_negociacao"]);
-              await Notice.insertMerchandises(merchandises, results[index]["id_erp"], results[index]["id_erp_fornecedor"]);
+              await Notice.insertMerchandises(merchandises, results[index]["id_negociacao"], results[index]["id_erp_fornecedor"]);
 
               const provider = await Notice.getProvider(results[index]["id_negociacao"]);
               await Notice.insertProvider(provider, merchandises[0]["id_comprador"]);
@@ -300,7 +318,6 @@ const Notice = {
 
   },
 
-
   getBuyers() {
     console.log("Get Buyers");
     const queryMerchandises = `select * from multishow_b2b.compradores;`;
@@ -333,6 +350,90 @@ const Notice = {
 
     let params = {
       table: "comprador",
+      data: data,
+    };
+
+    try {
+      return new Promise((resolve, reject) => {
+        return Insert(params)
+          .then(async (resp) => {
+            resolve(resp);
+          })
+          .catch((error) => {
+            res.status(400).send(error);
+          });
+      });
+    } catch (error) {
+      console.log(`Error Insert Negotiation: ${error}`)
+    }
+
+  },
+
+  insertCategories(itens) {
+    console.log("Insert Categories");
+    const data = [];
+
+    for (let index = 0; index < itens.length; index++) {
+      const element = itens[index];
+
+      data.push({
+        codCategoria: element["id_comprador"],
+        descCategoria: element["comprador"],
+      });
+    }
+
+    let params = {
+      table: "categoria",
+      data: data,
+    };
+
+    try {
+      return new Promise((resolve, reject) => {
+        return Insert(params)
+          .then(async (resp) => {
+            resolve(resp);
+          })
+          .catch((error) => {
+            res.status(400).send(error);
+          });
+      });
+    } catch (error) {
+      console.log(`Error Insert Negotiation: ${error}`)
+    }
+
+  },
+
+  getRelationClients() {
+    console.log("Get Relation Clients");
+    const queryMerchandises = `select * from lojistas_lojas ll join lojas l on l.id_loja = ll.id_loja where ll.ativa = 1`;
+
+    return new Promise((resolve, reject) => {
+      connectionMultishow.query(queryMerchandises, (error, buyers, fields) => {
+        if (error) {
+          logger.error(`Error Connection Multishow buyers: ${error}`);
+          reject(error);
+        } else {
+          resolve(buyers);
+        }
+      });
+    });
+  },
+
+  insertRelationClients(itens) {
+    console.log("Insert Relation Clients");
+    const data = [];
+
+    for (let index = 0; index < itens.length; index++) {
+      const element = itens[index];
+
+      data.push({
+        codAssocRelaciona: element["id_lojista"],
+        codConsultRelaciona: element["id_erp"],
+      });
+    }
+
+    let params = {
+      table: "relaciona",
       data: data,
     };
 
@@ -403,9 +504,71 @@ const Notice = {
 
   },
 
+  getOrganizers() {
+    console.log("Get Organizers");
+    const queryOrganizers = `select * from multishow_b2b.admin`;
+
+    return new Promise((resolve, reject) => {
+      connectionMultishow.query(queryOrganizers, (error, buyers, fields) => {
+        if (error) {
+          logger.error(`Error Connection Multishow buyers: ${error}`);
+          reject(error);
+        } else {
+          resolve(buyers);
+        }
+      });
+    });
+  },
+
+  insertOrganizers(itens) {
+    console.log("Insert Organizers");
+    function capitalizeWords(phrase) {
+      return phrase
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitaliza a primeira letra e deixa o restante em minúsculas
+        .join(' ');
+    }
+    const data = [];
+
+    for (let index = 0; index < itens.length; index++) {
+      const element = itens[index];
+
+      data.push({
+        codConsult: element["id_usuario"] + 999,
+        nomeConsult: capitalizeWords(element["nome"]),
+        cpfConsult: "00000000000",
+        telConsult: element["usuario"],
+        emailConsult: element["email"],
+        // codFornConsult: element["id_loja"],
+        codFornConsult: 158,
+      });
+    }
+
+    let params = {
+      table: "consultor",
+      data: data,
+    };
+
+    try {
+      return new Promise((resolve, reject) => {
+        return Insert(params)
+          .then(async (resp) => {
+            resolve(resp);
+          })
+          .catch((error) => {
+            res.status(400).send(error);
+          });
+      });
+    } catch (error) {
+      console.log(`Error Insert Negotiation: ${error}`)
+    }
+
+  },
+
   getClients() {
     console.log("Get Clients");
-    const queryMerchandises = `select l.*, l.nome, ll.id_loja from multishow_b2b.lojistas l join multishow_b2b.lojistas_lojas ll on ll.id_lojista = l.id_lojista where l.bloqueado = 0;`;
+    // const queryMerchandises = `select l.*, l.nome, ll.id_loja from multishow_b2b.lojistas l join multishow_b2b.lojistas_lojas ll on ll.id_lojista = l.id_lojista where l.bloqueado = 0;`;
+    const queryMerchandises = `select * from multishow_b2b.lojistas l join multishow_b2b.lojistas_lojas ll on ll.id_lojista = l.id_lojista where l.bloqueado  = 0 GROUP by l.id_lojista `;
 
     return new Promise((resolve, reject) => {
       connectionMultishow.query(queryMerchandises, (error, buyers, fields) => {
@@ -421,6 +584,12 @@ const Notice = {
 
   insertClients(itens) {
     console.log("Insert Clients");
+    function capitalizeWords(phrase) {
+      return phrase
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitaliza a primeira letra e deixa o restante em minúsculas
+        .join(' ');
+    }
     const data = [];
 
     for (let index = 0; index < itens.length; index++) {
@@ -428,7 +597,7 @@ const Notice = {
 
       data.push({
         codConsult: element["id_lojista"],
-        nomeConsult: element["nome"],
+        nomeConsult: capitalizeWords(element["nome"]),
         cpfConsult: element["cpf"],
         telConsult: element["telefone"],
         emailConsult: element["email"],
@@ -438,6 +607,179 @@ const Notice = {
 
     let params = {
       table: "consultor",
+      data: data,
+    };
+
+    try {
+      return new Promise((resolve, reject) => {
+        return Insert(params)
+          .then(async (resp) => {
+            resolve(resp);
+          })
+          .catch((error) => {
+            res.status(400).send(error);
+          });
+      });
+    } catch (error) {
+      console.log(`Error Insert Negotiation: ${error}`)
+    }
+
+  },
+
+  insertAccess(itens, acessoDire) {
+    console.log("Insert Access");
+    function generateUniqueIntegerHash() {
+      const uniqueData = uuidv4() + Date.now();
+      const hash = crypto.createHash('sha256').update(uniqueData).digest('hex');
+      const integerHash = parseInt(hash.substring(0, 8), 16); // Pega os primeiros 8 caracteres e converte para inteiro
+      return integerHash;
+    }
+
+    const data = [];
+
+    for (let index = 0; index < itens.length; index++) {
+      const element = itens[index];
+
+      data.push({
+        codAcesso: generateUniqueIntegerHash(),
+        direcAcesso: acessoDire,
+        codUsuario: acessoDire == 3 ? element["id_usuario"] + 999 : element["id_lojista"],
+        codOrganization: 158,
+      });
+    }
+
+    let params = {
+      table: "acesso",
+      data: data,
+    };
+
+    try {
+      return new Promise((resolve, reject) => {
+        return Insert(params)
+          .then(async (resp) => {
+            resolve(resp);
+          })
+          .catch((error) => {
+            res.status(400).send(error);
+          });
+      });
+    } catch (error) {
+      console.log(`Error Insert Negotiation: ${error}`)
+    }
+
+  },
+
+  getOrganizer() {
+    console.log("Get Organizer");
+    const queryOrganizer = `select * from multishow_b2b.fornecedores where id_fornecedor = 1;`;
+
+    return new Promise((resolve, reject) => {
+      connectionMultishow.query(queryOrganizer, (error, buyers, fields) => {
+        if (error) {
+          logger.error(`Error Connection Multishow buyers: ${error}`);
+          reject(error);
+        } else {
+          resolve(buyers);
+        }
+      });
+    });
+  },
+
+  insertOrganizer(itens) {
+    console.log("Insert Organizer");
+    const data = [];
+
+    for (let index = 0; index < itens.length; index++) {
+      const element = itens[index];
+
+      data.push({
+        codOrg: 158,
+        nomeOrg: element["fornecedor"],
+        razaoOrg: element["fornecedor"],
+        cnpjOrg: element["cnpj"],
+        emailOrg: element["cnpj"],
+        telOrg: element["id_fornecedor"],
+        ativo: 1,
+      });
+    }
+
+    let params = {
+      table: "organizador",
+      data: data,
+    };
+
+    try {
+      return new Promise((resolve, reject) => {
+        return Insert(params)
+          .then(async (resp) => {
+            resolve(resp);
+          })
+          .catch((error) => {
+            res.status(400).send(error);
+          });
+      });
+    } catch (error) {
+      console.log(`Error Insert Negotiation: ${error}`)
+    }
+
+  },
+
+  insertNotices() {
+    console.log("Insert Notices");
+    const data = [
+      {
+        codNotice: 2,
+        title: "Carro obstruindo passagem",
+        description: "Gentileza motorista do Gol Prata Placa: MTO3245, gentileza retirar veicula da entrada.",
+        image: "",
+        action: "",
+        priority: 5,
+        primaryColor: "",
+        secondaryColor: "",
+        stamp: "",
+        type: 5
+      },
+      {
+        codNotice: 3,
+        title: "Promocao leve Mais Seara",
+        description: "Seara esta como uma promocao especial em que leve o dobro pelo mesmo.",
+        image: "",
+        action: "",
+        priority: 4,
+        primaryColor: "",
+        secondaryColor: "",
+        stamp: "",
+        type: 5
+      },
+      {
+        codNotice: 1,
+        title: "Conheca o Stand Show",
+        description: "Conheca as instalacoes do stand da MultiShow no centro de convecoes",
+        image: "",
+        action: "",
+        priority: 3,
+        primaryColor: "",
+        secondaryColor: "",
+        stamp: "",
+        type: 5
+      },
+      {
+        codNotice: 4,
+        title: "3º Feira de negócios",
+        description: "Apresentação das funcionalidades do Profair para os fornecedores.",
+        image: "",
+        action: "",
+        priority: 0,
+        primaryColor: "0XFF0000ff",
+        secondaryColor: "0XFFff0000",
+        stamp: "24/05/2024",
+        type: 0
+      }
+    ];
+
+
+    let params = {
+      table: "notices",
       data: data,
     };
 
@@ -492,7 +834,9 @@ const Notice = {
             erpcode: merchandises[0]["id_erp"],
             nego: negotiation,
             codMercadoria_ext: merchandises[0]["id_produto"],
-            novo_codMercadoria: merchandises[0]["id_produto"],
+            codMercadoria: merchandises[0]["id_produto"],
+            quantMercadoria: 0,
+            volumeTotal: 0,
           }
         ) : res.json({});
       }
