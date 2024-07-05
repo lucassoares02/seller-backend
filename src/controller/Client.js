@@ -44,18 +44,24 @@ const Client = {
      join organizador o on o.codOrg = acesso.codOrganization
      WHERE acesso.codAcesso = ${codacesso};`
 
-    connection.query(queryConsult, (error, results, fields) => {
-      if (error) {
-        console.log("Error Select Client: ", error);
-      } else {
-        console.log(results[1])
-        if (results[1][0]["ativo"] == 0) {
-          return res.json({ "message": "Período de negociações ainda não está ativo" });
+    try {
+      connection.query(queryConsult, (error, results, fields) => {
+        if (error) {
+          console.log("Error Select Client: ", error);
         } else {
-          return res.json(results[1]);
+          console.log(results[1])
+          if (results[1][0]["ativo"] == 0) {
+            return res.json({ "message": "Período de negociações ainda não está ativo" });
+          } else {
+            return res.json(results[1]);
+          }
         }
-      }
-    });
+      });
+
+    } catch (error) {
+      logger.error(`Error Select Client: ${error}`)
+    }
+
     // connection.end();
   },
 
