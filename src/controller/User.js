@@ -7,10 +7,11 @@ const saveLogs = require('@logs');
 const User = {
   async getUserDoubleCompany(req, res) {
     logger.info("GET USER DOUBLE COMPANY");
-    const { codacesso, platform, action } = req.body;
+    // const { codacesso, platform, action } = req.body;
+    const { codacesso } = req.body;
 
     try {
-      saveLogs(codacesso, action, 1);
+      saveLogs("codacesso", "action", 1);
     } catch (error) {
       console.log(`Error Save Logs: ${error}`);
     }
@@ -131,7 +132,7 @@ const User = {
   async getUser(req, res) {
     logger.info("Post Request User");
     try {
-      saveLogs(req.headers.codacesso, req.headers.action, 1);
+      saveLogs("req.headers.codacesso", "req.headers.action", 1);
     } catch (error) {
       console.log(`Error Save Logs: ${error}`);
     }
@@ -256,10 +257,11 @@ const User = {
 
   async getUserWeb(req, res) {
     logger.info("Post Request User");
-    const { codacesso, action, platform } = req.body;
+    // const { codacesso, action, platform } = req.body;
+    const { codacesso } = req.body;
 
     try {
-      saveLogs(codacesso, action, 1);
+      saveLogs("codacesso", "action", 1);
     } catch (error) {
       console.log(`Error Save Logs: ${error}`);
     }
