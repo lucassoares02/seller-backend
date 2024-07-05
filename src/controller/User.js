@@ -10,7 +10,7 @@ const User = {
     const { codacesso, platform, action } = req.body;
 
     try {
-      saveLogs(codacesso, action, platform);
+      saveLogs(codacesso, action, 1);
     } catch (error) {
       console.log(`Error Save Logs: ${error}`);
     }
@@ -131,7 +131,7 @@ const User = {
   async getUser(req, res) {
     logger.info("Post Request User");
     try {
-      saveLogs(req.headers.codacesso, req.headers.action, req.headers.platform);
+      saveLogs(req.headers.codacesso, req.headers.action, 1);
     } catch (error) {
       console.log(`Error Save Logs: ${error}`);
     }
@@ -259,7 +259,7 @@ const User = {
     const { codacesso, action, platform } = req.body;
 
     try {
-      saveLogs(codacesso, action, platform);
+      saveLogs(codacesso, action, 1);
     } catch (error) {
       console.log(`Error Save Logs: ${error}`);
     }
