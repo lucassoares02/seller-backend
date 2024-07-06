@@ -11,6 +11,7 @@ const Buyer = require("@controller/Buyer");
 const Notice = require("@controller/Notice");
 const User = require("@controller/User");
 const Multishow = require("@controller/Multishow");
+const Delete = require("@controller/Delete");
 
 // Router with the headers
 router.post("/getuser", User.getUser);
@@ -138,6 +139,8 @@ router.get("getnegotiationmultishow/:category", Graphs.getExportPdf);
 router.get("/multishow/negotiation", Multishow.getNegotiations);
 
 router.get("/multishow/merchandiserefresh/:product/:negotiation", Multishow.refreshMerchandise);
+
+router.get("/deleteallinformations", Delete.deleteAll);
 
 
 

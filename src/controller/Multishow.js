@@ -8,7 +8,19 @@ const querys = 'querys.txt';
 const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
 
+
+
+
+
+
 const Notice = {
+
+  capitalizeWords(phrase) {
+    return phrase
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitaliza a primeira letra e deixa o restante em minúsculas
+      .join(' ');
+  },
 
   async getNegotiations(req, res) {
 
@@ -345,6 +357,7 @@ const Notice = {
         codCompr: element["id_comprador"],
         nomeCompr: element["comprador"],
         descCatComprador: element["comprador"],
+        color: "FFC400"
       });
     }
 
@@ -478,7 +491,7 @@ const Notice = {
 
       data.push({
         codAssociado: element["id_erp"],
-        razaoAssociado: element["descricao"],
+        razaoAssociado: Notice.capitalizeWords(element["descricao"]),
         cnpjAssociado: element["cnpj"],
       });
     }
@@ -568,7 +581,12 @@ const Notice = {
   getClients() {
     console.log("Get Clients");
     // const queryMerchandises = `select l.*, l.nome, ll.id_loja from multishow_b2b.lojistas l join multishow_b2b.lojistas_lojas ll on ll.id_lojista = l.id_lojista where l.bloqueado = 0;`;
-    const queryMerchandises = `select * from multishow_b2b.lojistas l join multishow_b2b.lojistas_lojas ll on ll.id_lojista = l.id_lojista where l.bloqueado  = 0 GROUP by l.id_lojista `;
+    const queryMerchandises = `select * 
+    from multishow_b2b.lojistas l 
+    join multishow_b2b.lojistas_lojas ll on ll.id_lojista = l.id_lojista 
+    join lojas lj on lj.id_loja = ll.id_loja 
+    where l.bloqueado = 0 
+    GROUP by l.id_lojista;`;
 
     return new Promise((resolve, reject) => {
       connectionMultishow.query(queryMerchandises, (error, buyers, fields) => {
@@ -597,11 +615,11 @@ const Notice = {
 
       data.push({
         codConsult: element["id_lojista"],
-        nomeConsult: capitalizeWords(element["nome"]),
+        nomeConsult: Notice.capitalizeWords(element["nome"]),
         cpfConsult: element["cpf"],
         telConsult: element["telefone"],
         emailConsult: element["email"],
-        codFornConsult: element["id_loja"],
+        codFornConsult: element["id_erp"],
       });
     }
 
@@ -809,38 +827,42 @@ const Notice = {
     join multishow_b2b.negociacoes_produtos np on np.id_produto = p.id_produto
     join multishow_b2b.marcas m on m.id_marca = p.id_marca
     join multishow_b2b.negociacoes n on n.id_negociacao  = np.id_negociacao
-    where n.id_erp = ${negotiation} and np.id_produto = ${product}`;
+    where n.id_negociacao = ${negotiation} and np.id_produto = ${product}`;
 
     console.log(queryMerchandises);
 
 
-    connectionMultishow.query(queryMerchandises, (error, merchandises, fields) => {
-      if (error) {
-        logger.error(`Error Connection Multishow Merchandises: ${error}`);
-        return res.status;
-      } else {
-        console.log(merchandises);
+    try {
+      connectionMultishow.query(queryMerchandises, (error, merchandises, fields) => {
+        if (error) {
+          logger.error(`Error Connection Multishow Merchandises: ${error}`);
+          return res.status;
+        } else {
+          console.log(merchandises);
 
-        return merchandises.length > 0 ? res.json(
-          {
-            nomeMercadoria: merchandises[0]["produto"].replaceAll("'", "`").replaceAll('"', '`'),
-            embMercadoria: merchandises[0]["embalagem"],
-            fatorMerc: merchandises[0]["embalagem_qtde"],
-            precoMercadoria: merchandises[0]["valor_nf_embalagem"],
-            precoUnit: merchandises[0]["valor_nf_unitario"],
-            barcode: merchandises[0]["codigo_barras"],
-            complemento: merchandises[0]["complemento"].replaceAll("'", "`").replaceAll('"', '`'),
-            marca: merchandises[0]["marca"],
-            erpcode: merchandises[0]["id_erp"],
-            nego: negotiation,
-            codMercadoria_ext: merchandises[0]["id_produto"],
-            codMercadoria: merchandises[0]["id_produto"],
-            quantMercadoria: 0,
-            volumeTotal: 0,
-          }
-        ) : res.json({});
-      }
-    });
+          return merchandises.length > 0 ? res.json(
+            {
+              nomeMercadoria: merchandises[0]["produto"].replaceAll("'", "`").replaceAll('"', '`'),
+              embMercadoria: merchandises[0]["embalagem"],
+              fatorMerc: merchandises[0]["embalagem_qtde"],
+              precoMercadoria: merchandises[0]["valor_nf_embalagem"],
+              precoUnit: merchandises[0]["valor_nf_unitario"],
+              barcode: merchandises[0]["codigo_barras"],
+              complemento: merchandises[0]["complemento"].replaceAll("'", "`").replaceAll('"', '`'),
+              marca: merchandises[0]["marca"],
+              erpcode: merchandises[0]["id_erp"],
+              nego: negotiation,
+              codMercadoria_ext: merchandises[0]["id_produto"],
+              codMercadoria: merchandises[0]["id_produto"],
+              quantMercadoria: 0,
+              volumeTotal: 0,
+            }
+          ) : res.json({});
+        }
+      });
+    } catch (error) {
+      return res.status(400).send(error);
+    }
   },
 
 

@@ -946,8 +946,12 @@ join associado a on a.codAssociado = p.codAssocPedido
 
     const queryConsult = `SET sql_mode = ''; 
     select codNegociacao,
-      sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'total',
-      descNegociacao, (pedido.codNegoPedido) as 'confirma'
+    descNegociacao,
+    prazo,
+    observacao,
+    codNegoErp,
+    sum(pedido.quantMercPedido * mercadoria.precoMercadoria) as 'total',
+    descNegociacao, (pedido.codNegoPedido) as 'confirma'
     from negociacao 
     left outer join pedido on(negociacao.codNegociacao = pedido.codNegoPedido)
     left join mercadoria on pedido.codMercPedido = mercadoria.codMercadoria

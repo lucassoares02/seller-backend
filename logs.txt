@@ -162,3 +162,13 @@
 14:36:46 - Error: ER_TRUNCATED_WRONG_VALUE_FOR_FIELD: Incorrect integer value: 'null' for column 'type' at row 1
 14:41:51 - Error: ER_TRUNCATED_WRONG_VALUE_FOR_FIELD: Incorrect integer value: '' for column 'type' at row 1
 14:43:23 - Error: ER_TRUNCATED_WRONG_VALUE_FOR_FIELD: Incorrect integer value: 'null' for column 'type' at row 1
+19:43:44 - Error: ER_DUP_ENTRY: Duplicate entry '1' for key 'comprador.PRIMARY'
+19:43:44 - Error: ER_DUP_ENTRY: Duplicate entry '1' for key 'categoria.PRIMARY'
+19:43:45 - Error: ER_DUP_ENTRY: Duplicate entry '101' for key 'associado.PRIMARY'
+19:43:45 - Error: ER_DUP_ENTRY: Duplicate entry '2' for key 'notices.PRIMARY'
+19:43:46 - Error: ER_DUP_ENTRY: Duplicate entry '1' for key 'consultor.PRIMARY'
+19:43:46 - Error: ER_DUP_ENTRY: Duplicate entry '1000' for key 'consultor.PRIMARY'
+19:43:47 - Error: ER_DUP_ENTRY: Duplicate entry '158' for key 'organizador.PRIMARY'
+19:43:48 - Error: ER_DUP_ENTRY: Duplicate entry '65474' for key 'negociacao.PRIMARY'
+19:43:49 - Error: ER_DUP_ENTRY: Duplicate entry '10324' for key 'fornecedor.PRIMARY'
+19:43:51 - Error: ER_DUP_ENTRY: Duplicate entry '21253' for key 'fornecedor.PRIMARY'

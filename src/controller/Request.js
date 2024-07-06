@@ -52,6 +52,7 @@ const Request = {
     });
     // connection.end();
   },
+
   async getRequestTopProviderClient(req, res) {
     logger.info("Get Top Providers per Client");
 
@@ -151,6 +152,7 @@ const Request = {
     });
     // connection.end();
   },
+  
   async getRequestsNegotiation(req, res) {
     logger.info("Get Requests Negotiation");
 
@@ -338,6 +340,7 @@ const Request = {
     const { codAssociado, codFornecedor, codComprador, codNegociacao, codOrganizacao, items, codeConsult } = req.body;
 
     let values = "";
+    
     for (let i = 0; i < items.length; i++) {
       values =
         values +
