@@ -42,7 +42,6 @@ const Merchandise = {
     });
   },
 
-
   async getMerchandiseNegotiationProvider(req, res) {
     logger.info("Get Merchandise to Negotiation to Provider");
 

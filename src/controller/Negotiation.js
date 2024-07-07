@@ -971,6 +971,48 @@ join associado a on a.codAssociado = p.codAssocPedido
     // connection.end();
   },
 
+  async getNegotiationClientsWithPriceNotNull(req, res) {
+    logger.info("Get Negotiation to Client");
+
+    const { codclient, codforn } = req.params;
+
+    const queryConsult = `SET sql_mode = ''; 
+    SELECT 
+    negociacao.codNegociacao,
+    negociacao.descNegociacao,
+    negociacao.prazo,
+    negociacao.observacao,
+    negociacao.codNegoErp,
+    SUM(pedido.quantMercPedido * mercadoria.precoMercadoria) AS 'total',
+    negociacao.descNegociacao, 
+    pedido.codNegoPedido AS 'confirma'
+    FROM 
+        negociacao
+    LEFT OUTER JOIN 
+        pedido ON negociacao.codNegociacao = pedido.codNegoPedido
+    LEFT JOIN 
+        mercadoria ON pedido.codMercPedido = mercadoria.codMercadoria
+        AND pedido.codAssocPedido = ${codclient}
+    WHERE 
+        negociacao.codFornNegociacao = ${codforn}
+    GROUP BY 
+        negociacao.codNegociacao
+    HAVING 
+        SUM(pedido.quantMercPedido * mercadoria.precoMercadoria) IS NOT NULL
+    ORDER BY 
+        confirma DESC;`;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select Negotiation to Client: ", error);
+      } else {
+
+        return res.json(results[1]);
+      }
+    });
+    // connection.end();
+  },
+
   async PostInsertNegotiation(req, res) {
     logger.info("Post Save Negotiation");
 

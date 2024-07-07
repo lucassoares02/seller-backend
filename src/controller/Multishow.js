@@ -55,8 +55,8 @@ const Notice = {
       console.log(`Error Intial Inserts: ${error}`)
     }
 
-    const queryConsult = "SELECT n.*, cn.categoria, f.id_erp as id_erp_fornecedor FROM multishow_b2b.negociacoes n JOIN multishow_b2b.categorias_negociacoes cn on cn.id_categoria_negociacao = n.id_categoria_negociacao join multishow_b2b.fornecedores f on f.id_fornecedor = n.id_fornecedor where n.id_categoria_negociacao = 25 or n.id_categoria_negociacao = 26";
-    // const queryConsult = "select n.*, cn.categoria FROM multishow_b2b.negociacoes n JOIN multishow_b2b.categorias_negociacoes cn on cn.id_categoria_negociacao = n.id_categoria_negociacao where n.created_at > '2024-06-25 14:15:15'";
+    // const queryConsult = "SELECT n.*, cn.categoria, f.id_erp as id_erp_fornecedor FROM multishow_b2b.negociacoes n JOIN multishow_b2b.categorias_negociacoes cn on cn.id_categoria_negociacao = n.id_categoria_negociacao join multishow_b2b.fornecedores f on f.id_fornecedor = n.id_fornecedor where n.id_categoria_negociacao = 25 or n.id_categoria_negociacao = 26";
+    const queryConsult = "SELECT n.*, cn.categoria, f.id_erp as id_erp_fornecedor FROM multishow_b2b.negociacoes n JOIN multishow_b2b.categorias_negociacoes cn on cn.id_categoria_negociacao = n.id_categoria_negociacao join multishow_b2b.fornecedores f on f.id_fornecedor = n.id_fornecedor  where n.created_at > '2024-07-01 14:15:15'";
 
     try {
       connectionMultishow.query(queryConsult, async (error, results, fields) => {
@@ -96,6 +96,7 @@ const Notice = {
 
 
   getMerchandises(negotiation) {
+    console.log(negotiation)
     const queryMerchandises = `select p.*, m.marca, np.*
       from multishow_b2b.produtos p
       join multishow_b2b.negociacoes_produtos np on np.id_produto = p.id_produto
@@ -266,8 +267,8 @@ const Notice = {
         telForn: element["id_fornecedor"],
         codCategoria: 1,
         codComprFornecedor: comprador,
-        image: "",
-        color: "0XFFffffff",
+        image: "https://static.vecteezy.com/system/resources/previews/012/986/755/non_2x/abstract-circle-logo-icon-free-png.png",
+        color: "0XFF0763F7",
       });
     }
 
@@ -585,7 +586,7 @@ const Notice = {
     from multishow_b2b.lojistas l 
     join multishow_b2b.lojistas_lojas ll on ll.id_lojista = l.id_lojista 
     join lojas lj on lj.id_loja = ll.id_loja 
-    where l.bloqueado = 0 
+    where l.bloqueado = 0 and lj.bloqueado = 0
     GROUP by l.id_lojista;`;
 
     return new Promise((resolve, reject) => {

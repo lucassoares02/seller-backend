@@ -68,6 +68,7 @@ router.get("/negotiationclient/:codclient/:codforn", Negotiation.getNegotiationC
 router.get("/negotiationproviderclient/:codclient/:codforn", Negotiation.getNegotiationsProviderWithMerchandisePerClient);
 
 router.get("/negotiationclientwithprice/:codclient/:codforn", Negotiation.getNegotiationClientWithPrice);
+router.get("/negotiationclientwithpricenotnull/:codclient/:codforn", Negotiation.getNegotiationClientsWithPriceNotNull);
 
 router.post("/insertnegotiation", Negotiation.PostInsertNegotiation);
 
