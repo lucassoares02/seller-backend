@@ -112,6 +112,7 @@ const Negotiation = {
     m.barcode,
     m.erpcode,
     m.marca,
+    m.nego,
     p.quantMercPedido as quantidade,
     p.codFornPedido,
     concat(a.codAssociado, "_", a.razaoAssociado) as cliente,
@@ -139,7 +140,7 @@ const Negotiation = {
 
             csvData += results[1]
               .map((row) => {
-                return ` ${row.codMercPedido};${row.codNegoPedido};"${row.erpcode}";"${row.barcode}";"${row.nomeMercadoria}";"${row.complemento}";;;;;;;;;;;"${row.marca}";;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+                return ` ${row.codMercPedido};${row.nego};"${row.erpcode}";"${row.barcode}";"${row.nomeMercadoria}";"${row.complemento}";;;;;;;;;;;"${row.marca}";;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
               })
               .join("\n");
 
@@ -248,6 +249,7 @@ const Negotiation = {
     m.barcode,
     m.erpcode,
     m.marca,
+    m.nego,
     p.quantMercPedido as quantidade,
     p.codFornPedido,
     concat(a.codAssociado, "_", a.razaoAssociado) as cliente,
@@ -271,7 +273,7 @@ join associado a on a.codAssociado = p.codAssocPedido
 
             csvData += results[1]
               .map((row) => {
-                return ` ${row.codMercPedido};${row.codNegoPedido};"${row.erpcode}";"${row.barcode}";"${row.nomeMercadoria}";"${row.complemento}";;;;;;;;;;;"${row.marca}";;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+                return ` ${row.codMercPedido};${row.nego};"${row.erpcode}";"${row.barcode}";"${row.nomeMercadoria}";"${row.complemento}";;;;;;;;;;;"${row.marca}";;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
               })
               .join("\n");
 
@@ -307,6 +309,7 @@ join associado a on a.codAssociado = p.codAssocPedido
       m.nomeMercadoria as 'title',
       m.complemento as 'complement',
       m.barcode ,
+      m.nego,
       m.marca as 'brand',
       p.quantMercPedido as 'quantity',
       p.codNegoPedido as 'negotiation',
@@ -328,6 +331,7 @@ join associado a on a.codAssociado = p.codAssocPedido
       m.nomeMercadoria as 'title',
       m.complemento as 'complement',
       m.barcode ,
+      m.nego,
       m.marca as 'brand',
       p.quantMercPedido as 'quantity',
       p.codNegoPedido as 'negotiation',
@@ -352,6 +356,7 @@ join associado a on a.codAssociado = p.codAssocPedido
       m.complemento as 'complement',
       m.barcode ,
       m.marca as 'brand',
+      m.nego,
       p.quantMercPedido as 'quantity',
       p.codNegoPedido as 'negotiation',
       n.descNegociacao as 'negotiation_description',
@@ -375,7 +380,7 @@ join associado a on a.codAssociado = p.codAssocPedido
 
         csvData += results[1]
           .map((row) => {
-            return ` ${row.product},${row.barcode},${row.title},${row.complement},${row.brand},${row.quantity},${row.negotiation},${row.negotiation_description},${row.client},${row.client_name}`; // Substitua com os nomes das colunas do seu banco de dados
+            return ` ${row.product},${row.barcode},${row.title},${row.complement},${row.brand},${row.quantity},${row.nego},${row.negotiation_description},${row.client},${row.client_name}`; // Substitua com os nomes das colunas do seu banco de dados
           })
           .join("\n");
 
