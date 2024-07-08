@@ -58,9 +58,11 @@ const Negotiation = {
     SET sql_mode = ''; select
       p.codMercPedido,
       concat(m.codMercadoria_ext," - ", m.nomeMercadoria) as nomeMercadoria,
+      m.nomeMercadoria as nomeMerc,
       m.complemento,
       m.barcode,
       m.erpcode,
+      m.codMercadoria_ext as codigoMerc,
       m.marca,
       p.quantMercPedido as quantidade,
       p.codFornPedido,
@@ -80,7 +82,7 @@ const Negotiation = {
 
         csvData += results[1]
           .map((row) => {
-            return ` ${row.codMercPedido};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMercadoria};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+            return ` ${row.codigoMerc};${row.codNegoPedido};${row.erpcode};${row.barcode};${row.nomeMerc};${row.complemento};;;;;;;;;;;${row.marca};;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
           })
           .join("\n");
 
@@ -180,6 +182,7 @@ const Negotiation = {
     m.complemento,
     m.barcode,
     m.erpcode,
+    m.nego,
     m.marca,
     p.quantMercPedido as quantidade,
     p.codFornPedido,
@@ -208,7 +211,7 @@ const Negotiation = {
 
             csvData += results[1]
               .map((row) => {
-                return ` ${row.codMercPedido};${row.codNegoPedido};"${row.erpcode}";"${row.barcode}";"${row.nomeMercadoria}";"${row.complemento}";;;;;;;;;;;"${row.marca}";;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
+                return ` ${row.codMercPedido};${row.nego};"${row.erpcode}";"${row.barcode}";"${row.nomeMercadoria}";"${row.complemento}";;;;;;;;;;;"${row.marca}";;${row.quantidade}`; // Substitua com os nomes das colunas do seu banco de dados
               })
               .join("\n");
 
