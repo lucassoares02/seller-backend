@@ -25,6 +25,9 @@ const Notice = {
   async getNegotiations(req, res) {
 
 
+    const { query } = req.body;
+
+
     try {
       const buyers = await Notice.getBuyers();
       await Notice.insertBuyers(buyers);
@@ -67,7 +70,7 @@ const Notice = {
     // const queryConsult = "SELECT n.*, cn.categoria, f.id_erp as id_erp_fornecedor FROM multishow_b2b.negociacoes n JOIN multishow_b2b.categorias_negociacoes cn on cn.id_categoria_negociacao = n.id_categoria_negociacao join multishow_b2b.fornecedores f on f.id_fornecedor = n.id_fornecedor  where n.created_at > '2024-07-01 14:15:15'";
 
     try {
-      connectionMultishow.query(queryConsult, async (error, results, fields) => {
+      connectionMultishow.query(query, async (error, results, fields) => {
         if (error) {
           console.log("Error Negotiation Multishow: ", error);
         } else {
