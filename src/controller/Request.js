@@ -363,19 +363,19 @@ const Request = {
         console.log(error);
         console.log("Error Select All Requests: ", error);
       } else {
-        try {
-          axios.post(`${process.env.API_BACKUP}/insertrequestnew`, {
-            "codAssociado": codAssociado,
-            "codFornecedor": codFornecedor,
-            "codComprador": codComprador,
-            "codNegociacao": codNegociacao,
-            "codeConsult": codeConsult,
-            "codOrganizacao": codOrganizacao,
-            "items": items
-          });
-        } catch (error) {
-          logger.error(`Error Backup Save: ${error}`);
-        }
+        // try {
+        //   axios.post(`${process.env.API_BACKUP}/insertrequestnew`, {
+        //     "codAssociado": codAssociado,
+        //     "codFornecedor": codFornecedor,
+        //     "codComprador": codComprador,
+        //     "codNegociacao": codNegociacao,
+        //     "codeConsult": codeConsult,
+        //     "codOrganizacao": codOrganizacao,
+        //     "items": items
+        //   });
+        // } catch (error) {
+        //   logger.error(`Error Backup Save: ${error}`);
+        // }
         return res.json(results[1]);
       }
     });
