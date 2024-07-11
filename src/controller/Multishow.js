@@ -306,7 +306,7 @@ const Notice = {
 
     for (let index = 0; index < itens.length; index++) {
       const element = itens[index];
-      const date = new Date(element["prazo_entrega"]);
+      const date = new Date(element["validade_fim"]);
 
       data.push({
         codNegociacao: element["id_negociacao"],

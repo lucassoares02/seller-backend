@@ -22,7 +22,7 @@
     "module-alias": "^2.2.2",
     "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
-    "newrelic": "^11.10.4",
+    "newrelic": "^11.22.0",
     "pdfkit": "^0.15.0",
     "pdfkit-table": "^0.1.99",
     "pg": "^8.11.3",
