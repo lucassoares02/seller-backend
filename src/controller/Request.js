@@ -2,6 +2,7 @@ const { connection } = require("@server");
 const logger = require("@logger");
 const Select = require("@select");
 const Insert = require("@insert");
+const axios = require('axios');
 
 const Request = {
   async getRequestProviderClient(req, res) {
@@ -152,7 +153,7 @@ const Request = {
     });
     // connection.end();
   },
-  
+
   async getRequestsNegotiation(req, res) {
     logger.info("Get Requests Negotiation");
 
@@ -340,7 +341,7 @@ const Request = {
     const { codAssociado, codFornecedor, codComprador, codNegociacao, codOrganizacao, items, codeConsult } = req.body;
 
     let values = "";
-    
+
     for (let i = 0; i < items.length; i++) {
       values =
         values +
@@ -362,6 +363,11 @@ const Request = {
         console.log(error);
         console.log("Error Select All Requests: ", error);
       } else {
+        try {
+          axios.post(`${process.env.API_BACKUP}/insertrequestnew`, req.body);
+        } catch (error) {
+          logger.error(`Error Backup Save: ${error}`);
+        }
         return res.json(results[1]);
       }
     });

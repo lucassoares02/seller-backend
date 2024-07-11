@@ -12,7 +12,6 @@ const { v4: uuidv4 } = require('uuid');
 
 
 
-
 const Notice = {
 
   capitalizeWords(phrase) {
@@ -309,7 +308,16 @@ const Notice = {
 
     for (let index = 0; index < itens.length; index++) {
       const element = itens[index];
-      const date = new Date(element["validade_fim"]);
+      var date = new Date(element["validade_fim"]);
+
+      try {
+        if (!String(element["data_fim_encarte"]).includes("Sat Dec 30 1899")) {
+          date = new Date(element["data_fim_encarte"]);
+        }
+
+      } catch (error) {
+        console.log(`Error Date Encarte: ${error}`)
+      }
 
       data.push({
         codNegociacao: element["id_negociacao"],
