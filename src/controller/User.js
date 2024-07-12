@@ -371,6 +371,40 @@ const User = {
     // connection.end();
   },
 
+  async getUsersProviderNotInList(req, res) {
+    logger.info("Get Users Provider Not in List Fair");
+
+    const queryConsult = `
+    SELECT 
+    acesso.codAcesso, 
+    acesso.direcAcesso,  
+    acesso.codUsuario, 
+    relacionafornecedor.codFornecedor, 
+    consultor.nomeConsult,
+    consultor.cpfConsult
+    FROM 
+        acesso 
+    JOIN 
+        consultor ON acesso.codUsuario = consultor.codConsult 
+    JOIN 
+        relacionafornecedor ON consultor.codConsult = relacionafornecedor.codConsultor 
+    WHERE 
+        relacionafornecedor.codFornecedor NOT IN (SELECT f.codForn FROM fornecedor f)
+    GROUP BY 
+        consultor.codConsult;
+
+    `;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        return res.status(400).send(error);
+      } else {
+        return res.json(results[1]);
+      }
+    });
+    // connection.end();
+  },
+
   async getAllUsersAssociate(req, res) {
     logger.info("Get All Users Fair");
 

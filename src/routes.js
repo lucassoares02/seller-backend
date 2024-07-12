@@ -20,6 +20,7 @@ router.post("/getuserweb", User.getUserWeb);
 
 router.get("/getallusersorg", User.getAllUsersOrg);
 router.get("/getallusersprovider", User.getAllUsersProvider);
+router.get("/getusersprovidernotinlist", User.getUsersProviderNotInList);
 router.get("/getallusersassociate", User.getAllUsersAssociate);
 
 router.get("/allclient", Client.getAllClient);
