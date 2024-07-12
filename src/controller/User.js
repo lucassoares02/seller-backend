@@ -375,6 +375,7 @@ const User = {
     logger.info("Get Users Provider Not in List Fair");
 
     const queryConsult = `
+    SET sql_mode = '';
     SELECT 
     acesso.codAcesso, 
     acesso.direcAcesso,  
@@ -391,9 +392,7 @@ const User = {
     WHERE 
         relacionafornecedor.codFornecedor NOT IN (SELECT f.codForn FROM fornecedor f)
     GROUP BY 
-        consultor.codConsult;
-
-    `;
+        consultor.codConsult;`;
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
