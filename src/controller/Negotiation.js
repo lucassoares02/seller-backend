@@ -893,7 +893,7 @@ join associado a on a.codAssociado = p.codAssocPedido
       codclient +
       "	where negociacao.codFornNegociacao  = " +
       codforn +
-      " GROUP BY negociacao.codNegociacao ORDER BY confirma desc";
+      " GROUP BY negociacao.codNegociacao ORDER BY codNegociacao, observacao desc";
 
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
@@ -915,7 +915,7 @@ join associado a on a.codAssociado = p.codAssocPedido
       codclient +
       "	where negociacao.codFornNegociacao  = " +
       codforn +
-      " GROUP BY negociacao.codNegociacao ORDER BY confirma desc";
+      " GROUP BY negociacao.codNegociacao ORDER BY codNegociacao, observacao desc";
 
     connection.query(queryConsult, async (error, results, fields) => {
       if (error) {

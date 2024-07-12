@@ -142,7 +142,7 @@ const Notice = {
         precoUnit: element["valor_nf_unitario"],
         barcode: element["codigo_barras"],
         complemento: element["complemento"].replaceAll("'", "`").replaceAll('"', '`'),
-        marca: element["marca"],
+        marca: element["marca"].replaceAll("'", "`").replaceAll('"', '`'),
         erpcode: element["id_erp"],
         nego: negotiation,
         codMercadoria_ext: element["id_produto"],

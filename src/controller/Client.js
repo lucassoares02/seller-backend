@@ -497,12 +497,19 @@ const Client = {
 
   },
 
-  async insertRelationProvider(req, res) {
+  async insertRelationProviderClient(req, res) {
     logger.info("Post Update Provider Person");
     const { cod, empresa, type } = req.body;
 
+    console.log(cod);
+    console.log(empresa);
+    console.log(type);
+
     if (cod != null) {
-      await this.insertRelationProvider(cod, empresa, type);
+      await Client.insertRelationProvider(cod, empresa, type);
+      return res.json({ "message": "updated" });
+      
+
     }
   },
 

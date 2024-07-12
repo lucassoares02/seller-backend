@@ -31,7 +31,7 @@ router.post("/insertperson", Client.postInsertPerson);
 router.post("/insertuser", Client.postInsertUser);
 router.post("/updateperson", Client.updatePerson);
 router.post("/updateusers", Client.updateUsers);
-router.post("/inserrelationprovider", Client.insertRelationProvider);
+router.post("/inserrelationprovider", Client.insertRelationProviderClient);
 
 router.get("/clientmerchandise/:codmercadoria", Client.getClientMerchandise);
 router.get("/clientmerchandisetrading/:codmercadoria/:codnegotiation", Client.getClientMerchandiseTrading);
