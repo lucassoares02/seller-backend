@@ -338,6 +338,7 @@ const Client = {
 
   },
 
+
   async updatePerson(req, res) {
     logger.info("Post Update Person");
     const { cod, type, hash, name, company, typeUser, document } = req.body;
@@ -496,7 +497,14 @@ const Client = {
 
   },
 
+  async insertRelationProvider(req, res) {
+    logger.info("Post Update Provider Person");
+    const { cod, empresa, type } = req.body;
 
+    if (cod != null) {
+      await this.insertRelationProvider(cod, empresa, type);
+    }
+  },
 
   insertRelationProvider(cod, empresa, type) {
     console.log("Insert Relation Provider");
