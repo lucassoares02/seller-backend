@@ -18,9 +18,6 @@ router.post("/getuser", User.getUser);
 router.post("/getusermore", User.getUserDoubleCompany);
 router.post("/getuserweb", User.getUserWeb);
 
-
-
-
 router.get("/getallusersorg", User.getAllUsersOrg);
 router.get("/getallusersprovider", User.getAllUsersProvider);
 router.get("/getallusersassociate", User.getAllUsersAssociate);
@@ -30,6 +27,9 @@ router.get("/client/:codacesso", Client.getOneClient);
 router.get("/clientconsult/:codconsultor", Client.getClientConsult);
 
 router.post("/insertperson", Client.postInsertPerson);
+router.post("/insertuser", Client.postInsertUser);
+router.post("/updateperson", Client.updatePerson);
+router.post("/updateusers", Client.updateUsers);
 
 router.get("/clientmerchandise/:codmercadoria", Client.getClientMerchandise);
 router.get("/clientmerchandisetrading/:codmercadoria/:codnegotiation", Client.getClientMerchandiseTrading);

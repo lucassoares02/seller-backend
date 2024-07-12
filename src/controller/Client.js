@@ -307,6 +307,63 @@ const Client = {
       });
   },
 
+  async updateUsers(req, res) {
+    logger.info("Post Update Users");
+    const { cod, name, company, document } = req.body;
+
+    if (cod != null) {
+
+      const queryUpdate = `update consultor set 
+      nomeConsult = '${name}',
+      cpfConsult = '${document}',
+      telConsult = '${document}',
+      emailConsult = '${document}',
+      codFornConsult = '${company}'
+      where codConsult = ${cod}`;
+
+      console.log(queryUpdate);
+
+      connection.query(queryUpdate, (error, results) => {
+        if (error) {
+          console.log("Error Update Users: ", error);
+          return res.status(400).send(`message: ${error}`);
+        } else {
+          console.log("updated");
+          return res.json({ "message": "updated" });
+        }
+      });
+    } else {
+      return res.status(400).send(`message: Nothing Result!`);
+    }
+
+  },
+
+  async updatePerson(req, res) {
+    logger.info("Post Update Person");
+    const { cod, type, hash, name, company, typeUser, document } = req.body;
+
+    if (hash != null) {
+
+      const queryUpdate = `update acesso set 
+      codAcesso = ${hash} where codUsuario = ${cod}`;
+
+      console.log(queryUpdate);
+
+      connection.query(queryUpdate, (error, results) => {
+        if (error) {
+          console.log("Error Update Person: ", error);
+          return res.status(400).send(`message: ${error}`);
+        } else {
+          console.log("updated");
+          return res.json({ "message": "updated" });
+        }
+      });
+    } else {
+      return res.status(400).send(`message: Nothing Result!`);
+    }
+
+  },
+
   async postInsertPerson(req, res) {
     logger.info("Post Insert Person");
 
@@ -371,6 +428,72 @@ const Client = {
     } else {
       return res.status(400).send(`message: Nothing Result!`);
     }
+  },
+
+  async postInsertUser(req, res) {
+    logger.info("Post Insert User");
+
+    const { nome, email, empresa, tel, cpf, type, hash } = req.body;
+
+    const queryInsert = `INSERT INTO 
+    consultor 
+        (codConsult, nomeConsult,	cpfConsult,	telConsult,	codFornConsult,	emailConsult) 
+    VALUES ((SELECT IFNULL(MAX(a.codConsult), 0) + 1 FROM consultor a),'${nome}', '${cpf}', '${tel}', '${empresa}', '${email}')`;
+
+    console.log("queryInsert");
+    console.log(queryInsert);
+
+    //=============================================================
+    //=============================================================
+    //=============================================================
+
+    let result = true;
+    let response = "";
+
+    connection.query(queryInsert, (error, results) => {
+      if (error) {
+        result = false;
+        console.log("Error Insert Person: ", error);
+        return;
+      } else {
+        console.log("inserido consultor");
+        response = results;
+        return;
+      }
+    });
+
+    //=============================================================
+    //=============================================================
+    //=====================
+    if (result) {
+      const queryAccess = `insert into acesso (codAcesso, direcAcesso, codUsuario, codOrganization) values(${hash}, ${type}, (SELECT IFNULL(MAX(a.codConsult), 0) FROM consultor a), 158); select * from consultor where codConsult = (SELECT IFNULL(MAX(a.codConsult), 0) FROM consultor a)`;
+
+      console.log("queryAccess");
+      console.log(queryAccess);
+
+      await connection.query(queryAccess, (error, results) => {
+        if (error) {
+          console.log("Error Insert Acesso: ", error);
+          result = false;
+          return;
+        } else {
+          console.log("inserido acesso");
+          if (type != 3) {
+            Client.insertRelationProvider(results[1][0]["codConsult"], empresa, type);
+            return res.json({ "message": "saved" });
+          } else {
+            return res.status(400).send(`message: Nothing Result!`);
+          }
+          return;
+        }
+      });
+    }
+
+    //=============================================================
+    //=============================================================
+    //=============================================================
+
+
   },
 
 
