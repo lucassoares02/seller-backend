@@ -803,14 +803,14 @@ const Notice = {
       },
       {
         codNotice: 4,
-        title: "3º Feira de negócios",
+        title: "3º Feira de negócios - 2024",
         description: "Apresentação das funcionalidades do Profair para os fornecedores.",
         image: "",
         action: "",
         priority: 0,
         primaryColor: "0XFF0000ff",
         secondaryColor: "0XFFff0000",
-        stamp: "24/05/2024",
+        stamp: "12/07/2024",
         type: 0
       }
     ];
