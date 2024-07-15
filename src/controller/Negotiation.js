@@ -219,7 +219,7 @@ a.razaoAssociado,
 
             csvData += results[1]
               .map((row) => {
-                return ` ${row.codMercPedido};${row.nomeMercadoria};"${row.barcode}";"${row.complemento}";"${(row.precoUnit).toLocaleString("pt-BR", {style: "currency",currency: "BRL",})}";"${(row.precoMercadoria).toLocaleString("pt-BR", {style: "currency",currency: "BRL",})}";"${row.embMercadoria} | ${row.fatorMerc}";"${row.quantidade}";"${(row.quantidade * row.precoMercadoria).toLocaleString("pt-BR", {style: "currency",currency: "BRL",})}"`; // Substitua com os nomes das colunas do seu banco de dados
+                return ` ${row.codMercPedido};${row.nomeMercadoria};"${row.barcode}";"${row.complemento}";"${(row.precoUnit).toLocaleString("pt-BR", { style: "currency", currency: "BRL", })}";"${(row.precoMercadoria).toLocaleString("pt-BR", { style: "currency", currency: "BRL", })}";"${row.embMercadoria} | ${row.fatorMerc}";"${row.quantidade}";"${(row.quantidade * row.precoMercadoria).toLocaleString("pt-BR", { style: "currency", currency: "BRL", })}"`; // Substitua com os nomes das colunas do seu banco de dados
               })
               .join("\n");
 
@@ -229,6 +229,83 @@ a.razaoAssociado,
             res.setHeader(
               "Content-Disposition",
               `attachment; filename=${results[1][0].cliente.replaceAll(" ", "_").toLowerCase()}_${results[1][0].fornecedor.replaceAll(" ", "_").toLowerCase()}.csv`
+            );
+            res.setHeader("Content-Type", "text/csv");
+
+            // Transmitir o arquivo CSV como resposta
+            return res.send(csvData);
+          }
+
+          return res.send({ Message: "Sem pedidos" });
+
+          // return res.json(results[1]);
+        }
+      } catch (error) {
+        return res.send({ Mensagem: "Essa loja não possuí pedidos para exportar!" });
+      }
+    });
+    // connection.end();
+  },
+
+  async GetExportNegotiationsPerNegotiation(req, res) {
+    logger.info("Get Export Negotiation ");
+
+    console.log(req.params);
+
+    const { codenegotiation } = req.params;
+
+
+    const queryConsult = `
+    SET sql_mode = ''; select
+    m.codMercadoria_ext as codMercPedido,
+    m.nomeMercadoria,
+    m.complemento,
+    m.barcode,
+    m.erpcode,
+    m.marca,
+    m.precoUnit,
+m.precoMercadoria,
+m.embMercadoria,
+a.razaoAssociado,
+m.nego as negociacao,
+m.fatorMerc,
+    p.quantMercPedido as quantidade,
+a.codAssociado,
+    concat(a.codAssociado, "_", a.razaoAssociado) as cliente,
+  concat(f.codForn, "_", f.nomeForn) as  'fornecedor',
+    n.codNegoErp as codNegoPedido
+    from pedido p
+    join mercadoria m 
+    join negociacao n on n.codNegociacao = p.codNegoPedido 
+    join associado a on a.codAssociado = p.codAssocPedido
+    join fornecedor f on f.codForn = p.codFornPedido
+    where m.codMercadoria = p.codMercPedido 
+      and m.nego = ${codenegotiation}
+      order by a.razaoAssociado, p.codNegoPedido;
+    `;
+
+    console.log(queryConsult);
+
+    connection.query(queryConsult, (error, results, fields) => {
+      try {
+        if (error) {
+          console.log("Error Export Negotiation : ", error);
+        } else {
+          if (results.length > 0) {
+            let csvData = `ID;Mercadoria;Codigo de barras;Complemento;Valor unitario;Valor;Tipo Embalagem;Cliente;Quantidade;Total\n`;
+
+            csvData += results[1]
+              .map((row) => {
+                return ` ${row.codMercPedido};${row.nomeMercadoria};"${row.barcode}";"${row.complemento}";"${(row.precoUnit).toLocaleString("pt-BR", { style: "currency", currency: "BRL", })}";"${(row.precoMercadoria).toLocaleString("pt-BR", { style: "currency", currency: "BRL", })}";"${row.embMercadoria} | ${row.fatorMerc}";"${row.codAssociado} - ${row.razaoAssociado}";"${row.quantidade}";"${(row.quantidade * row.precoMercadoria).toLocaleString("pt-BR", { style: "currency", currency: "BRL", })}"`; // Substitua com os nomes das colunas do seu banco de dados
+              })
+              .join("\n");
+
+            const dateNow = Date.now();
+
+            // Configurar os cabeçalhos de resposta para fazer o download
+            res.setHeader(
+              "Content-Disposition",
+              `attachment; filename=${results[1][0].fornecedor.replaceAll(" ", "_").toLowerCase()}.csv`
             );
             res.setHeader("Content-Type", "text/csv");
 
