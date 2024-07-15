@@ -224,7 +224,7 @@ const Negotiation = {
               })
               .join("\n");
 
-            csvData += `Gostaríamos de informá-lo(a) que as informações baixadas recentemente não representam o pedido final dos associados. O arquivo exportado refere-se apenas às vendas realizadas durante o Evento Multishow.
+            csvData += `\nGostaríamos de informá-lo(a) que as informações baixadas recentemente não representam o pedido final dos associados. O arquivo exportado refere-se apenas às vendas realizadas durante o Evento Multishow.
 
             É importante destacar que os associados ainda devem realizar alterações e ajustes em seus pedidos finais. Portanto, solicitamos a gentileza de aguardar a confirmação dessas modificações antes de proceder com qualquer preparação ou envio de mercadorias.
             
@@ -308,7 +308,7 @@ const Negotiation = {
               })
               .join("\n");
 
-            csvData += `Gostaríamos de informá-lo(a) que as informações baixadas recentemente não representam o pedido final dos associados. O arquivo exportado refere-se apenas às vendas realizadas durante o Evento Multishow.
+            csvData += `\nGostaríamos de informá-lo(a) que as informações baixadas recentemente não representam o pedido final dos associados. O arquivo exportado refere-se apenas às vendas realizadas durante o Evento Multishow.
 
               É importante destacar que os associados ainda devem realizar alterações e ajustes em seus pedidos finais. Portanto, solicitamos a gentileza de aguardar a confirmação dessas modificações antes de proceder com qualquer preparação ou envio de mercadorias.
               
@@ -513,7 +513,7 @@ join associado a on a.codAssociado = p.codAssocPedido
               })
               .join("\n");
 
-            csvData += `Gostaríamos de informá-lo(a) que as informações baixadas recentemente não representam o pedido final dos associados. O arquivo exportado refere-se apenas às vendas realizadas durante o Evento Multishow.
+            csvData += `\nGostaríamos de informá-lo(a) que as informações baixadas recentemente não representam o pedido final dos associados. O arquivo exportado refere-se apenas às vendas realizadas durante o Evento Multishow.
 
               É importante destacar que os associados ainda devem realizar alterações e ajustes em seus pedidos finais. Portanto, solicitamos a gentileza de aguardar a confirmação dessas modificações antes de proceder com qualquer preparação ou envio de mercadorias.
               
