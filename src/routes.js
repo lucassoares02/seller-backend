@@ -83,9 +83,16 @@ router.get("/exportnegotiationsprovider/:supplier/:buyer/:negotiation", Negotiat
 router.get("/exportnegotiationsclient/:codeclient", Negotiation.GetExportNegotiationsClientTesteaaaaaaaaa);
 
 router.get("/exportnegotiationsclientprovider/:codeclient/:codeprovider", Negotiation.GetExportNegotiationsClientPerProvider);
-router.get("/exportnegotiationperclient/:codeclient/:codenegotiation", Negotiation.GetExportNegotiationsPerNegotiationClient);
+router.get("/exportnegotiationperclient/:codeclient/:codenegotiation", Negotiation.fv);
 router.get("/exportnegotiationper/:codenegotiation", Negotiation.GetExportNegotiationsPerNegotiation);
 router.get("/exportnegotiationperprovider/:codeclient/:codenegotiation", Negotiation.GetExportNegotiationPerProvider);
+
+router.get("/exportproductnegotiationperprovider/:provider", Negotiation.exportProductsPerNegotiationPerProvider);
+
+
+
+
+
 
 router.get("/buyersclient/:codconsultorclient", Buyer.getBuyersClient);
 

@@ -455,6 +455,71 @@ join associado a on a.codAssociado = p.codAssocPedido
     // connection.end();
   },
 
+  async exportProductsPerNegotiationPerProvider(req, res) {
+    logger.info("Get Export Negotiation ");
+
+    const { provider } = req.params;
+
+    const queryConsult = `
+    SET sql_mode = ''; select fornecedor.codForn, 
+    fornecedor.nomeForn, 
+    mercadoria.codMercadoria, 
+    concat(mercadoria.codMercadoria_ext," - ", mercadoria.nomeMercadoria) as nomeMercadoria,
+    mercadoria.embMercadoria, 
+    mercadoria.marca, 
+    mercadoria.erpcode,
+    mercadoria.barcode,
+    mercadoria.nego,                                      
+    mercadoria.codMercadoria_ext,                                      
+    mercadoria.complemento, 
+    mercadoria.fatorMerc, 
+    mercadoria.precoMercadoria as precoMercadoria, 
+    mercadoria.precoUnit as precoUnit,
+    IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal', 
+    IFNULL(sum(pedido.quantMercPedido),0) as 'volumeTotal' 
+    from mercadoria 
+    join fornecedor on mercadoria.codFornMerc = fornecedor.codForn 
+    left join pedido on pedido.codMercPedido = mercadoria.codMercadoria
+    where fornecedor.codForn = ${provider}
+    group by mercadoria.codMercadoria
+    order by mercadoria.nomeMercadoria  
+    asc`;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      try {
+        if (error) {
+          console.log("Error Export Negotiation : ", error);
+        } else {
+          if (results.length > 0) {
+            let csvData = `ID;Mercadoria;Marca;Codigo de barras;Complemento;Valor Unitário;Valor Embalagem;Tipo Embalagem | Fator;Quantidade;Valor Total\n`;
+
+            csvData += results[1]
+              .map((row) => {
+                return ` ${row.codMercPedido};${row.nomeMercadoria};"${row.marca}";"${row.barcode}";"${row.complemento}";"${row.precoUnit}";"${row.precoMercadoria}";"${row.embMercadoria} - ${row.fatorMerc}";"${volumeTotal}";"${valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}"`; // Substitua com os nomes das colunas do seu banco de dados
+              })
+              .join("\n");
+
+            const dateNow = Date.now();
+
+            // Configurar os cabeçalhos de resposta para fazer o download
+            res.setHeader("Content-Disposition", `attachment; filename=${results[1][0].cliente.replaceAll(" ", "_").toLowerCase()}_exportacao.csv`);
+            res.setHeader("Content-Type", "text/csv");
+
+            // Transmitir o arquivo CSV como resposta
+            return res.send(csvData);
+          }
+
+          return res.send({ Message: "Sem pedidos" });
+
+          // return res.json(results[1]);
+        }
+      } catch (error) {
+        return res.send({ Mensagem: "Essa loja não possuí pedidos para exportar!" });
+      }
+    });
+    // connection.end();
+  },
+
   async GetExportNegotiationsProvider(req, res) {
     logger.info("Get Export Negotiation Provider");
 
