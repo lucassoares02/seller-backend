@@ -249,11 +249,6 @@ a.razaoAssociado,
 
   async GetExportNegotiationsPerNegotiation(req, res) {
     logger.info("Get Export Negotiation ");
-    const formatador = new Intl.NumberFormat('pt-BR', {
-      style: 'decimal',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-  });
 
     console.log(req.params);
 
@@ -268,16 +263,17 @@ a.razaoAssociado,
     m.barcode,
     m.erpcode,
     m.marca,
-    m.precoUnit,
-m.precoMercadoria,
-m.embMercadoria,
-a.razaoAssociado,
-m.nego as negociacao,
-m.fatorMerc,
+    format(m.precoUnit,2,'de_DE') as precoUnit,
+    format(m.precoMercadoria,2,'de_DE') as precoMercadoria,
     p.quantMercPedido as quantidade,
-a.codAssociado,
+    format((m.precoMercadoria * p.quantMercPedido),2,'de_DE') as precoTotal,
+    m.embMercadoria,
+    a.razaoAssociado,
+    m.nego as negociacao,
+    m.fatorMerc,
+    a.codAssociado,
     concat(a.codAssociado, "_", a.razaoAssociado) as cliente,
-  concat(f.codForn, "_", f.nomeForn) as  'fornecedor',
+    concat(f.codForn, "_", f.nomeForn) as  'fornecedor',
     n.codNegoErp as codNegoPedido
     from pedido p
     join mercadoria m 
@@ -297,11 +293,11 @@ a.codAssociado,
           console.log("Error Export Negotiation : ", error);
         } else {
           if (results.length > 0) {
-            let csvData = `ID;Mercadoria;Codigo de barras;Complemento;Valor unitario;Valor;Tipo Embalagem;Cliente;Quantidade;Total\n`;
+            let csvData = `Codigo mercadoria;Mercadoria;Codigo de barras;Complemento;Embalagem | Fator;Cliente;Preco unitario;Preco;Quantidade;Total\n`;
 
             csvData += results[1]
               .map((row) => {
-                return ` "${row.codMercPedido}";"${row.nomeMercadoria}";"${row.barcode}";"${row.complemento}";"${row.precoUnit}";"${row.precoMercadoria}";"${row.embMercadoria} | ${row.fatorMerc}";"${row.codAssociado} - ${row.razaoAssociado}";"${row.quantidade}";"${row.quantidade * row.precoMercadoria}"`; // Substitua com os nomes das colunas do seu banco de dados
+                return ` "${row.codMercPedido}";"${row.nomeMercadoria}";"${row.barcode}";"${row.complemento}";"${row.embMercadoria} | ${row.fatorMerc}";"${row.codAssociado} - ${row.razaoAssociado}";"${row.precoUnit}";"${row.precoMercadoria}";"${row.quantidade}";"${row.precoTotal}"`; // Substitua com os nomes das colunas do seu banco de dados
               })
               .join("\n");
 
@@ -478,9 +474,9 @@ join associado a on a.codAssociado = p.codAssocPedido
     mercadoria.codMercadoria_ext,                                      
     mercadoria.complemento, 
     mercadoria.fatorMerc, 
-    mercadoria.precoMercadoria as precoMercadoria, 
-    mercadoria.precoUnit as precoUnit,
-    IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0) as 'valorTotal', 
+    format(mercadoria.precoMercadoria, 2,'de_DE') as precoMercadoria, 
+    format(mercadoria.precoUnit,2,'de_DE') as precoUnit,
+    format(IFNULL(sum(mercadoria.precoMercadoria*pedido.quantMercPedido), 0), 2, 'de_DE') as 'valorTotal', 
     IFNULL(sum(pedido.quantMercPedido),0) as 'volumeTotal' 
     from mercadoria 
     join fornecedor on mercadoria.codFornMerc = fornecedor.codForn 
