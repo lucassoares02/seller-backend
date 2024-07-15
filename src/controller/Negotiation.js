@@ -249,6 +249,11 @@ a.razaoAssociado,
 
   async GetExportNegotiationsPerNegotiation(req, res) {
     logger.info("Get Export Negotiation ");
+    const formatador = new Intl.NumberFormat('pt-BR', {
+      style: 'decimal',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+  });
 
     console.log(req.params);
 
@@ -296,7 +301,7 @@ a.codAssociado,
 
             csvData += results[1]
               .map((row) => {
-                return ` ${row.codMercPedido};${row.nomeMercadoria};"${row.barcode}";"${row.complemento}";"${(row.precoUnit).toLocaleString("pt-BR", { style: "currency", currency: "BRL", })}";"${(row.precoMercadoria).toLocaleString("pt-BR", { style: "currency", currency: "BRL", })}";"${row.embMercadoria} | ${row.fatorMerc}";"${row.codAssociado} - ${row.razaoAssociado}";"${row.quantidade}";"${(row.quantidade * row.precoMercadoria).toLocaleString("pt-BR", { style: "currency", currency: "BRL", })}"`; // Substitua com os nomes das colunas do seu banco de dados
+                return ` ${row.codMercPedido};${row.nomeMercadoria};"${row.barcode}";"${row.complemento}";"${(row.precoUnit).toLocaleString("pt-BR", { style: "currency", currency: "BRL", })}";"${(row.precoMercadoria).toLocaleString("pt-BR", { style: "currency", currency: "BRL", })}";"${row.embMercadoria} | ${row.fatorMerc}";"${row.codAssociado} - ${row.razaoAssociado}";"${row.quantidade}";"${formatador.format(row.quantidade * row.precoMercadoria)}"`; // Substitua com os nomes das colunas do seu banco de dados
               })
               .join("\n");
 
@@ -464,7 +469,7 @@ join associado a on a.codAssociado = p.codAssocPedido
     SET sql_mode = ''; select fornecedor.codForn, 
     fornecedor.nomeForn, 
     mercadoria.codMercadoria, 
-    concat(mercadoria.codMercadoria_ext," - ", mercadoria.nomeMercadoria) as nomeMercadoria,
+    mercadoria.nomeMercadoria  as nomeMercadoria,
     mercadoria.embMercadoria, 
     mercadoria.marca, 
     mercadoria.erpcode,
