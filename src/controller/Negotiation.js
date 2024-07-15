@@ -172,7 +172,7 @@ const Negotiation = {
 
   async GetExportNegotiationsPerNegotiationClient(req, res) {
     logger.info("Get Export Negotiation ");
-    
+
     console.log(req.params);
 
     const { codeclient, codenegotiation } = req.params;
@@ -219,7 +219,7 @@ a.razaoAssociado,
 
             csvData += results[1]
               .map((row) => {
-                return ` ${row.codMercPedido};${row.nomeMercadoria};"${row.barcode}";"${row.complemento}";"${row.precoUnit}";"${row.precoMercadoria}";"${row.embMercadoria}; "${row.fatorMerc}";"${row.quantidade}";"${row.quantidade * row.precoMercadoria}"`; // Substitua com os nomes das colunas do seu banco de dados
+                return ` ${row.codMercPedido};${row.nomeMercadoria};"${row.barcode}";"${row.complemento}";"${(row.precoUnit).toLocaleString("pt-BR", {style: "currency",currency: "BRL",})}";"${(row.precoMercadoria).toLocaleString("pt-BR", {style: "currency",currency: "BRL",})}";"${row.embMercadoria}";"${row.fatorMerc}";"${row.quantidade}";"${(row.quantidade * row.precoMercadoria).toLocaleString("pt-BR", {style: "currency",currency: "BRL",})}"`; // Substitua com os nomes das colunas do seu banco de dados
               })
               .join("\n");
 
