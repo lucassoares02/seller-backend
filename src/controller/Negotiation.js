@@ -495,7 +495,7 @@ join associado a on a.codAssociado = p.codAssocPedido
 
             csvData += results[1]
               .map((row) => {
-                return ` ${row.codMercPedido};${row.nomeMercadoria};"${row.marca}";"${row.barcode}";"${row.complemento}";"${row.precoUnit}";"${row.precoMercadoria}";"${row.embMercadoria} - ${row.fatorMerc}";"${volumeTotal}";"${valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}"`; // Substitua com os nomes das colunas do seu banco de dados
+                return ` ${row.codMercPedido};${row.nomeMercadoria};"${row.marca}";"${row.barcode}";"${row.complemento}";"${row.precoUnit}";"${row.precoMercadoria}";"${row.embMercadoria} - ${row.fatorMerc}";"${row.volumeTotal}";"${row.valorTotal}"`; // Substitua com os nomes das colunas do seu banco de dados
               })
               .join("\n");
 
