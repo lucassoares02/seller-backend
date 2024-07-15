@@ -215,11 +215,11 @@ a.razaoAssociado,
           console.log("Error Export Negotiation : ", error);
         } else {
           if (results.length > 0) {
-            let csvData = `ID;Mercadoria;Codigo de barras;Complemento;Valor unitario;Valor;Tipo Embalagem;Qtde. Embalagem;Quantidade;Total\n`;
+            let csvData = `ID;Mercadoria;Codigo de barras;Complemento;Valor unitario;Valor;Tipo Embalagem;Quantidade;Total\n`;
 
             csvData += results[1]
               .map((row) => {
-                return ` ${row.codMercPedido};${row.nomeMercadoria};"${row.barcode}";"${row.complemento}";"${(row.precoUnit).toLocaleString("pt-BR", {style: "currency",currency: "BRL",})}";"${(row.precoMercadoria).toLocaleString("pt-BR", {style: "currency",currency: "BRL",})}";"${row.embMercadoria}";"${row.fatorMerc}";"${row.quantidade}";"${(row.quantidade * row.precoMercadoria).toLocaleString("pt-BR", {style: "currency",currency: "BRL",})}"`; // Substitua com os nomes das colunas do seu banco de dados
+                return ` ${row.codMercPedido};${row.nomeMercadoria};"${row.barcode}";"${row.complemento}";"${(row.precoUnit).toLocaleString("pt-BR", {style: "currency",currency: "BRL",})}";"${(row.precoMercadoria).toLocaleString("pt-BR", {style: "currency",currency: "BRL",})}";"${row.embMercadoria} | ${row.fatorMerc}";"${row.quantidade}";"${(row.quantidade * row.precoMercadoria).toLocaleString("pt-BR", {style: "currency",currency: "BRL",})}"`; // Substitua com os nomes das colunas do seu banco de dados
               })
               .join("\n");
 
