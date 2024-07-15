@@ -479,9 +479,9 @@ join associado a on a.codAssociado = p.codAssocPedido
     IFNULL(sum(pedido.quantMercPedido),0) as 'volumeTotal' 
     from mercadoria 
     join fornecedor on mercadoria.codFornMerc = fornecedor.codForn 
-    left join pedido on pedido.codMercPedido = mercadoria.codMercadoria
+    join pedido on pedido.codMercPedido = mercadoria.codMercadoria
     where fornecedor.codForn = ${provider}
-    group by mercadoria.codMercadoria
+    group by mercadoria.codMercadoria_ext
     order by mercadoria.nomeMercadoria  
     asc`;
 
@@ -495,7 +495,7 @@ join associado a on a.codAssociado = p.codAssocPedido
 
             csvData += results[1]
               .map((row) => {
-                return ` ${row.codMercPedido};${row.nomeMercadoria};"${row.marca}";"${row.barcode}";"${row.complemento}";"${row.precoUnit}";"${row.precoMercadoria}";"${row.embMercadoria} - ${row.fatorMerc}";"${row.volumeTotal}";"${row.valorTotal}"`; // Substitua com os nomes das colunas do seu banco de dados
+                return ` "${row.codMercadoria_ext}";"${row.nomeMercadoria}";"${row.marca}";"${row.barcode}";"${row.complemento}";"${row.precoUnit}";"${row.precoMercadoria}";"${row.embMercadoria} | ${row.fatorMerc}";"${row.volumeTotal}";"${row.valorTotal}"`; // Substitua com os nomes das colunas do seu banco de dados
               })
               .join("\n");
 
