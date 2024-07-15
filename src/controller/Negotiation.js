@@ -224,6 +224,12 @@ const Negotiation = {
               })
               .join("\n");
 
+            csvData += `Gostaríamos de informá-lo(a) que as informações baixadas recentemente não representam o pedido final dos associados. O arquivo exportado refere-se apenas às vendas realizadas durante o Evento Multishow.
+
+            É importante destacar que os associados ainda devem realizar alterações e ajustes em seus pedidos finais. Portanto, solicitamos a gentileza de aguardar a confirmação dessas modificações antes de proceder com qualquer preparação ou envio de mercadorias.
+            
+            Estamos trabalhando para garantir que todos os pedidos sejam finalizados com precisão e dentro do prazo. Agradecemos a compreensão de todos.`;
+
             const dateNow = Date.now();
 
             // Configurar os cabeçalhos de resposta para fazer o download
@@ -301,6 +307,12 @@ const Negotiation = {
                 return ` "${row.codMercPedido}";"${row.nomeMercadoria}";"${row.barcode}";"${row.complemento}";"${row.embMercadoria} | ${row.fatorMerc}";"${row.codAssociado} - ${row.razaoAssociado}";"${row.precoUnit}";"${row.precoMercadoria}";"${row.quantidade}";"${row.precoTotal}"`; // Substitua com os nomes das colunas do seu banco de dados
               })
               .join("\n");
+
+            csvData += `Gostaríamos de informá-lo(a) que as informações baixadas recentemente não representam o pedido final dos associados. O arquivo exportado refere-se apenas às vendas realizadas durante o Evento Multishow.
+
+              É importante destacar que os associados ainda devem realizar alterações e ajustes em seus pedidos finais. Portanto, solicitamos a gentileza de aguardar a confirmação dessas modificações antes de proceder com qualquer preparação ou envio de mercadorias.
+              
+              Estamos trabalhando para garantir que todos os pedidos sejam finalizados com precisão e dentro do prazo. Agradecemos a compreensão de todos.`;
 
             const dateNow = Date.now();
 
@@ -500,6 +512,13 @@ join associado a on a.codAssociado = p.codAssocPedido
                 return ` "${row.codMercadoria_ext}";"${row.nomeMercadoria}";"${row.marca}";"${row.barcode}";"${row.complemento}";"${row.precoUnit}";"${row.precoMercadoria}";"${row.embMercadoria} | ${row.fatorMerc}";"${row.volumeTotal}";"${row.valorTotal}"`; // Substitua com os nomes das colunas do seu banco de dados
               })
               .join("\n");
+
+            csvData += `Gostaríamos de informá-lo(a) que as informações baixadas recentemente não representam o pedido final dos associados. O arquivo exportado refere-se apenas às vendas realizadas durante o Evento Multishow.
+
+              É importante destacar que os associados ainda devem realizar alterações e ajustes em seus pedidos finais. Portanto, solicitamos a gentileza de aguardar a confirmação dessas modificações antes de proceder com qualquer preparação ou envio de mercadorias.
+              
+              Estamos trabalhando para garantir que todos os pedidos sejam finalizados com precisão e dentro do prazo. Agradecemos a compreensão de todos.`;
+
 
             const dateNow = Date.now();
 
