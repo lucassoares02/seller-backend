@@ -186,15 +186,16 @@ const Negotiation = {
     m.barcode,
     m.erpcode,
     m.marca,
-    m.precoUnit,
-m.precoMercadoria,
-m.embMercadoria,
-m.fatorMerc,
+    format(m.precoUnit, 2, 'de_DE') as precoUnit,
+    format(m.precoMercadoria, 2, 'de_DE') as precoMercadoria,
+    format(m.precoMercadoria * p.quantMercPedido, 2, 'de_DE') as valorTotal,
+    m.embMercadoria,
+    m.fatorMerc,
     p.quantMercPedido as quantidade,
-a.codAssociado,
-a.razaoAssociado,
+    a.codAssociado,
+    a.razaoAssociado,
     concat(a.codAssociado, "_", a.razaoAssociado) as cliente,
-  concat(f.codForn, "_", f.nomeForn) as  'fornecedor',
+    concat(f.codForn, "_", f.nomeForn) as  'fornecedor',
     n.codNegoErp as codNegoPedido
     from pedido p
     join mercadoria m 
@@ -219,7 +220,7 @@ a.razaoAssociado,
 
             csvData += results[1]
               .map((row) => {
-                return ` ${row.codMercPedido};${row.nomeMercadoria};"${row.barcode}";"${row.complemento}";"${(row.precoUnit).toLocaleString("pt-BR", { style: "currency", currency: "BRL", })}";"${(row.precoMercadoria).toLocaleString("pt-BR", { style: "currency", currency: "BRL", })}";"${row.embMercadoria} | ${row.fatorMerc}";"${row.quantidade}";"${(row.quantidade * row.precoMercadoria).toLocaleString("pt-BR", { style: "currency", currency: "BRL", })}"`; // Substitua com os nomes das colunas do seu banco de dados
+                return ` ${row.codMercPedido};${row.nomeMercadoria};"${row.barcode}";"${row.complemento}";"${row.precoUnit}";"${row.precoMercadoria}";"${row.embMercadoria} | ${row.fatorMerc}";"${row.quantidade}";"${row.valorTotal}"`; // Substitua com os nomes das colunas do seu banco de dados
               })
               .join("\n");
 
