@@ -258,34 +258,18 @@ const Negotiation = {
 
 
     const queryConsult = `
-    SET sql_mode = ''; select
-    m.codMercadoria_ext as codMercPedido,
-    m.nomeMercadoria,
-    m.complemento,
-    m.barcode,
-    m.erpcode,
-    m.marca,
-    format(m.precoUnit,2,'de_DE') as precoUnit,
-    format(m.precoMercadoria,2,'de_DE') as precoMercadoria,
-    p.quantMercPedido as quantidade,
-    format((m.precoMercadoria * p.quantMercPedido),2,'de_DE') as precoTotal,
-    m.embMercadoria,
-    a.razaoAssociado,
-    m.nego as negociacao,
-    m.fatorMerc,
-    a.codAssociado,
-    concat(a.codAssociado, "_", a.razaoAssociado) as cliente,
-    concat(f.codForn, "_", f.nomeForn) as  'fornecedor',
-    n.codNegoErp as codNegoPedido
-    from pedido p
-    join mercadoria m 
-    join negociacao n on n.codNegociacao = p.codNegoPedido 
-    join associado a on a.codAssociado = p.codAssocPedido
-    join fornecedor f on f.codForn = p.codFornPedido
-    where m.codMercadoria = p.codMercPedido 
-      and m.nego = ${codenegotiation}
-      order by a.razaoAssociado, p.codNegoPedido;
-    `;
+      SET sql_mode = '';
+      select
+      a.codAssociado,
+      a.razaoAssociado,
+      p.codNegoPedido,
+      sum(p.quantMercPedido) quantidade,
+      format(sum(p.quantMercPedido * m.precoMercadoria), 2, 'de_DE') as valorTotal
+      from pedido p
+      join mercadoria m on m.codMercadoria = p.codMercPedido
+      join associado a on a.codAssociado = p.codAssocPedido
+      where p.codNegoPedido = ${codenegotiation}
+      group by p.codNegoPedido, p.codAssocPedido`;
 
     console.log(queryConsult);
 
@@ -295,11 +279,11 @@ const Negotiation = {
           console.log("Error Export Negotiation : ", error);
         } else {
           if (results.length > 0) {
-            let csvData = `Codigo mercadoria;Mercadoria;Codigo de barras;Complemento;Embalagem | Fator;Cliente;Preco unitario;Preco;Quantidade;Total\n`;
+            let csvData = `Codigo Associado;Razão Associado;Negociação;Volume Total;Valor Total\n`;
 
             csvData += results[1]
               .map((row) => {
-                return ` "${row.codMercPedido}";"${row.nomeMercadoria}";"${row.barcode}";"${row.complemento}";"${row.embMercadoria} | ${row.fatorMerc}";"${row.codAssociado} - ${row.razaoAssociado}";"${row.precoUnit}";"${row.precoMercadoria}";"${row.quantidade}";"${row.precoTotal}"`; // Substitua com os nomes das colunas do seu banco de dados
+                return ` "${row.codAssociado}";"${row.razaoAssociado}";"${row.codNegoPedido}";"${row.quantidade}";"${row.valorTotal}"`; // Substitua com os nomes das colunas do seu banco de dados
               })
               .join("\n");
 
