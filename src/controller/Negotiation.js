@@ -263,7 +263,7 @@ const Negotiation = {
     a.codAssociado,
     a.razaoAssociado,
     p.codNegoPedido,
-    f.razaoForn,
+    f.razaoForn as fornecedor,
     sum(p.quantMercPedido) quantidade,
     format(sum(p.quantMercPedido * m.precoMercadoria), 2, 'de_DE') as valorTotal
     from pedido p
