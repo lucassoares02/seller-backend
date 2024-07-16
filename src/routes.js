@@ -88,6 +88,8 @@ router.get("/exportnegotiationper/:codenegotiation", Negotiation.GetExportNegoti
 router.get("/exportnegotiationperprovider/:codeclient/:codenegotiation", Negotiation.GetExportNegotiationPerProvider);
 
 
+router.get("/ExportNegotiationsPerProvider/:provider", Negotiation.ExportNegotiationsPerProvider);
+
 router.get("/exportproductnegotiationperprovider/:provider", Negotiation.exportProductsPerNegotiationPerProvider);
 
 

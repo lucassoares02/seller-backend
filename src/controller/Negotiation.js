@@ -314,6 +314,70 @@ const Negotiation = {
     // connection.end();
   },
 
+  async ExportNegotiationsPerProvider(req, res) {
+    logger.info("Get Export Negotiation ");
+
+    console.log(req.params);
+
+    const { provider } = req.params;
+
+
+    const queryConsult = `
+          SET sql_mode = '';
+          select
+          a.codAssociado,
+          a.razaoAssociado,
+          p.codNegoPedido,
+          f.codForn,
+          f.razaoForn as fornecedor,
+          sum(p.quantMercPedido) quantidade,
+          format(sum(p.quantMercPedido * m.precoMercadoria), 2, 'de_DE') as valorTotal
+          from pedido p
+          join mercadoria m on m.codMercadoria = p.codMercPedido
+          join associado a on a.codAssociado = p.codAssocPedido
+          join fornecedor f on f.codForn = p.codFornPedido
+          where p.codFornPedido = ${provider}
+          group by p.codNegoPedido, p.codAssocPedido`;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      try {
+        if (error) {
+          console.log("Error Export Negotiation : ", error);
+        } else {
+          if (results.length > 0) {
+            let csvData = `Codigo Associado;Razão Associado;Negociação;Volume Total;Valor Total\n`;
+
+            csvData += results[1]
+              .map((row) => {
+                return ` ${row.codAssociado};"${row.razaoAssociado}";"${row.codNegoPedido}";"${row.quantidade}";"${row.valorTotal}"`; // Substitua com os nomes das colunas do seu banco de dados
+              })
+              .join("\n");
+
+
+            const dateNow = Date.now();
+
+            // Configurar os cabeçalhos de resposta para fazer o download
+            res.setHeader(
+              "Content-Disposition",
+              `attachment; filename=${results[1][0].fornecedor.replaceAll(" ", "_").toLowerCase()}_geral.csv`
+            );
+            res.setHeader("Content-Type", "text/csv");
+
+            // Transmitir o arquivo CSV como resposta
+            return res.send(csvData);
+          }
+
+          return res.send({ Message: "Sem pedidos" });
+
+          // return res.json(results[1]);
+        }
+      } catch (error) {
+        return res.send({ Mensagem: "Essa loja não possuí pedidos para exportar!" });
+      }
+    });
+    // connection.end();
+  },
+
   async GetExportNegotiationPerProvider(req, res) {
     logger.info("Get Export Negotiation ");
 
