@@ -323,21 +323,23 @@ const Negotiation = {
 
 
     const queryConsult = `
-          SET sql_mode = '';
-          select
-          a.codAssociado,
-          a.razaoAssociado,
-          p.codNegoPedido,
-          f.codForn,
-          f.razaoForn as fornecedor,
-          sum(p.quantMercPedido) quantidade,
-          format(sum(p.quantMercPedido * m.precoMercadoria), 2, 'de_DE') as valorTotal
-          from pedido p
-          join mercadoria m on m.codMercadoria = p.codMercPedido
-          join associado a on a.codAssociado = p.codAssocPedido
-          join fornecedor f on f.codForn = p.codFornPedido
-          where p.codFornPedido = ${provider}
-          group by p.codNegoPedido, p.codAssocPedido`;
+      SET sql_mode = '';
+      select
+      a.codAssociado,
+      a.razaoAssociado,
+      p.codNegoPedido,
+      f.codForn,
+      c.nomeConsult as vendedor,
+      f.razaoForn as fornecedor,
+      sum(p.quantMercPedido) quantidade,
+      format(sum(p.quantMercPedido * m.precoMercadoria), 2, 'de_DE') as valorTotal
+      from pedido p
+      join mercadoria m on m.codMercadoria = p.codMercPedido
+      join associado a on a.codAssociado = p.codAssocPedido
+      join fornecedor f on f.codForn = p.codFornPedido
+      join consultor c on c.codConsult = p.codConsultPedido
+      where p.codFornPedido = ${provider}
+      group by p.codNegoPedido, p.codAssocPedido`;
 
     connection.query(queryConsult, (error, results, fields) => {
       try {
@@ -345,11 +347,11 @@ const Negotiation = {
           console.log("Error Export Negotiation : ", error);
         } else {
           if (results.length > 0) {
-            let csvData = `Codigo Associado;Razão Associado;Negociação;Volume Total;Valor Total\n`;
+            let csvData = `Codigo Associado;Razão Associado;Negociação;Vendedor;Volume Total;Valor Total\n`;
 
             csvData += results[1]
               .map((row) => {
-                return ` ${row.codAssociado};"${row.razaoAssociado}";"${row.codNegoPedido}";"${row.quantidade}";"${row.valorTotal}"`; // Substitua com os nomes das colunas do seu banco de dados
+                return ` ${row.codAssociado};"${row.razaoAssociado}";"${row.codNegoPedido}";"${row.vendedor}";"${row.quantidade}";"${row.valorTotal}"`; // Substitua com os nomes das colunas do seu banco de dados
               })
               .join("\n");
 
