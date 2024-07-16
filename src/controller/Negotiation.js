@@ -258,18 +258,20 @@ const Negotiation = {
 
 
     const queryConsult = `
-      SET sql_mode = '';
-      select
-      a.codAssociado,
-      a.razaoAssociado,
-      p.codNegoPedido,
-      sum(p.quantMercPedido) quantidade,
-      format(sum(p.quantMercPedido * m.precoMercadoria), 2, 'de_DE') as valorTotal
-      from pedido p
-      join mercadoria m on m.codMercadoria = p.codMercPedido
-      join associado a on a.codAssociado = p.codAssocPedido
-      where p.codNegoPedido = ${codenegotiation}
-      group by p.codNegoPedido, p.codAssocPedido`;
+    SET sql_mode = '';
+    select
+    a.codAssociado,
+    a.razaoAssociado,
+    p.codNegoPedido,
+    f.razaoForn,
+    sum(p.quantMercPedido) quantidade,
+    format(sum(p.quantMercPedido * m.precoMercadoria), 2, 'de_DE') as valorTotal
+    from pedido p
+    join mercadoria m on m.codMercadoria = p.codMercPedido
+    join associado a on a.codAssociado = p.codAssocPedido
+    join fornecedor f on f.codForn = p.codFornPedido
+    where p.codNegoPedido = ${codenegotiation}
+    group by p.codNegoPedido, p.codAssocPedido`;
 
     console.log(queryConsult);
 
@@ -283,7 +285,7 @@ const Negotiation = {
 
             csvData += results[1]
               .map((row) => {
-                return ` "${row.codAssociado}";"${row.razaoAssociado}";"${row.codNegoPedido}";"${row.quantidade}";"${row.valorTotal}"`; // Substitua com os nomes das colunas do seu banco de dados
+                return ` ${row.codAssociado};"${row.razaoAssociado}";"${row.codNegoPedido}";"${row.quantidade}";"${row.valorTotal}"`; // Substitua com os nomes das colunas do seu banco de dados
               })
               .join("\n");
 
