@@ -184,6 +184,76 @@ const Request = {
     // connection.end();
   },
 
+
+  async ExportClientsPerProvider(req, res) {
+    logger.info("Get Export Negotiation ");
+
+    console.log(req.params);
+
+    const { provider } = req.params;
+
+
+    const queryConsult = `
+    SET sql_mode = ''; 
+    select  
+    associado.cnpjAssociado AS CNPJ, 
+    associado.codAssociado as 'codigo',
+    consultor.nomeConsult as 'responsavel', 
+    associado.razaoAssociado as 'razao', 
+    fornecedor.codForn as 'codigo_fornecedor', 
+    fornecedor.razaoForn as 'fornecedor',
+    IFNULL(sum(pedido.quantMercPedido), 0) as 'volume',
+    format(sum(pedido.quantMercPedido * mercadoria.precoMercadoria), 2, 'de_DE') as 'valor', 
+    TIME_FORMAT(SUBTIME(pedido.dataPedido, '03:00:00'),'%H:%i') as 'horas' 
+    from consultor 
+    join pedido on consultor.codConsult = pedido.codComprPedido 
+    join associado on pedido.codAssocPedido = associado.codAssociado 
+    join mercadoria on pedido.codMercPedido = mercadoria.codMercadoria 
+    join fornecedor on fornecedor.codForn = pedido.codFornPedido
+    where pedido.codFornPedido = ${provider}
+    group by associado.codAssociado 
+    order by valor
+    desc`;
+
+    connection.query(queryConsult, (error, results, fields) => {
+      try {
+        if (error) {
+          console.log("Error Export Negotiation : ", error);
+        } else {
+          if (results.length > 0) {
+            let csvData = `Codigo Associado;Razão Associado;CNPJ;Responsável;Volume Total;Valor Total\n`;
+
+            csvData += results[1]
+              .map((row) => {
+                return ` ${row.codigo};"${row.razao}";"${row.cnpj}";"${row.responsavel}";"${row.volume}";"${row.valor}"`; // Substitua com os nomes das colunas do seu banco de dados
+              })
+              .join("\n");
+
+
+            const dateNow = Date.now();
+
+            // Configurar os cabeçalhos de resposta para fazer o download
+            res.setHeader(
+              "Content-Disposition",
+              `attachment; filename=${results[1][0].codigo_fornecedor}_${results[1][0].fornecedor.replaceAll(" ", "_").toLowerCase()}_geral.csv`
+            );
+            res.setHeader("Content-Type", "text/csv");
+
+            // Transmitir o arquivo CSV como resposta
+            return res.send(csvData);
+          }
+
+          return res.send({ Message: "Sem pedidos" });
+
+          // return res.json(results[1]);
+        }
+      } catch (error) {
+        return res.send({ Mensagem: "Essa loja não possuí pedidos para exportar!" });
+      }
+    });
+    // connection.end();
+  },
+
   async getRequestsNegotiation(req, res) {
     logger.info("Get Requests Negotiation");
 

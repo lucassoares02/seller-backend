@@ -127,6 +127,8 @@ router.get("/requesttonegotiationclient/:codclient/:codprovider", Request.getReq
 router.get("/requesttonegotiationsperprovider/:codprovider", Request.getRequestNegotiationsPerProvider);
 
 router.get("/requestsprovider/:codprovider", Request.getRequestsProvider);
+router.get("/exportrequestsprovider/:codprovider", Request.ExportClientsPerProvider);
+
 
 router.get("/requestsprovidernegotiation/:codenegotiation", Request.getRequestsNegotiation);
 
