@@ -196,7 +196,7 @@ const Request = {
     const queryConsult = `
     SET sql_mode = ''; 
     select  
-    associado.cnpjAssociado AS CNPJ, 
+    associado.cnpjAssociado as cnpj, 
     associado.codAssociado as 'codigo',
     consultor.nomeConsult as 'responsavel', 
     associado.razaoAssociado as 'razao', 
