@@ -9,7 +9,7 @@ const Faceline = {
     const { client, datetime, button1, button2, button3, button4, button5, button6, button7, button8, button_whatsApp, button_Oferta1, button_Oferta2, button_Oferta3, percentage } = data;
 
     // Verificar se o cliente já existe
-    const selectQuery = `SELECT * FROM faceline WHERE client = client`;
+    const selectQuery = `SELECT * FROM faceline WHERE client = ${client}`;
 
     connection.query(selectQuery, [client], (err, results) => {
         if (err) throw err;
