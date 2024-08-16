@@ -297,3 +297,4 @@
 11:58:39 - Error: ER_DUP_ENTRY: Duplicate entry '24880' for key 'fornecedor.PRIMARY'
 11:58:41 - Error: ER_DUP_ENTRY: Duplicate entry '24880' for key 'fornecedor.PRIMARY'
 11:58:42 - Error: ER_DUP_ENTRY: Duplicate entry '24880' for key 'fornecedor.PRIMARY'
+20:12:09 - Error: getaddrinfo ENOTFOUND db-mysql-nyc3-17606-do-user-16317462-0.c.db.ondigitalocean.com
