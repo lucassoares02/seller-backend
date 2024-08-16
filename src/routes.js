@@ -12,6 +12,9 @@ const Notice = require("@controller/Notice");
 const User = require("@controller/User");
 const Multishow = require("@controller/Multishow");
 const Delete = require("@controller/Delete");
+const Faceline = require("@controller/Faceline");
+
+router.post("/faceline-user", Faceline.insert);
 
 // Router with the headers
 router.post("/getuser", User.getUser);
@@ -150,9 +153,6 @@ router.get("/information", Graphs.getTotalInformations);
 router.get("/exportpdf/:supplier/:negotiation/:client", Graphs.getExportPdf);
 
 router.get("getnegotiationmultishow/:category", Graphs.getExportPdf);
-
-
-
 
 router.post("/multishow/negotiation", Multishow.getNegotiations);
 
