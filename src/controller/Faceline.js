@@ -6,8 +6,25 @@ const Faceline = {
   async insert(req, res) {
     logger.info("Post Save Faceline Client");
 
-    const { client, datetime, button1, button2, button3, button4, button5, button6, button7, button8, button_whatsApp, button_Oferta1, button_Oferta2, button_Oferta3, percentage } = req.body;
+    const {
+      client = null,
+      datetime = null,
+      button1 = null,
+      button2 = null,
+      button3 = null,
+      button4 = null,
+      button5 = null,
+      button6 = null,
+      button7 = null,
+      button8 = null,
+      button_whatsApp = null,
+      button_Oferta1 = null,
+      button_Oferta2 = null,
+      button_Oferta3 = null,
+      percentage = null
+  } = req.body;
 
+  console.log(req.body)
     // Verificar se o cliente já existe
     const selectQuery = `SELECT * FROM faceline WHERE client = ${client}`;
 
