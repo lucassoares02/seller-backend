@@ -15,6 +15,7 @@ const Delete = require("@controller/Delete");
 const Faceline = require("@controller/Faceline");
 
 router.post("/faceline-user", Faceline.insert);
+router.post("/faceline-user-update", Faceline.update);
 
 // Router with the headers
 router.post("/getuser", User.getUser);

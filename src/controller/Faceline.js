@@ -1,64 +1,54 @@
 const { connection } = require("@server");
 const logger = require("@logger");
 const Insert = require("@insert");
+const Update = require("@update");
 
 const Faceline = {
   async insert(req, res) {
     logger.info("Post Save Faceline Client");
 
-    const {
-      client = null,
-      datetime = null,
-      button1 = null,
-      button2 = null,
-      button3 = null,
-      button4 = null,
-      button5 = null,
-      button6 = null,
-      button7 = null,
-      button8 = null,
-      button_whatsApp = null,
-      button_Oferta1 = null,
-      button_Oferta2 = null,
-      button_Oferta3 = null,
-      percentage = null
-  } = req.body;
+    const itens = req.body;
 
-  console.log(req.body)
-    // Verificar se o cliente já existe
-    const selectQuery = `SELECT * FROM faceline WHERE client = ${client}`;
+    let params = {
+      table: "faceline",
+      data: itens,
+    };
 
-    connection.query(selectQuery, [client], (err, results) => {
-      if (err) throw err;
+    return Insert(params)
+      .then(async (resp) => {
+        res.json(resp);
+      })
+      .catch((error) => {
+        res.status(400).send(error);
+      });
+    // connection.end();
+  },
 
-      if (results.length > 0) {
-        // Se o cliente existir, atualize as informações
-        const updateQuery = `
-                UPDATE faceline
-                SET datetime = ?, button1 = ?, button2 = ?, button3 = ?, button4 = ?, button5 = ?, button6 = ?, button7 = ?, button8 = ?, button_whatsApp = ?, button_Oferta1 = ?, button_Oferta2 = ?, button_Oferta3 = ?, percentage = ?
-                WHERE client = ?
-            `;
+  async update(req, res) {
+    logger.info("Post Update Faceline Client");
 
-        connection.query(updateQuery, [datetime, button1, button2, button3, button4, button5, button6, button7, button8, button_whatsApp, button_Oferta1, button_Oferta2, button_Oferta3, percentage, client], (err, results) => {
-          if (err) throw err;
-          console.log('Cliente atualizado com sucesso!');
-        });
+    const itens = req.body;
+    console.log(itens)
 
-      } else {
-        // Se o cliente não existir, insira um novo registro
-        const insertQuery = `
-                INSERT INTO faceline (client, datetime, button1, button2, button3, button4, button5, button6, button7, button8, button_whatsApp, button_Oferta1, button_Oferta2, button_Oferta3, percentage)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            `;
-
-        connection.query(insertQuery, [client, datetime, button1, button2, button3, button4, button5, button6, button7, button8, button_whatsApp, button_Oferta1, button_Oferta2, button_Oferta3, percentage], (err, results) => {
-          if (err) throw err;
-          console.log('Cliente inserido com sucesso!');
-        });
+    let params = {
+      table: 'faceline',
+      data: itens.data,
+      where: {
+        client: itens.client
       }
-    });
-  }
+    };
 
+    console.log(params)
+
+    return Update(params)
+      .then(async (resp) => {
+        res.json(resp);
+      })
+      .catch((error) => {
+        res.status(400).send(error);
+      });
+    // connection.end();
+  },
 
 };
 
