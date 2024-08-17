@@ -37,6 +37,10 @@ async function Update(params) {
 
     const query = `UPDATE ${table} SET ${setClause} WHERE ${whereCondition}; SHOW WARNINGS`;
 
+    console.log("====== Query update ======");
+    console.log(query);
+    console.log("====== xxxxxxxxxxxx ======");
+
     return new Promise(function (resolve, reject) {
       try {
         connection.query(query, (error, results, fields) => {
