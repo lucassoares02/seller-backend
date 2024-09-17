@@ -49,16 +49,17 @@ const Client = {
         if (error) {
           logger.error("Error Select Client: ", error);
         } else {
-          try {
-            if (results[1][0]["ativo"] == 0) {
-              return res.json({ "message": "Período de negociações ainda não está ativo" });
-            } else {
-              return res.json(results[1]);
-            }
-          } catch (error) {
-            logger.error(`Error Ativo User: ${error}`)
-            return res.json({ "message": "Problemas ao selecionar o ativo" });
-          }
+          return res.json(results[1]);
+          // try {
+          //   if (results[1][0]["ativo"] == 0) {
+          //     return res.json({ "message": "Período de negociações ainda não está ativo" });
+          //   } else {
+          //     return res.json(results[1]);
+          //   }
+          // } catch (error) {
+          //   logger.error(`Error Ativo User: ${error}`)
+          //   return res.json({ "message": "Problemas ao selecionar o ativo" });
+          // }
         }
       });
 
