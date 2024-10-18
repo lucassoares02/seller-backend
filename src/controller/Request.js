@@ -440,21 +440,21 @@ const Request = {
 
     const { codAssociado, codFornecedor, codComprador, codNegociacao, codOrganizacao, items, codeConsult } = req.body;
 
-    try {
-      if (process.env.INDEX_API == 0) {
-        axios.post(`${process.env.API_BACKUP}/insertrequestnew`, {
-          "codAssociado": codAssociado,
-          "codFornecedor": codFornecedor,
-          "codComprador": codComprador,
-          "codNegociacao": codNegociacao,
-          "codeConsult": codeConsult,
-          "codOrganizacao": codOrganizacao,
-          "items": items
-        });
-      }
-    } catch (error) {
-      logger.error(`Error Backup Save: ${error}`);
-    }
+    // try {
+    //   if (process.env.INDEX_API == 0) {
+    //     axios.post(`${process.env.API_BACKUP}/insertrequestnew`, {
+    //       "codAssociado": codAssociado,
+    //       "codFornecedor": codFornecedor,
+    //       "codComprador": codComprador,
+    //       "codNegociacao": codNegociacao,
+    //       "codeConsult": codeConsult,
+    //       "codOrganizacao": codOrganizacao,
+    //       "items": items
+    //     });
+    //   }
+    // } catch (error) {
+    //   logger.error(`Error Backup Save: ${error}`);
+    // }
 
     let values = "";
 
