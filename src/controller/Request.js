@@ -436,7 +436,7 @@ const Request = {
   // },
 
   async postInserRequestNew(req, res) {
-    logger.info("Get All Requests");
+    logger.info("POST INSERT REQUEST NEW");
 
     const { codAssociado, codFornecedor, codComprador, codNegociacao, codOrganizacao, items, codeConsult } = req.body;
 
