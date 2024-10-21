@@ -421,6 +421,9 @@ const Request = {
 
     const { codMercadoria, quantMercadoria, codFornecedor, codAssociado, codComprador, codNegociacao, codOrganizacao } = req.body;
 
+    logger.info(req.body);
+    console.log(req.body);
+
     const queryConsult = `INSERT INTO pedido (codMercPedido, codNegoPedido, codAssocPedido, codFornPedido, codComprPedido, quantMercPedido, codOrganizador)
     VALUES (${codMercadoria}, ${codNegociacao}, ${codAssociado},  ${codFornecedor}, ${codComprador}, ${quantMercadoria}, ${codOrganizacao})
     ON DUPLICATE KEY UPDATE quantMercPedido = VALUES(quantMercPedido);`;
