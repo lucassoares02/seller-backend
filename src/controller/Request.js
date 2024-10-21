@@ -471,6 +471,9 @@ const Request = {
 
     logger.info("3");
 
+    logger.info(items);
+    console.log(items);
+
     for (let i = 0; i < items.length; i++) {
       values =
         values +
