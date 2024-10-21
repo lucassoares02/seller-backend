@@ -46,7 +46,7 @@ const User = {
             left join mercadoria on mercadoria.codMercadoria = pedido.codMercPedido 
             where acesso.codAcesso = ${codacesso}
             group by fornecedor.codForn
-            order by valorPedido desc;
+            order by fornecedor.nomeForn desc;
             `;
 
             connection.query(queryProvider, (error, results) => {

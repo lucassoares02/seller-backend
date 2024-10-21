@@ -421,7 +421,6 @@ const Request = {
 
   //   const { codMercadoria, quantMercadoria, codFornecedor, codAssociado, codComprador, codNegociacao, codOrganizacao } = req.body;
 
-  //   logger.info(req.body);
   //   console.log(req.body);
 
   //   const queryConsult = `INSERT INTO pedido (codMercPedido, codNegoPedido, codAssocPedido, codFornPedido, codComprPedido, quantMercPedido, codOrganizador)
@@ -443,9 +442,8 @@ const Request = {
 
     logger.info("1");
 
-    const { codAssociado, codFornecedor, codComprador, codNegociacao, codOrganizacao, items, codeConsult } = req.body;
 
-    logger.info(JSON.stringify(req.body, null, 2));
+    const { codAssociado, codFornecedor, codComprador, codNegociacao, codOrganizacao, items, codeConsult } = req.body;
 
     logger.info("2");
 
@@ -468,9 +466,6 @@ const Request = {
     let values = "";
 
     logger.info("3");
-
-    logger.info(items);
-    console.log(items);
 
     for (let i = 0; i < items.length; i++) {
       values =
