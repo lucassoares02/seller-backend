@@ -57,7 +57,7 @@ const Negotiation = {
     const queryConsult = `
     SET sql_mode = ''; select
       p.codMercPedido,
-      concat(m.codMercadoria_ext," - ", m.nomeMercadoria) as nomeMercadoria,
+      m.nomeMercadoria,
       m.nomeMercadoria as nomeMerc,
       m.complemento,
       m.barcode,
@@ -701,7 +701,7 @@ join associado a on a.codAssociado = p.codAssocPedido
     const queryConsult = `
     SET sql_mode = ''; select
       p.codMercPedido,
-      concat(m.codMercadoria_ext," - ", m.nomeMercadoria) as nomeMercadoria,
+      m.nomeMercadoria as nomeMercadoria,
       m.complemento,
       m.barcode,
       m.erpcode,
@@ -842,7 +842,7 @@ join associado a on a.codAssociado = p.codAssocPedido
     const queryConsult = `
     SET sql_mode = ''; select
       p.codMercPedido,
-      concat(m.codMercadoria_ext," - ", m.nomeMercadoria) as nomeMercadoria,
+      m.nomeMercadoria as nomeMercadoria,
       m.complemento,
       m.barcode,
       m.erpcode,
@@ -1003,7 +1003,7 @@ join associado a on a.codAssociado = p.codAssocPedido
     const queryConsult = `
     SET sql_mode = ''; select
       p.codMercPedido,
-      concat(m.codMercadoria_ext," - ", m.nomeMercadoria) as nomeMercadoria,
+      m.nomeMercadoria as nomeMercadoria,
       m.complemento,
       m.barcode,
       m.erpcode,
@@ -1201,7 +1201,7 @@ join associado a on a.codAssociado = p.codAssocPedido
         let allResult = [];
         const queryReusult = await new Promise(async (resolve, reject) => {
           await Promise.all(results[1].map(async (negotiation) => {
-            const queryConsult = `SET sql_mode = ''; select mercadoria.codMercadoria, concat(mercadoria.codMercadoria_ext,' - ', mercadoria.nomeMercadoria) as nomeMercadoria,mercadoria.complemento, mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido =  ${codclient}  and pedido.codNegoPedido = ${negotiation["codNegociacao"]} where mercadoria.nego = ${negotiation["codNegociacao"]} and mercadoria.codFornMerc = ${codforn} GROUP BY mercadoria.codMercadoria ORDER BY quantMercadoria desc`;
+            const queryConsult = `SET sql_mode = ''; select mercadoria.codMercadoria, mercadoria.nomeMercadoria as nomeMercadoria,mercadoria.complemento, mercadoria.marca, mercadoria.precoUnit, mercadoria.embMercadoria, mercadoria.fatorMerc, mercadoria.precoMercadoria as precoMercadoria, IFNULL(SUM(pedido.quantMercPedido), 0) as quantMercadoria FROM mercadoria left outer JOIN pedido ON(mercadoria.codMercadoria = pedido.codMercPedido) and pedido.codAssocPedido =  ${codclient}  and pedido.codNegoPedido = ${negotiation["codNegociacao"]} where mercadoria.nego = ${negotiation["codNegociacao"]} and mercadoria.codFornMerc = ${codforn} GROUP BY mercadoria.codMercadoria ORDER BY quantMercadoria desc`;
 
             const queryMerhcandises = await new Promise(async (resolves, reject) => {
               connection.query(queryConsult, (error, merchandises, fields) => {
