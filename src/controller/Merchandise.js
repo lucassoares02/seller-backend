@@ -336,7 +336,7 @@ SET sql_mode = ''; SELECT
     const itens = req.body;
 
     let params = {
-      table: "mercadoriaNova",
+      table: "mercadoria",
       data: itens,
     };
     return Insert(params)
