@@ -445,9 +445,7 @@ const Request = {
 
     const { codAssociado, codFornecedor, codComprador, codNegociacao, codOrganizacao, items, codeConsult } = req.body;
 
-    logger.info(req.body);
-
-    console.log(req.body);
+    logger.info(JSON.stringify(req.body, null, 2));
 
     logger.info("2");
 
