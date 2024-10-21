@@ -483,7 +483,7 @@ const Request = {
     const queryConsult =
       "INSERT INTO pedido (codMercPedido, codNegoPedido, codAssocPedido, codFornPedido, codConsultPedido, codComprPedido, quantMercPedido, codOrganizador) VALUES" +
       values +
-      "ON DUPLICATE KEY UPDATE quantMercPedido = VALUES(quantMercPedido);";
+      "ON DUPLICATE KEY UPDATE quantMercPedido = VALUES(quantMercPedido); SHOW WARNINGS";
 
     logger.info("5");
 
