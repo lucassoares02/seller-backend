@@ -3,6 +3,7 @@ const logger = require("@logger");
 const Select = require("@select");
 const Insert = require("@insert");
 const axios = require('axios');
+const { response } = require("express");
 
 const Request = {
   async getRequestProviderClient(req, res) {
@@ -437,74 +438,6 @@ const Request = {
   //   // connection.end();
   // },
 
-  async postInserRequestNew(req, res) {
-    logger.info("POST INSERT REQUEST NEW");
-
-    logger.info("1");
-
-
-    const { codAssociado, codFornecedor, codComprador, codNegociacao, codOrganizacao, items, codeConsult } = req.body;
-
-    logger.info("2");
-
-    // try {
-    //   if (process.env.INDEX_API == 0) {
-    //     axios.post(`${process.env.API_BACKUP}/insertrequestnew`, {
-    //       "codAssociado": codAssociado,
-    //       "codFornecedor": codFornecedor,
-    //       "codComprador": codComprador,
-    //       "codNegociacao": codNegociacao,
-    //       "codeConsult": codeConsult,
-    //       "codOrganizacao": codOrganizacao,
-    //       "items": items
-    //     });
-    //   }
-    // } catch (error) {
-    //   logger.error(`Error Backup Save: ${error}`);
-    // }
-
-    let values = "";
-
-    logger.info("3");
-
-    for (let i = 0; i < items.length; i++) {
-      values =
-        values +
-        `(${items[i]["codMercadoria"]}, ${codNegociacao}, ${codAssociado},  ${codFornecedor}, ${codeConsult}, ${codComprador}, ${items[i]["quantMercadoria"]}, ${codOrganizacao})`;
-      values = values + (i == items.length - 1 ? " " : ",");
-    }
-
-    logger.info("4");
-
-    const queryConsult =
-      "INSERT INTO pedido (codMercPedido, codNegoPedido, codAssocPedido, codFornPedido, codConsultPedido, codComprPedido, quantMercPedido, codOrganizador) VALUES" +
-      values +
-      "ON DUPLICATE KEY UPDATE quantMercPedido = VALUES(quantMercPedido); SHOW WARNINGS";
-
-    logger.info("5");
-
-    console.log("==================================");
-    console.log(queryConsult);
-    console.log("==================================");
-
-    logger.info("6");
-
-    connection.query(queryConsult, (error, results, fields) => {
-      if (error) {
-        console.log(error);
-        console.log("Error Select All Requests: ", error);
-      } else {
-        console.log(results);
-        console.log("results");
-        console.log(results[1]);
-        logger.info("7");
-        return res.json(results[1]);
-      }
-    });
-    return 0;
-    // connection.end();
-  },
-
   async postInsertRequest(req, res) {
     logger.info("Post Insert Request");
 
@@ -574,6 +507,59 @@ const Request = {
     });
     // connection.end();
   },
+
+
+
+  async postInserRequestNew(req, res) {
+    logger.info("POST INSERT REQUEST NEW");
+
+    const { codAssociado, codFornecedor, codComprador, codNegociacao, codOrganizacao, items, codeConsult } = req.body;
+
+    // try {
+    //   if (process.env.INDEX_API == 0) {
+    //     axios.post(`${process.env.API_BACKUP}/insertrequestnew`, {
+    //       "codAssociado": codAssociado,
+    //       "codFornecedor": codFornecedor,
+    //       "codComprador": codComprador,
+    //       "codNegociacao": codNegociacao,
+    //       "codeConsult": codeConsult,
+    //       "codOrganizacao": codOrganizacao,
+    //       "items": items
+    //     });
+    //   }
+    // } catch (error) {
+    //   logger.error(`Error Backup Save: ${error}`);
+    // }
+
+    let values = "";
+
+    for (let i = 0; i < items.length; i++) {
+      values =
+        values +
+        `(${items[i]["codMercadoria"]}, ${codNegociacao}, ${codAssociado},  ${codFornecedor}, ${codeConsult}, ${codComprador}, ${items[i]["quantMercadoria"]}, ${codOrganizacao})`;
+      values = values + (i == items.length - 1 ? " " : ",");
+    }
+
+    logger.info("4");
+
+    const queryConsult =
+      "INSERT INTO pedido (codMercPedido, codNegoPedido, codAssocPedido, codFornPedido, codConsultPedido, codComprPedido, quantMercPedido, codOrganizador) VALUES" +
+      values +
+      "ON DUPLICATE KEY UPDATE quantMercPedido = VALUES(quantMercPedido); SHOW WARNINGS";
+
+    connection.query(queryConsult, (error, results, fields) => {
+      if (error) {
+        error.logger(error);
+        return res.json({ response: 400 });
+      } else {
+        return res.json({ response: 200 });
+      }
+    });
+    return 0;
+    // connection.end();
+  },
+
+
 };
 
 module.exports = Request;
