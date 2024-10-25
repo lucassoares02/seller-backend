@@ -550,9 +550,16 @@ const Request = {
     connection.query(queryConsult, (error, results, fields) => {
       if (error) {
         error.logger(error);
-        return res.json({ response: 400 });
+        return res.status(400).json({
+          response: 400,
+          message: "Failed to insert data",
+          error: error.message // Inclui a mensagem de erro
+        });
       } else {
-        return res.json({ response: 200 });
+        return res.status(200).json({
+          response: 200,
+          message: "Data inserted successfully"
+        });
       }
     });
     return 0;
