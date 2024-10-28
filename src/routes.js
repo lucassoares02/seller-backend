@@ -13,6 +13,7 @@ const User = require("@controller/User");
 const Multishow = require("@controller/Multishow");
 const Delete = require("@controller/Delete");
 const Faceline = require("@controller/Faceline");
+const Halo = require("@controller/Halo");
 
 router.post("/faceline-user", Faceline.insert);
 router.post("/faceline-user-update", Faceline.update);
@@ -162,6 +163,8 @@ router.get("/multishow/merchandiserefresh/:product/:negotiation", Multishow.refr
 router.get("/deleteallinformations", Delete.deleteAll);
 
 
+
+router.post("/sla/client", Halo.slaClient);
 
 
 
