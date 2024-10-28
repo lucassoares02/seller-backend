@@ -4,8 +4,7 @@ const Buyer = {
   async slaClient(req, res) {
     logger.info("HALO SLA CLIENT");
 
-    console.log(req.body)
-    console.log(req.body)
+    console.log(req.body[0])
 
     return res.json(req.body);
   }
