@@ -47,7 +47,23 @@ const Wedding = {
     }
 
 
-  }
+  },
+
+  async get(req, res) {
+    logger.info("Get Confirmation");
+
+    const { id } = req.query;
+
+    const query = `select confirmou from confirmado where id = ${id}`;
+
+    connection.query(query, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select Users: ", error);
+      } else {
+        return res.json(results[1]);
+      }
+    });
+  },
 
 
 };
