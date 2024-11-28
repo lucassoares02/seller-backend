@@ -14,6 +14,7 @@ const Multishow = require("@controller/Multishow");
 const Delete = require("@controller/Delete");
 const Faceline = require("@controller/Faceline");
 const Halo = require("@controller/Halo");
+const Wedding = require("@controller/Wedding");
 
 router.post("/faceline-user", Faceline.insert);
 router.post("/faceline-user-update", Faceline.update);
@@ -162,14 +163,11 @@ router.get("/multishow/merchandiserefresh/:product/:negotiation", Multishow.refr
 
 router.get("/deleteallinformations", Delete.deleteAll);
 
-
-
 router.post("/sla/client", Halo.slaClient);
 
 
-
-
-
+router.get("/wedding/confirm", Wedding.confirm);
+router.get("/wedding/desconfirm", Wedding.disconfirm);
 
 
 module.exports = router;
