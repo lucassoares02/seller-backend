@@ -169,6 +169,7 @@ router.post("/sla/client", Halo.slaClient);
 router.get("/wedding/get", Wedding.get);
 router.get("/wedding/confirm", Wedding.confirm);
 router.get("/wedding/desconfirm", Wedding.disconfirm);
+router.get("/wedding/getallguests", Wedding.getAllGuests);
 
 
 module.exports = router;

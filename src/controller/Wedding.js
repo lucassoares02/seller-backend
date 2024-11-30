@@ -64,6 +64,22 @@ const Wedding = {
       }
     });
   },
+  
+  async getAllGuests(req, res) {
+    logger.info("Get All Guests");
+
+    const { id } = req.query;
+
+    const query = `select * from convidados`;
+
+    connection.query(query, (error, results, fields) => {
+      if (error) {
+        console.log("Error Select GetAll Guests: ", error);
+      } else {
+        return res.json(results[0]);
+      }
+    });
+  },
 
 
 };
