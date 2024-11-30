@@ -70,7 +70,7 @@ const Wedding = {
 
     const { id } = req.query;
 
-    const query = `select * from convidados`;
+    const query = `select convidados.*, confirmado.confirmou from convidados join confirmado on convidados.familia = confirmado.familia `;
 
     connection.query(query, (error, results, fields) => {
       if (error) {
