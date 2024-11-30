@@ -60,7 +60,7 @@ const Wedding = {
       if (error) {
         console.log("Error Select Users: ", error);
       } else {
-        return res.json(results);
+        return res.json(results[0]);
       }
     });
   },
