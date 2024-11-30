@@ -76,7 +76,7 @@ const Wedding = {
       if (error) {
         console.log("Error Select GetAll Guests: ", error);
       } else {
-        return res.json(results[0]);
+        return res.json(results);
       }
     });
   },
