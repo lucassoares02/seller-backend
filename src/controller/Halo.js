@@ -18,6 +18,7 @@ const Halo = {
       }
     }
 
+
     function toHHMMSS(seconds) {
       try {
         const hours = Math.floor(seconds / 3600);
@@ -43,10 +44,17 @@ const Halo = {
 
       for (let i = 0; i < ticket.actions.length; i++) {
         if (ticket.actions[i].new_status == 24 && ticket.actions[i].old_status == 4) {
+
+          console.log("actionClient")
+          console.log(ticket.actions[i].new_status);
+          console.log(ticket.actions[i].old_status);
+          console.log(`actionClient: ${new Date(ticket.actions[i].datetime)}`);
           actionClient = new Date(ticket.actions[i].datetime);
         }
-        if (ticket.actions[i].new_status == 4) {
+        if (ticket.actions[i].new_status == 4 && ticket.actions[i].old_status != 4) {
+
           actionAgent = new Date(ticket.actions[i].datetime);
+          console.log(`actionAgent: ${new Date(ticket.actions[i].datetime)}`);
           break;
         }
       }
@@ -57,6 +65,8 @@ const Halo = {
       }
 
       const sub = actionClient - actionAgent;
+
+      console.log(`sub: ${sub}`);
 
 
       // Converte para horas, minutos e segundos
@@ -89,10 +99,10 @@ const Halo = {
 
       const totalSeconds = toHHMMSS(toSeconds(time1) + toSeconds(timeSla));// Todas as vezes
 
-      console.log(`firstSeconds: ${firstSeconds}`);
-      console.log(`mediaSeconds: ${mediaSeconds}`);
-      console.log(`totalSeconds: ${totalSeconds}`);
-      console.log(`timeSla: ${timeSla}`);
+      // console.log(`firstSeconds: ${firstSeconds}`);
+      // console.log(`mediaSeconds: ${mediaSeconds}`);
+      // console.log(`totalSeconds: ${totalSeconds}`);
+      // console.log(`timeSla: ${timeSla}`);
 
       if (actionAgent && actionClient) {
         return res.json({
@@ -210,11 +220,6 @@ const Halo = {
     }
 
   },
-
-
-
-
-
 };
 
 module.exports = Halo;
