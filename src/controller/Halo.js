@@ -5,9 +5,6 @@ const Halo = {
     const ticket = req.body.ticket;
     const sla = req.body.sla;
 
-    console.log("=-----------------------------------------------------------=");
-    console.log(sla);
-
 
     function toSeconds(time) {
       try {
@@ -44,15 +41,9 @@ const Halo = {
 
       for (let i = 0; i < ticket.actions.length; i++) {
         if (ticket.actions[i].new_status == 24 && ticket.actions[i].old_status == 4) {
-
-          console.log("actionClient")
-          console.log(ticket.actions[i].new_status);
-          console.log(ticket.actions[i].old_status);
-          console.log(`actionClient: ${new Date(ticket.actions[i].datetime)}`);
           actionClient = new Date(ticket.actions[i].datetime);
         }
         if (ticket.actions[i].new_status == 4 && ticket.actions[i].old_status != 4) {
-
           actionAgent = new Date(ticket.actions[i].datetime);
           console.log(`actionAgent: ${new Date(ticket.actions[i].datetime)}`);
           break;
@@ -88,8 +79,13 @@ const Halo = {
       var mediaSeconds = "00:00:00";
 
       if (sla != null) {
-        time1 = sla["value"];
-        firstSeconds = sla["value"];
+        // time1 = sla["value"];
+        // firstSeconds = sla["value"];
+        time1 = sla;
+        firstSeconds = sla;
+        console.log(`sla: ${sla}`);
+        console.log(`time1: ${time1}`);
+        console.log(`timeSlas: ${timeSla}`);
         mediaSeconds = toHHMMSS((toSeconds(time1) + toSeconds(timeSla)) / 2); // Média todas as vezes
       } else if (sla == null) {
         firstSeconds = toHHMMSS(toSeconds(time1) + toSeconds(timeSla)); // Somente a primeira vez
@@ -100,7 +96,7 @@ const Halo = {
       const totalSeconds = toHHMMSS(toSeconds(time1) + toSeconds(timeSla));// Todas as vezes
 
       // console.log(`firstSeconds: ${firstSeconds}`);
-      // console.log(`mediaSeconds: ${mediaSeconds}`);
+      // console.log(`  : ${mediaSeconds}`);
       // console.log(`totalSeconds: ${totalSeconds}`);
       // console.log(`timeSla: ${timeSla}`);
 
